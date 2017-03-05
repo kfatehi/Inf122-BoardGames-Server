@@ -13,3 +13,10 @@ hs_err_pid*
 
 # IntelliJ files
 .idea/*
+
+# Eclipse
+.classpath
+.project
+
+# Build
+out/*
