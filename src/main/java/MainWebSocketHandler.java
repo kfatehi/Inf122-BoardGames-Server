@@ -1,41 +1,29 @@
-import org.java_websocket.*;
-import org.java_websocket.server.*;
-import org.java_websocket.handshake.*;
-import org.java_websocket.framing.*;
-
-import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
+import org.eclipse.jetty.websocket.api.*;
+import org.eclipse.jetty.websocket.api.annotations.*;
 
 
 /**
  * Created by james on 3/5/17.
  */
-public class MainWebSocketHandler extends WebSocketServer {
+@WebSocket
+public class MainWebSocketHandler {
 
-    public MainWebSocketHandler(int port) throws UnknownHostException {
-        super(new InetSocketAddress(port));
+    private String sender, msg;
+
+    @OnWebSocketConnect
+    public void onConnect(Session session) throws Exception {
+        System.out.println("New connection: " + session.getRemoteAddress());
     }
 
-    @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        System.out.println( conn.getRemoteSocketAddress().getAddress().getHostAddress() + " entered the room!" );
+    @OnWebSocketClose
+    public void onClose(Session session, int statusCode, String reason) {
+        System.out.println("Closed connection: " + statusCode + " " + session.getRemoteAddress() + " " + reason);
+
     }
 
-    @Override
-    public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        System.out.println( conn + " has left the room!" );
+    @OnWebSocketMessage
+    public void onMessage(Session session, String message) {
+        System.out.println("New message: " + session.getRemoteAddress() + " " + message);
     }
 
-    @Override
-    public void onMessage(WebSocket conn, String message) {
-        System.out.println( conn + ": " + message );
-    }
-
-    @Override
-    public void onError(WebSocket conn, Exception ex) {
-        ex.printStackTrace();
-        if(conn != null) {
-            // some errors like port binding failed may not be assignable to a specific websocket
-        }
-    }
 }
