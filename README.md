@@ -3,17 +3,13 @@ Informatics 122 Final Group Project for Board Games
 
 ## External Dependencies
 
-* [javax.websocket-api-1.1.jar](http://central.maven.org/maven2/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar)
-
-You have two options for installing the dependencies. You can either use maven or manually download.
-
-### Manual Download
-
-Download each jar listed above, and place them in the `lib/` folder of the project (you may need to create this folder).
+* Spark (included in pom.xml)
 
 ### Automatic Download
 
 You can run `mvn dependency:copy-dependencies -DoutputDirectory=lib` or `make deps`
+
+Or if you're running IntelliJ it should automatically download necessary files when you click "Enable Auto-Import" on the bottom right.
 
 ## Install
 This should be quite easy. I made this project with IntelliJ but it should work fine with Eclipse for you. Tell me if it doesn't.
@@ -31,6 +27,6 @@ File -> "Open Projects from Filesystem...", choose the root folder for the git r
 Eclipse seems to find and include jar files in the `lib` folder automatically.
 
 ## Running
-Right now, run as is. The default port is 8080. The console will give you a link.
+Right now, run as is. The default port is 4567. The console will give you a link.
 
 An example client to manually send messages is here: https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related?hl=en
