@@ -6,8 +6,9 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-
-        Server server = new Server(8080);
+        int port = 8080;
+        Server server = new Server(port);
+        System.out.println("Running server on http://localhost:"+port);
         server.serve();
 
 
