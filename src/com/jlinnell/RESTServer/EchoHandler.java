@@ -1,10 +1,9 @@
-package com.jlinnell.Server;
+package com.jlinnell.RESTServer;
 
 import com.jlinnell.Util;
 import com.sun.net.httpserver.*;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 
 

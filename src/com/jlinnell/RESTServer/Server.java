@@ -1,4 +1,4 @@
-package com.jlinnell.Server;
+package com.jlinnell.RESTServer;
 
 import com.sun.net.httpserver.*;
 

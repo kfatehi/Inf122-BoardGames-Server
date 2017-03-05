@@ -1,6 +1,6 @@
 package com.jlinnell;
 
-import com.jlinnell.Server.Server;
+import com.jlinnell.RESTServer.Server;
 
 public class Main {
 
