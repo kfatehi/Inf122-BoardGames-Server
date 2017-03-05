@@ -6,7 +6,7 @@ This should be quite easy. I made this project with IntelliJ but it should work 
 
 ## External Dependencies
 
-* websocket: http://central.maven.org/maven2/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar
+* [javax.websocket-api-1.1.jar](http://central.maven.org/maven2/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar)
 
 You have two options for installing the dependencies. You can either use maven or manually download.
 
