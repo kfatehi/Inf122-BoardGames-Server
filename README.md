@@ -30,3 +30,6 @@ Eclipse seems to find and include jar files in the `lib` folder automatically.
 Right now, run as is. The default port is 4567. The console will give you a link.
 
 An example client to manually send messages is here: https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo/related?hl=en
+
+## Running in Command Line
+`make run` will run mvn package to compile and then run the java server.
