@@ -1,4 +1,4 @@
-mainClassName="Main"
+mainClassName="team5.Main"
 
 deps:
 	mvn dependency:copy-dependencies -DoutputDirectory=lib
