@@ -1,6 +1,6 @@
-package team5.piece.logic.chess;
+package team5.plugins.chess;
 
-import team5.piece.logic.PieceMovementLogic;
+import team5.game.state.PieceMovementLogic;
 
 public class Pawn implements PieceMovementLogic {
     public Pawn() {

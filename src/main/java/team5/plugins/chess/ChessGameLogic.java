@@ -1,4 +1,4 @@
-package team5.game.logic;
+package team5.plugins.chess;
 
 public class ChessGameLogic {
     public ChessGameLogic() {

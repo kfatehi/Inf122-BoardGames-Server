@@ -1,4 +1,4 @@
-package team5.piece.logic;
+package team5.game.state;
 public interface PieceMovementLogic {
     public boolean validMode();
 }

@@ -2,13 +2,13 @@ package team5;
 
 import static spark.Spark.*;
 import team5.network.MainWebSocketHandler;
-import team5.piece.logic.chess.Pawn;
+import team5.plugins.chess.Pawn;
 import team5.network.CommunicationBridge;
 // Does not do recursive import.
 import team5.game.*;
 
 // This is why this is needed in order to import ChessGameLogic
-import team5.game.logic.ChessGameLogic;
+import team5.plugins.chess.ChessGameLogic;
 
 /**
  * Created by james on 3/5/17.
