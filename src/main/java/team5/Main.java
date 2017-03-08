@@ -16,8 +16,8 @@ import team5.plugins.chess.ChessGameLogic;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        webSocket("/games", MainWebSocketHandler.class);
-        init();
+
+        startServer();
 
         // Showing that nested packages work
         new Pawn();
@@ -28,8 +28,10 @@ public class Main {
         new GameSession();
         new User();
 
+    }
 
-
-
+    public static void startServer() {
+        webSocket("/games", MainWebSocketHandler.class);
+        init();
     }
 }
