@@ -96,6 +96,7 @@ public class CommunicationBridge {
             }
 
             if(GameManagerSingleton.instance().login(username)) {
+                this.username = username;
                 sendMessage(successfulResponseJson);
             } else {
                 // Fail safe..
