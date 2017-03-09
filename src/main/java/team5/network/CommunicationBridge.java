@@ -86,6 +86,7 @@ public class CommunicationBridge {
     public void sendMessage(JsonObject json) {
         if(wsSession != null && wsSession.isOpen()) {
             try {
+                System.out.println(json.toString());
                 wsSession.getRemote().sendString(json.toString());
             } catch(IOException e) {
                 e.printStackTrace();
