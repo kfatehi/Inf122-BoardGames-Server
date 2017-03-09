@@ -148,56 +148,31 @@ public class CommunicationBridge {
         responseJson.addProperty(typeKey, "SET_USER_PROFILE");
 
         try {
-            String username = json.get("username").getAsString();
+            String username = json.get(usernameKey).getAsString();
             responseJson.addProperty(usernameKey, username);
 
 
-            //User userObj = GameManagerSingleton.instance().user(username);
-            //Test driver
-            User userObj = new User();
+            User userObj = GameManagerSingleton.instance().user(username);
 
             // Fail safe..
-            if(username == null) {
+            if(userObj == null) {
                 System.out.println("CommunicationBridge-viewPersonalStates: No username found in json object");
                 return;
             }
 
             JsonArray jsonGamesArray = new JsonArray();
 
-            //Build response
-            if(userObj == null) {
-                responseJson.add(gamesKey, jsonGamesArray);
-            } else {
-                // Fix these when suer is flusehd out
-                GameStat g1 = new GameStat("Tic Tac Toe");
-                GameStat g2 = new GameStat("Checkers");
-                GameStat g3 = new GameStat("Chess");
-
-                g1.incrementWins();
-                g2.incrementLosses();
-                g3.incrementDraws();
-
-                ArrayList<GameStat> arrayTest = new ArrayList<GameStat>();
-                arrayTest.add(g1);
-                arrayTest.add(g2);
-                arrayTest.add(g3);
-
-                for(int i = 0; i < arrayTest.size(); i++) {
-                    JsonObject gameStatJson = new JsonObject();
-                    GameStat g = arrayTest.get(i);
-                    gameStatJson.addProperty(gameTypeKey, g.getGameName());
-                    gameStatJson.addProperty(gamesWonKey, g.getWins());
-                    gameStatJson.addProperty(gamesLostKey, g.getLosses());
-                    gameStatJson.addProperty(gamesDrawKey, g.getDraws());
-                    jsonGamesArray.add(gameStatJson);
-                }
-
-                responseJson.add(gamesKey, jsonGamesArray);
-
+            for (GameStat stat : userObj.getStats()) {
+                JsonObject gameStatJson = new JsonObject();
+                gameStatJson.addProperty(gameTypeKey, stat.getGameName());
+                gameStatJson.addProperty(gamesWonKey, stat.getWins());
+                gameStatJson.addProperty(gamesLostKey, stat.getLosses());
+                gameStatJson.addProperty(gamesDrawKey, stat.getDraws());
+                jsonGamesArray.add(gameStatJson);
             }
 
+            responseJson.add(gamesKey, jsonGamesArray);
             sendMessage(responseJson);
-
 
 
         } catch(ClassCastException e) {

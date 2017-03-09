@@ -11,8 +11,10 @@ public class User {
     private String name = "";
     private List<GameStat> stats = new ArrayList<GameStat>();
 
-    public User() {
+    public User(String name) {
         System.out.println("Building User");
+
+        this.name = name;
 
         for (String gameName : GameLogicFactory.getAllSupportedGames()) {
             stats.add(new GameStat(gameName));
@@ -28,4 +30,5 @@ public class User {
         }
         return null;
     }
+    public List<GameStat> getStats() { return stats; }
 }

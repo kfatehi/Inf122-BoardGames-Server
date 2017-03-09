@@ -33,8 +33,7 @@ public class Main {
             System.out.println("We currently support " + game);
         }
         //new GameSession();
-        new User();
-
+//        new User();
 
     }
 

@@ -44,6 +44,12 @@ public class GameManagerSingleton {
     }
 
     public boolean login(String username) {
+
+        User user = user(username);
+        if (user == null) {
+            users.add(new User(username));
+        }
+
         return true;
     }
 
