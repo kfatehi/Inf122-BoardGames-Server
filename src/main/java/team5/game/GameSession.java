@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public class GameSession {
 
+    private int nextId = 0;
+
     private int id;
     private String pugName;
 
@@ -22,12 +24,14 @@ public class GameSession {
     private GameLogic gameLogic;
 
     public GameSession(){
-
+        id = nextId;
+        nextId += 1;
     }
     public GameSession(String gameName, String pugName) {
         System.out.println("Building GameSession");
 
-
+        id = nextId;
+        nextId += 1;
     }
 
     public void addUser(String username, CommunicationBridge commBridge) {

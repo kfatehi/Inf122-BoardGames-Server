@@ -23,6 +23,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import javax.sound.midi.SysexMessage;
+
 
 /**
  *
@@ -183,7 +185,41 @@ public class CommunicationBridge {
     }
 
     private void createGameHandler(JsonObject json) {
+        String typeKey = "type",
+               responseTypeKey = "NEWLY_CREATED_GAME",
+               gameNameKey = "gameName",
+               pugNameKey = "pugName",
+               gameIdKey = "gameId";
 
+        try {
+            String gameName = json.get(gameNameKey).getAsString();
+            String pugName = json.get(pugNameKey).getAsString();
+
+            // Create it
+            GameSession gameSession = GameManagerSingleton.instance().createGameSession(this, gameName, pugName);
+            if (gameSession == null) {
+                System.out.println("Unexpected error creating game session");
+                return;
+            }
+            this.gameSession = gameSession;
+
+
+            // Handle the response
+            JsonObject response = new JsonObject();
+            response.addProperty(typeKey, responseTypeKey);
+            response.addProperty(gameNameKey, gameName);
+            response.addProperty(gameIdKey, gameSession.id());
+            // Send it
+            sendMessage(response);
+
+
+            // Also, push a new list of open games for the client for ease on its end
+            listOpenGamesHandler(null);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void joinGameHandler(JsonElement json) {
