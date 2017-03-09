@@ -4,12 +4,15 @@ package team5.network;
 // Internal imports
 import team5.game.GameSession;
 import team5.game.GameManagerSingleton;
+import team5.game.User;
 
 // Native
 import java.io.IOException;
+import java.util.Hashtable;
 
 // External
 import org.eclipse.jetty.websocket.api.Session;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -114,5 +117,59 @@ public class CommunicationBridge {
     }
 
     public void viewPersonalStats(JsonObject json) {
+        String  typeKey = "type",
+                usernameKey = "username",
+                gamesKey = "games",
+
+                gameTypeKey = "gameType",
+                gamesWonKey = "gamesWon",
+                gamesLostKey = "gamesLost",
+                gamesDrawKey = "gamesDraw";
+
+        JsonObject responseJson = new JsonObject();
+        responseJson.addProperty(typeKey, "SET_USER_PROFILE");
+
+        try {
+            String username = json.get("username").getAsString();
+            responseJson.addProperty(usernameKey, username);
+
+
+            //User userObj = GameManagerSingleton.instance().user(username);
+            //Test driver
+            User userObj = new User();
+
+            // Fail safe..
+            if(username == null) {
+                System.out.println("CommunicationBridge-viewPersonalStates: No username found in json object");
+                return;
+            }
+
+            JsonArray jsonGamesArray = new JsonArray();
+
+            //Build response
+            if(userObj == null) {
+                responseJson.add(gamesKey, jsonGamesArray);
+            } else {
+                // Fix these when suer is flusehd out
+                JsonObject gameStatJson = new JsonObject();
+                gameStatJson.addProperty(gameTypeKey, "Tic Tac Toe");
+                gameStatJson.addProperty(gamesWonKey, 50);
+                gameStatJson.addProperty(gamesLostKey, 0);
+                gameStatJson.addProperty(gamesDrawKey, 10);
+
+                jsonGamesArray.add(gameStatJson);
+                responseJson.add(gamesKey, jsonGamesArray);
+
+            }
+
+            sendMessage(responseJson);
+
+
+
+        } catch(ClassCastException e) {
+            e.printStackTrace();
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 }
