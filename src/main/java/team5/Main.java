@@ -25,7 +25,7 @@ public class Main {
         //new CommunicationBridge();
         new ChessGameLogic();
         new GameLogicFactory();
-        new GameSession();
+        //new GameSession();
         new User();
 
     }
