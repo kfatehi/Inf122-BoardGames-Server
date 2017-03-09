@@ -3,6 +3,7 @@ package team5.network;
 
 // Internal imports
 import team5.game.GameSession;
+import team5.game.GameLogicFactory;
 import team5.game.GameManagerSingleton;
 import team5.game.User;
 import team5.game.GameStat;
@@ -10,6 +11,7 @@ import team5.game.GameStat;
 // Native
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.ArrayList;
 
 // External
@@ -227,7 +229,7 @@ public class CommunicationBridge {
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty(typeKey, "SET_OPEN_GAMES");
 
-        JsonArray openGamesArrayJson = new JsonArray();
+        JsonArray openGamesJsonArray = new JsonArray();
 
         try {
             /*
@@ -240,24 +242,26 @@ public class CommunicationBridge {
 
                 openGameJson.addProperty(gameIDKey, gameSession.id());
                 openGameJson.addProperty(gameNameKey, gameSession.pugName());
-                // openGameJson.addProperty(gameMaxPlayersKey, supportedGames.maxPlayers(gameSession.pugName()));
+//              openGameJson.addProperty(gameMaxPlayersKey, supportedGames.maxPlayers(gameSession.pugName()));
                 openGameJson.addProperty(gameMaxPlayersKey, 2);
-                // openGameJson.addProperty(gameImageKey, supportGames.image(gameSession.pugName()));
+//              openGameJson.addProperty(gameImageKey, supportedGames.image(gameSession.pugName()));
                 openGameJson.addProperty(gameImageKey, "");
 
-                JsonObject playersArrayJson = new JsonArray();
+                JsonArray playersJsonArray = new JsonArray();
                 for (int j = 0; j < numPlayers; j++) {
-                    playersArrayJson.add(gameSession.getUsername(j));
+                    playersJsonArray.add(gameSession.getUsername(j));
                 }
-                openGameJson.addProperty(gamePlayersKey, playersArrayJson);
+                openGameJson.add(gamePlayersKey, playersJsonArray);
 
-                openGamesArrayJson.add(openGameJson);
+                openGamesJsonArray.add(openGameJson);
             }
-            responseJson.addProperty(openGamesKey, openGamesArrayJson);
-
             */
-
+            responseJson.add(openGamesKey, openGamesJsonArray);
+            
+            
             sendMessage(responseJson);
+            
+            
 
         } catch(ClassCastException e) {
             e.printStackTrace();
@@ -267,7 +271,44 @@ public class CommunicationBridge {
     }
 
     private void getSupportedGamesHandler(JsonElement json) {
-
+    	String	typeKey = "type",
+    			supportedGamesKey = "games",
+    	
+    			gameNameKey = "name",
+    			gameMaxPlayersKey = "maxPlayers",
+    			gameImageKey = "image";
+    	
+    	JsonObject responseJson = new JsonObject();
+    	responseJson.addProperty(typeKey, "SET_ALL_SUPPORTED_GAMES");
+    	
+    	JsonArray supportedGamesJsonArray = new JsonArray();
+    	
+    	try {
+    		List<String> supportedGames = GameLogicFactory.getAllSupportedGames();
+    		int numSupportedGames = supportedGames.size();
+    		
+    		for (int i = 0; i < numSupportedGames; i++) {
+    			JsonObject supportedGameJson = new JsonObject();
+    			supportedGameJson.addProperty(gameNameKey, supportedGames.get(i));
+//    			supportedGameJson.addProperty(gameMaxPlayersKey, GameLogicFactory.getMaxPlayers(supportedGames.get(i)));
+    			supportedGameJson.addProperty(gameMaxPlayersKey, 2);
+//				supportedGameJson.addProperty(gameImageKey, GameLogicFactory.getImage(supportedGames.get(i)));
+    			supportedGameJson.addProperty(gameImageKey, "");
+    			
+    			supportedGamesJsonArray.add(supportedGameJson);
+    		}
+    		
+    		responseJson.add(supportedGamesKey, supportedGamesJsonArray);
+    		
+    		sendMessage(responseJson);
+    		
+    		
+    		
+        } catch(ClassCastException e) {
+            e.printStackTrace();
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     private void clientTurnHandler(JsonObject json) {

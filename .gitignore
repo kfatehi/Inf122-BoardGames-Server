@@ -33,3 +33,4 @@ out/*
 
 # Maven
 /target
+/bin/
