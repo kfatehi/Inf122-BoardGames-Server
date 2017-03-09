@@ -3,7 +3,9 @@ package team5.game;
 import org.eclipse.jetty.websocket.api.Session;
 import team5.network.CommunicationBridge;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +14,8 @@ import java.util.Map;
 public class GameManagerSingleton {
     private static GameManagerSingleton instance;
 
+    private List<GameSession> gamesWaiting = new ArrayList<GameSession>();
+    private List<GameSession> gamesInProgress = new ArrayList<GameSession>();
     private Map<Session, CommunicationBridge> userSessions = new HashMap<Session, CommunicationBridge>();
 
     private GameManagerSingleton() {
@@ -41,4 +45,30 @@ public class GameManagerSingleton {
     public boolean login(String username) {
         return true;
     }
+
+    public GameSession createGameSession(CommunicationBridge commBridge, String gameName, String pugName) {
+        // TODO: when GameSession initializer is done, pass in gameName and pugName, and commBridge
+        GameSession game = new GameSession();
+        gamesWaiting.add(game);
+        return game;
+    }
+
+    public GameSession joinGameSession(CommunicationBridge commBridge, final int gameSessionID) {
+        int index = -1;
+        for (int i = 0; i < gamesWaiting.size(); i++) {
+            if (gamesWaiting.get(i).id() == gameSessionID) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) { return null; }
+
+        GameSession game = gamesWaiting.remove(index);
+        gamesInProgress.add(game);
+
+        // TODO: Indicate to the game that it is full? Or should that be in the logic/sesison itself.
+
+        return game;
+    }
+
 }

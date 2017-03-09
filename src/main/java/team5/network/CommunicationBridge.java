@@ -47,6 +47,10 @@ public class CommunicationBridge {
                 loginHandler(entireJsonMsg);
             } else if(type.equals("GET_USER_PROFILE")) {
                 viewPersonalStats(entireJsonMsg);
+            } else if (type.equals("CREATE_GAME")) {
+                createGameHandler(entireJsonMsg);
+            } else if (type.equals("JOIN_GAME")) {
+                joinGameHandler(entireJsonMsg);
             } else {
                 // Print stub
                 System.out.println("Cannot handle provided type");
@@ -114,5 +118,13 @@ public class CommunicationBridge {
     }
 
     public void viewPersonalStats(JsonObject json) {
+    }
+
+    private void createGameHandler(JsonObject json) {
+
+    }
+
+    private void joinGameHandler(JsonElement json) {
+
     }
 }
