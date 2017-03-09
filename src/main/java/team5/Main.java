@@ -24,9 +24,17 @@ public class Main {
         //new GameManagerSingleton();
         //new CommunicationBridge();
         new ChessGameLogic();
-        new GameLogicFactory();
+        GameLogicFactory gl = new GameLogicFactory();
+        gl.createGameLogic("Tic Tac Toe");
+        gl.createGameLogic("Checkers");
+        gl.createGameLogic("Chess");
+
+        for(String game : GameLogicFactory.getAllSupportedGames()) {
+            System.out.println("We currently support " + game);
+        }
         //new GameSession();
         new User();
+
 
     }
 
