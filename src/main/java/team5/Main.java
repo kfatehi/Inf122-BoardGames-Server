@@ -28,6 +28,7 @@ public class Main {
         gl.createGameLogic("Tic Tac Toe");
         gl.createGameLogic("Checkers");
         gl.createGameLogic("Chess");
+        gl.createGameLogic("Test Game");
 
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);

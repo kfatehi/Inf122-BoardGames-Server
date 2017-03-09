@@ -10,6 +10,7 @@ import team5.game.GameLogic;
 import team5.plugins.chess.*;
 import team5.plugins.checkers.*;
 import team5.plugins.tictactoe.*;
+import team5.plugins.test.*;
 
 /*
  * Handles the creation of game logic objects given a unique game name
@@ -55,8 +56,8 @@ public class GameLogicFactory {
             return new TicTacToeGameLogic();
         else if(supportedGameName.equalsIgnoreCase("Chess"))
             return new ChessGameLogic();
-//        else if (supportedGameName.equalsIgnoreCase("Test"))
-//        	return new TestGameLogic();
+        else if (supportedGameName.equalsIgnoreCase("Test"))
+            return new TestGameLogic();
         else
             return null;
     }
