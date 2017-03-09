@@ -22,6 +22,7 @@ public class GameLogicFactory {
             add("Tic Tac Toe");
             add("Checkers");
             add("Chess");
+            add("Test");
         }
     };
     
@@ -30,6 +31,7 @@ public class GameLogicFactory {
     		put("Tic Tac Toe", "https://d30y9cdsu7xlg0.cloudfront.net/png/96852-200.png");
     		put("Checkers", "https://d30y9cdsu7xlg0.cloudfront.net/png/139786-200.png");
     		put("Chess", "https://d30y9cdsu7xlg0.cloudfront.net/png/24034-200.png");
+    		put("Test", "http://i.imgur.com/Tvfwy6j.png");
     	}
     };
     
@@ -38,6 +40,7 @@ public class GameLogicFactory {
     		put("Tic Tac Toe", 2);
     		put("Checkers", 2);
     		put("Chess", 2);
+    		put("Test", 2);
     	}
     };
 
@@ -52,6 +55,8 @@ public class GameLogicFactory {
             return new TicTacToeGameLogic();
         else if(supportedGameName.equalsIgnoreCase("Chess"))
             return new ChessGameLogic();
+//        else if (supportedGameName.equalsIgnoreCase("Test"))
+//        	return new TestGameLogic();
         else
             return null;
     }
