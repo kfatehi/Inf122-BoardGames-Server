@@ -9,7 +9,7 @@ package team5.game;
  */
 public abstract class GameLogic {
 
-    private String gameName = "";
+    protected String gameName = "";
     public static void testDriverMethod() {
         System.out.println("Abstract Game Logic working");
     }

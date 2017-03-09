@@ -2,6 +2,7 @@ package team5.game;
 
 import team5.game.state.GameState;
 import team5.network.CommunicationBridge;
+import team5.plugins.chess.ChessGameLogic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public class GameSession {
 
         id = nextId;
         nextId += 1;
+
+        // Temp
+        gameLogic = new ChessGameLogic();
     }
 
     public void addUser(String username, CommunicationBridge commBridge) {

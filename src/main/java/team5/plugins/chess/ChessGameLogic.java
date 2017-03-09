@@ -9,7 +9,11 @@ import team5.game.GameLogic;
  * @date    2016/03/08
  */
 public class ChessGameLogic extends GameLogic {
+
     public ChessGameLogic() {
         System.out.println("Created ChessGameLogic");
+
+        gameName = "Chess";
     }
+
 }
