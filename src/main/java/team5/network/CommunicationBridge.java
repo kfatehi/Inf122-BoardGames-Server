@@ -190,7 +190,7 @@ public class CommunicationBridge {
                     jsonGamesArray.add(gameStatJson);
                 }
 
-                responseJson.add(gamesKey, jsonGamesArray);
+                responseJson.addProperty(gamesKey, jsonGamesArray);
 
             }
 
@@ -214,7 +214,56 @@ public class CommunicationBridge {
     }
 
     private void listOpenGamesHandler(JsonElement json) {
+        String  typeKey = "type",
+                openGamesKey = "openGames",
 
+                gameIDKey = "id",
+                gameNameKey = "name",
+                gamePlayersKey = "players",
+                gameMaxPlayersKey = "maxPlayers",
+                gameImageKey = "image";
+
+
+        JsonObject responseJson = new JsonObject();
+        responseJson.add(typeKey, "SET_OPEN_GAMES");
+
+        JsonObject openGamesArrayJson = new JsonArray();
+
+        try {
+            /*
+            int numbOpenGames = GameManagerSingleton.getNumWaitingGames();
+            
+            for (int i = 0; i < numbOpenGames; i++) {
+                JsonObject  openGameJson = new JsonObject();
+                GameSession gameSession = GameManagerSingleton.getOpenGame(i);
+                int numPlayers = gameSession.numPlayers();
+
+                openGameJson.addProperty(gameIDKey, gameSession.id());
+                openGameJson.addProperty(gameNameKey, gameSession.pugName());
+                // openGameJson.addProperty(gameMaxPlayersKey, supportedGames.maxPlayers(gameSession.pugName()));
+                openGameJson.addProperty(gameMaxPlayersKey, 2);
+                // openGameJson.addProperty(gameImageKey, supportGames.image(gameSession.pugName()));
+                openGameJson.addProperty(gameImageKey, "");
+
+                JsonObject playersArrayJson = new JsonArray();
+                for (int j = 0; j < numPlayers; j++) {
+                    playersArrayJson.add(gameSession.getUsername(j));
+                }
+                openGameJson.addProperty(gamePlayersKey, playersArrayJson);
+
+                openGamesArrayJson.add(openGameJson);
+            }
+            responseJson.addProperty(openGamesKey, openGamesArrayJson);
+
+            */
+
+            sendMessage(responseJson);
+
+        } catch(ClassCastException e) {
+            e.printStackTrace();
+        } catch(IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getSupportedGamesHandler(JsonElement json) {
