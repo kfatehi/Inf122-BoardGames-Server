@@ -83,14 +83,17 @@ public class GameManagerSingleton {
     }
 
     public void userWon(String username, String gameName) {
-
+        this.user(username).gameStat(gameName).incrementWins();
     }
 
     public void userLost(String username, String gameName) {
-
+        this.user(username).gameStat(gameName).incrementLosses();
     }
 
     public void userDraw(String username, String gameName) {
-
+        this.user(username).gameStat(gameName).incrementDraws();
     }
+
+    public List<GameSession> getGamesWaiting() { return gamesWaiting; }
+    public List<GameSession> getGamesInProgress() { return gamesInProgress; }
 }
