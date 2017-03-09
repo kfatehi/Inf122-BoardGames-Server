@@ -2,6 +2,7 @@ package team5.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 // Interal
 import team5.game.GameLogic;
@@ -22,6 +23,22 @@ public class GameLogicFactory {
             add("Chess");
         }
     };
+    
+    private static HashMap<String, String> IMAGE_MAP = new HashMap<String, String>() {
+    	{
+    		put("Tic Tac Toe", "https://d30y9cdsu7xlg0.cloudfront.net/png/96852-200.png");
+    		put("Checkers", "https://d30y9cdsu7xlg0.cloudfront.net/png/139786-200.png");
+    		put("Chess", "https://d30y9cdsu7xlg0.cloudfront.net/png/24034-200.png");
+    	}
+    };
+    
+    private static HashMap<String, Integer> MAX_PLAYERS_MAP = new HashMap<String, Integer>() {
+    	{
+    		put("Tic Tac Toe", 2);
+    		put("Checkers", 2);
+    		put("Chess", 2);
+    	}
+    };
 
 
     public GameLogicFactory() {
@@ -40,6 +57,14 @@ public class GameLogicFactory {
 
     public static List<String> getAllSupportedGames() {
         return GameLogicFactory.SUPPORTED_GAMES;
+    }
+    
+    public static String getImageURL(String supportedGameName) {
+    	return IMAGE_MAP.get(supportedGameName);
+    }
+    
+    public static int getMaxPlayers(String supportedGameName) {
+    	return MAX_PLAYERS_MAP.get(supportedGameName);
     }
     
 }

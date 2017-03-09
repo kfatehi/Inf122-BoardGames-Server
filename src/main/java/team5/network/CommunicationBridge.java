@@ -289,11 +289,10 @@ public class CommunicationBridge {
     		
     		for (int i = 0; i < numSupportedGames; i++) {
     			JsonObject supportedGameJson = new JsonObject();
-    			supportedGameJson.addProperty(gameNameKey, supportedGames.get(i));
-//    			supportedGameJson.addProperty(gameMaxPlayersKey, GameLogicFactory.getMaxPlayers(supportedGames.get(i)));
-    			supportedGameJson.addProperty(gameMaxPlayersKey, 2);
-//				supportedGameJson.addProperty(gameImageKey, GameLogicFactory.getImage(supportedGames.get(i)));
-    			supportedGameJson.addProperty(gameImageKey, "");
+    			String supportedGameName = supportedGames.get(i);
+    			supportedGameJson.addProperty(gameNameKey, supportedGameName);
+    			supportedGameJson.addProperty(gameMaxPlayersKey, GameLogicFactory.getMaxPlayers(supportedGameName));
+				supportedGameJson.addProperty(gameImageKey, GameLogicFactory.getImageURL(supportedGameName));
     			
     			supportedGamesJsonArray.add(supportedGameJson);
     		}
