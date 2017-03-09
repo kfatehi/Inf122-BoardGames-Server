@@ -16,6 +16,7 @@ public class GameManagerSingleton {
 
     private List<GameSession> gamesWaiting = new ArrayList<GameSession>();
     private List<GameSession> gamesInProgress = new ArrayList<GameSession>();
+    private List<User> users = new ArrayList<User>();
     private Map<Session, CommunicationBridge> userSessions = new HashMap<Session, CommunicationBridge>();
 
     private GameManagerSingleton() {
@@ -46,6 +47,15 @@ public class GameManagerSingleton {
         return true;
     }
 
+    public User user(String username) {
+        for (User user : users) {
+            if (user.name().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public GameSession createGameSession(CommunicationBridge commBridge, String gameName, String pugName) {
         // TODO: when GameSession initializer is done, pass in gameName and pugName, and commBridge
         GameSession game = new GameSession();
@@ -71,4 +81,15 @@ public class GameManagerSingleton {
         return game;
     }
 
+    public void userWon(String username, String gameName) {
+
+    }
+
+    public void userLost(String username, String gameName) {
+
+    }
+
+    public void userDraw(String username, String gameName) {
+
+    }
 }
