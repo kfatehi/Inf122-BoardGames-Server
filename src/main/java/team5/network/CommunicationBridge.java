@@ -51,8 +51,11 @@ public class CommunicationBridge {
             JsonObject entireJsonMsg = jParser.parse(json).getAsJsonObject();
             JsonElement typeJsonElem = entireJsonMsg.get("type");
 
+            // Client Action Router
             if(typeJsonElem.getAsString().equals("LOGIN")) {
                 loginHandler(entireJsonMsg);
+            else if(typeJsonElem.getAsString().equals("GET_USER_PROFILE")) {
+                viewPersonalStats(entireJsonMsg);
             } else {
                 // Print stub
                 System.out.println("Cannot handle provided type");
@@ -95,6 +98,7 @@ public class CommunicationBridge {
         try {
 
             JsonElement usernameJsonElem = json.get("username");
+            String usernameAttempt = usernameJsonElem.getAsString();
             
             // Fail safe..
             if(usernameJsonElem == null) {
@@ -102,7 +106,8 @@ public class CommunicationBridge {
                 sendMessage(failedResponseJson);
             }
 
-            if(GameManagerSingleton.login(wsSession)) {
+            if(GameManagerSingleton.getSharedInstance().login(usernameAttempt)) {
+                username = usernameAttempt;
                 sendMessage(successfulResponseJson); 
 
             // Fail safe..
