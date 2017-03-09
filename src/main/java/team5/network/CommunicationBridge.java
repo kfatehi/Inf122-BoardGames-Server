@@ -222,8 +222,36 @@ public class CommunicationBridge {
         }
     }
 
-    private void joinGameHandler(JsonElement json) {
+    private void joinGameHandler(JsonObject json) {
+        String typeKey = "type",
+                gameIdKey = "gameId",
+                joinSuccessVal = "JOIN_GAME_SUCCESS",
+                joinFailedVal = "JOIN_GAME_FAILED",
+                errorMessageKey = "errorMessage";
 
+        try {
+
+            int gameId = json.get(gameIdKey).getAsInt();
+
+            GameSession gameSession = GameManagerSingleton.instance().joinGameSession(this, gameId);
+            if (gameSession == null) {
+                // Error!
+                JsonObject error = new JsonObject();
+                error.addProperty(typeKey, joinFailedVal);
+                error.addProperty(errorMessageKey, "Unexpected error joining game");
+                sendMessage(error);
+                return;
+            }
+
+            // Success
+            JsonObject response = new JsonObject();
+            response.addProperty(typeKey, joinSuccessVal);
+            sendMessage(response);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void listOpenGamesHandler(JsonElement json) {
