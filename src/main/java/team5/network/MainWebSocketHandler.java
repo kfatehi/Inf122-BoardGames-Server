@@ -19,7 +19,7 @@ public class MainWebSocketHandler {
 
         // Have the GameManagerSingleton create a new CommBridge for us,
         // passing our Session to it
-        //GameManagerSingleton.sharedInstance.newCommBridge(session);
+        GameManagerSingleton.instance().newCommBridge(session);
     }
 
     @OnWebSocketClose
@@ -27,7 +27,7 @@ public class MainWebSocketHandler {
         System.out.println("Closed connection: " + statusCode + " " + session.getRemoteAddress() + " " + reason);
 
         // Have the singleton lose the CommBridge
-        //GameManagerSingleton.sharedInstance.destroyCommBridge(session)
+        GameManagerSingleton.instance().destroyCommBridge(session)
     }
 
     @OnWebSocketMessage
@@ -35,12 +35,10 @@ public class MainWebSocketHandler {
         System.out.println("New message: " + session.getRemoteAddress() + " " + message);
 
         // Get the CommBridge
-        //CommunicationBridge commBridge = GameManagerSingleton.sharedInstance.commBridge(session);
+        CommunicationBridge commBridge = GameManagerSingleton.instance().commBridge(session);
 
         // Pass on the JSON message (still as String)
         // test driver for login
-        CommunicationBridge commBridge = new CommunicationBridge(session);
-        
         commBridge.parseMessage(message);
     }
 }
