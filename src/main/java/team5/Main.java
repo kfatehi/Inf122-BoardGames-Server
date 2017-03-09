@@ -21,8 +21,8 @@ public class Main {
 
         // Showing that nested packages work
         new Pawn();
-        new GameManagerSingleton();
-        new CommunicationBridge();
+        //new GameManagerSingleton();
+        //new CommunicationBridge();
         new ChessGameLogic();
         new GameLogicFactory();
         new GameSession();
