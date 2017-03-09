@@ -5,10 +5,12 @@ package team5.network;
 import team5.game.GameSession;
 import team5.game.GameManagerSingleton;
 import team5.game.User;
+import team5.game.GameStat;
 
 // Native
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.ArrayList;
 
 // External
 import org.eclipse.jetty.websocket.api.Session;
@@ -165,13 +167,29 @@ public class CommunicationBridge {
                 responseJson.add(gamesKey, jsonGamesArray);
             } else {
                 // Fix these when suer is flusehd out
-                JsonObject gameStatJson = new JsonObject();
-                gameStatJson.addProperty(gameTypeKey, "Tic Tac Toe");
-                gameStatJson.addProperty(gamesWonKey, 50);
-                gameStatJson.addProperty(gamesLostKey, 0);
-                gameStatJson.addProperty(gamesDrawKey, 10);
+                GameStat g1 = new GameStat("Tic Tac Toe");
+                GameStat g2 = new GameStat("Checkers");
+                GameStat g3 = new GameStat("Chess");
 
-                jsonGamesArray.add(gameStatJson);
+                g1.incrementWins();
+                g2.incrementLosses();
+                g3.incrementDraws();
+
+                ArrayList<GameStat> arrayTest = new ArrayList<GameStat>();
+                arrayTest.add(g1);
+                arrayTest.add(g2);
+                arrayTest.add(g3);
+
+                for(int i = 0; i < arrayTest.size(); i++) {
+                    JsonObject gameStatJson = new JsonObject();
+                    GameStat g = arrayTest.get(i);
+                    gameStatJson.addProperty(gameTypeKey, g.getGameName());
+                    gameStatJson.addProperty(gamesWonKey, g.getWins());
+                    gameStatJson.addProperty(gamesLostKey, g.getLosses());
+                    gameStatJson.addProperty(gamesDrawKey, g.getDraws());
+                    jsonGamesArray.add(gameStatJson);
+                }
+
                 responseJson.add(gamesKey, jsonGamesArray);
 
             }

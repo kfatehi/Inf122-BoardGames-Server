@@ -21,6 +21,9 @@ public class GameSession {
     private GameState gameState;
     private GameLogic gameLogic;
 
+    public GameSession(){
+
+    }
     public GameSession(String gameName, String pugName) {
         System.out.println("Building GameSession");
 
