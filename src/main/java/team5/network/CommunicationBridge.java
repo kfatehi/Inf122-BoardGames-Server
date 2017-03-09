@@ -50,6 +50,16 @@ public class CommunicationBridge {
                 loginHandler(entireJsonMsg);
             } else if(type.equals("GET_USER_PROFILE")) {
                 viewPersonalStats(entireJsonMsg);
+            } else if (type.equals("CREATE_GAME")) {
+                createGameHandler(entireJsonMsg);
+            } else if (type.equals("JOIN_GAME")) {
+                joinGameHandler(entireJsonMsg);
+            } else if (type.equals("GET_ALL_SUPPORTED_GAMES")) {
+                getSupportedGamesHandler(entireJsonMsg);
+            } else if (type.equals("GET_OPEN_GAMES")) {
+                listOpenGamesHandler(entireJsonMsg);
+            } else if (type.equals("GET_OPEN_GAMES")) {
+
             } else {
                 // Print stub
                 System.out.println("Cannot handle provided type");
@@ -75,6 +85,10 @@ public class CommunicationBridge {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setGameSession(GameSession gameSession) {
+        this.gameSession = gameSession;
     }
 
     /*
@@ -172,4 +186,34 @@ public class CommunicationBridge {
             e.printStackTrace();
         }
     }
+
+    private void createGameHandler(JsonObject json) {
+
+    }
+
+    private void joinGameHandler(JsonElement json) {
+
+    }
+
+    private void listOpenGamesHandler(JsonElement json) {
+
+    }
+
+    private void getSupportedGamesHandler(JsonElement json) {
+
+    }
+
+    private void clientTurnHandler(JsonObject json) {
+
+    }
+
+    private void sendStateChange() {
+
+    }
+
+    private void sendGameEnd(String winner, String message) {
+
+    }
+
+    public String username() { return username; }
 }
