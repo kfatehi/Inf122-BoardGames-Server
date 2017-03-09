@@ -27,7 +27,7 @@ public class MainWebSocketHandler {
         System.out.println("Closed connection: " + statusCode + " " + session.getRemoteAddress() + " " + reason);
 
         // Have the singleton lose the CommBridge
-        GameManagerSingleton.instance().destroyCommBridge(session)
+        GameManagerSingleton.instance().destroyCommBridge(session);
     }
 
     @OnWebSocketMessage
