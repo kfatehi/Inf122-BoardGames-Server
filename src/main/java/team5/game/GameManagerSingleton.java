@@ -57,8 +57,7 @@ public class GameManagerSingleton {
     }
 
     public GameSession createGameSession(CommunicationBridge commBridge, String gameName, String pugName) {
-        // TODO: when GameSession initializer is done, pass in gameName and pugName, and commBridge
-        GameSession game = new GameSession();
+        GameSession game = new GameSession(gameName, pugName);
         gamesWaiting.add(game);
         return game;
     }
@@ -74,9 +73,11 @@ public class GameManagerSingleton {
         if (index == -1) { return null; }
 
         GameSession game = gamesWaiting.remove(index);
+
+        game.addUser(commBridge.username(), commBridge);
         gamesInProgress.add(game);
 
-        // TODO: Indicate to the game that it is full? Or should that be in the logic/sesison itself.
+        // TODO: Indicate to the game that it is full? Or should that be in the logic/session itself.
 
         return game;
     }

@@ -157,4 +157,6 @@ public class CommunicationBridge {
     private void sendGameEnd(String winner, String message) {
 
     }
+
+    public String username() { return username; }
 }
