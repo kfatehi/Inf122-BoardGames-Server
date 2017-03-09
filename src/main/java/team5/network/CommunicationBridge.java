@@ -190,7 +190,7 @@ public class CommunicationBridge {
                     jsonGamesArray.add(gameStatJson);
                 }
 
-                responseJson.addProperty(gamesKey, jsonGamesArray);
+                responseJson.add(gamesKey, jsonGamesArray);
 
             }
 
@@ -225,9 +225,9 @@ public class CommunicationBridge {
 
 
         JsonObject responseJson = new JsonObject();
-        responseJson.add(typeKey, "SET_OPEN_GAMES");
+        responseJson.addProperty(typeKey, "SET_OPEN_GAMES");
 
-        JsonObject openGamesArrayJson = new JsonArray();
+        JsonArray openGamesArrayJson = new JsonArray();
 
         try {
             /*
