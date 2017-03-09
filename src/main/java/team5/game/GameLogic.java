@@ -8,7 +8,11 @@ package team5.game;
  * @date    2017/03/08
  */
 public abstract class GameLogic {
+
+    private String gameName = "";
     public static void testDriverMethod() {
         System.out.println("Abstract Game Logic working");
     }
+
+    public String gameName() { return gameName; }
 }
