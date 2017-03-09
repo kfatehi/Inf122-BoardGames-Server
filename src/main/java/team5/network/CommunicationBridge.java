@@ -29,14 +29,6 @@ public class CommunicationBridge {
     private String username;
     private Session wsSession;
 
-    public CommunicationBridge() {
-        // Initially, there will be gameSession/username associated with the client.
-        // They will need to invoke the action "login" or "create game".
-        gameSession = null;
-        username = null;
-        wsSession = null;
-    }
-
     public CommunicationBridge(Session s) {
         // Initially, there will be gameSession/username associated with the client.
         // They will need to invoke the action "login" or "create game".
@@ -49,12 +41,11 @@ public class CommunicationBridge {
         JsonParser jParser = new JsonParser();
         try {
             JsonObject entireJsonMsg = jParser.parse(json).getAsJsonObject();
-            JsonElement typeJsonElem = entireJsonMsg.get("type");
+            String type = entireJsonMsg.get("type").getAsString();
 
-            // Client Action Router
-            if(typeJsonElem.getAsString().equals("LOGIN")) {
+            if(type.equals("LOGIN")) {
                 loginHandler(entireJsonMsg);
-            else if(typeJsonElem.getAsString().equals("GET_USER_PROFILE")) {
+            } else if(type.equals("GET_USER_PROFILE")) {
                 viewPersonalStats(entireJsonMsg);
             } else {
                 // Print stub
@@ -97,22 +88,21 @@ public class CommunicationBridge {
 
         try {
 
-            JsonElement usernameJsonElem = json.get("username");
-            String usernameAttempt = usernameJsonElem.getAsString();
+            String username = json.get("username").getAsString();
             
             // Fail safe..
-            if(usernameJsonElem == null) {
+            if(username == null) {
                 failedResponseJson.addProperty(errMsgKey, "Missing username");
                 sendMessage(failedResponseJson);
+                return;
             }
 
-            if(GameManagerSingleton.getSharedInstance().login(usernameAttempt)) {
-                username = usernameAttempt;
-                sendMessage(successfulResponseJson); 
-
-            // Fail safe..
+            if(GameManagerSingleton.instance().login(username)) {
+                this.username = username;
+                sendMessage(successfulResponseJson);
             } else {
-                failedResponseJson.addProperty(errMsgKey, "");
+                // Fail safe..
+                failedResponseJson.addProperty(errMsgKey, "Unexpected error logging in.");
                 sendMessage(failedResponseJson);
             }
 
