@@ -2,6 +2,7 @@ package team5.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.HashMap;
 
 // Interal
@@ -24,7 +25,7 @@ public class GameLogicFactory {
         }
     };
     
-    private static HashMap<String, String> IMAGE_MAP = new HashMap<String, String>() {
+    private static Map<String, String> IMAGE_MAP = new HashMap<String, String>() {
     	{
     		put("Tic Tac Toe", "https://d30y9cdsu7xlg0.cloudfront.net/png/96852-200.png");
     		put("Checkers", "https://d30y9cdsu7xlg0.cloudfront.net/png/139786-200.png");
@@ -32,7 +33,7 @@ public class GameLogicFactory {
     	}
     };
     
-    private static HashMap<String, Integer> MAX_PLAYERS_MAP = new HashMap<String, Integer>() {
+    private static Map<String, Integer> MAX_PLAYERS_MAP = new HashMap<String, Integer>() {
     	{
     		put("Tic Tac Toe", 2);
     		put("Checkers", 2);

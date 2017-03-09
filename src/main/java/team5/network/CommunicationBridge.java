@@ -196,6 +196,7 @@ public class CommunicationBridge {
 
                 gameIDKey = "id",
                 gameNameKey = "name",
+                gamePugNameKey = "pugName",
                 gamePlayersKey = "players",
                 gameMaxPlayersKey = "maxPlayers",
                 gameImageKey = "image";
@@ -207,35 +208,35 @@ public class CommunicationBridge {
         JsonArray openGamesJsonArray = new JsonArray();
 
         try {
-            /*
-            int numbOpenGames = GameManagerSingleton.getNumWaitingGames();
             
-            for (int i = 0; i < numbOpenGames; i++) {
+            List<GameSession> waitingGames = GameManagerSingleton.instance().getGamesWaiting();
+            int numOpenGames = waitingGames.size();
+            
+            for (int i = 0; i < numOpenGames; i++) {
                 JsonObject  openGameJson = new JsonObject();
-                GameSession gameSession = GameManagerSingleton.getOpenGame(i);
-                int numPlayers = gameSession.numPlayers();
+                GameSession gameSession = waitingGames.get(i);
+                String gameName = gameSession.gameName();
+                List<String> usernames = gameSession.getUsernames();
+                int numPlayers = usernames.size();
 
                 openGameJson.addProperty(gameIDKey, gameSession.id());
-                openGameJson.addProperty(gameNameKey, gameSession.pugName());
-//              openGameJson.addProperty(gameMaxPlayersKey, supportedGames.maxPlayers(gameSession.pugName()));
-                openGameJson.addProperty(gameMaxPlayersKey, 2);
-//              openGameJson.addProperty(gameImageKey, supportedGames.image(gameSession.pugName()));
-                openGameJson.addProperty(gameImageKey, "");
+                openGameJson.addProperty(gameNameKey, gameName);
+                openGameJson.addProperty(gamePugNameKey, gameSession.pugName());
+              	openGameJson.addProperty(gameMaxPlayersKey, GameLogicFactory.getMaxPlayers(gameName));
+              	openGameJson.addProperty(gameImageKey, GameLogicFactory.getImageURL(gameName));
 
                 JsonArray playersJsonArray = new JsonArray();
                 for (int j = 0; j < numPlayers; j++) {
-                    playersJsonArray.add(gameSession.getUsername(j));
+                    playersJsonArray.add(usernames.get(j));
                 }
                 openGameJson.add(gamePlayersKey, playersJsonArray);
 
                 openGamesJsonArray.add(openGameJson);
             }
-            */
             responseJson.add(openGamesKey, openGamesJsonArray);
             
             
             sendMessage(responseJson);
-            
             
 
         } catch(ClassCastException e) {

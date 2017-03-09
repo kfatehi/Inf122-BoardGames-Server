@@ -37,4 +37,6 @@ public class GameSession {
 
     public int id() { return id; }
     public String pugName() { return pugName; }
+    public String gameName() { return gameLogic.gameName(); }
+    public List<String> getUsernames() { return usernames; }
 }
