@@ -21,10 +21,10 @@ public class Main {
 
         // Showing that nested packages work
         new Pawn();
+        new GameManagerSingleton();
         new CommunicationBridge();
         new ChessGameLogic();
         new GameLogicFactory();
-        new GameManagerSingleton();
         new GameSession();
         new User();
 

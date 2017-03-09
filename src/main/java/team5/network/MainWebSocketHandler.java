@@ -2,6 +2,7 @@ package team5.network;
 import org.eclipse.jetty.websocket.api.*;
 import org.eclipse.jetty.websocket.api.annotations.*;
 import team5.game.GameManagerSingleton;
+import team5.network.CommunicationBridge;
 
 
 /**
@@ -37,6 +38,9 @@ public class MainWebSocketHandler {
         //CommunicationBridge commBridge = GameManagerSingleton.sharedInstance.commBridge(session);
 
         // Pass on the JSON message (still as String)
-        //commBridge.parseMessage(message);
+        // test driver for login
+        CommunicationBridge commBridge = new CommunicationBridge(session);
+        
+        commBridge.parseMessage(message);
     }
 }
