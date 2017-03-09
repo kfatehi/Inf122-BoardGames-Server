@@ -76,14 +76,20 @@ public class GameManagerSingleton {
                 break;
             }
         }
+        // No game, exit
         if (index == -1) { return null; }
 
-        GameSession game = gamesWaiting.remove(index);
-
+        // Add the user to the game
+        GameSession game = gamesWaiting.get(index);
         game.addUser(commBridge.username(), commBridge);
-        gamesInProgress.add(game);
 
-        // TODO: Indicate to the game that it is full? Or should that be in the logic/session itself.
+        // If the game has everyone, move it to inProgress and start it.
+        if (game.isFull()) {
+            gamesWaiting.remove(index);
+            gamesInProgress.add(game);
+
+            game.start();
+        }
 
         return game;
     }

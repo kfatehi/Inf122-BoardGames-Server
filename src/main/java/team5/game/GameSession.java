@@ -46,6 +46,14 @@ public class GameSession {
         commBridges.put(username, commBridge);
     }
 
+    public boolean isFull() {
+        return usernames.size() >= GameLogicFactory.getMaxPlayers(gameName());
+    }
+
+    public void start() {
+
+    }
+
     public int id() { return id; }
     public String pugName() { return pugName; }
     public String gameName() { return gameLogic.gameName(); }
