@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class GameSession {
 
-    private int nextId = 0;
+    private static int nextId = 0;
 
     private int id;
     private String pugName;
@@ -34,8 +34,11 @@ public class GameSession {
         id = nextId;
         nextId += 1;
 
+        this.pugName = pugName;
+
         // Temp
         gameLogic = new ChessGameLogic();
+
     }
 
     public void addUser(String username, CommunicationBridge commBridge) {
