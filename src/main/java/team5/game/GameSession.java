@@ -1,6 +1,7 @@
 package team5.game;
 
 import team5.game.state.GameState;
+import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
 import team5.plugins.chess.ChessGameLogic;
 
@@ -51,7 +52,25 @@ public class GameSession {
     }
 
     public void start() {
+        // TODO: start things with initial state change
+    }
 
+    public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+        gameLogic.commitTurn(username, pieceId, intendedCoord);
+
+        // TODO: send state change
+
+        if (gameLogic.gameFinishedWinner() != null) {
+            // TODO: call comm bridges on both with winner
+            // and tell the singleton of winners/losers/draws
+            // and destroy this object (from the singleton too)
+        }
+    }
+
+    public void sendStateChange() {
+        // TODO: implement this
+        // it will send the board and relevant pool data to each user
+        // and it'll also use the diffs list in GameState to send the changes as well
     }
 
     public int id() { return id; }
