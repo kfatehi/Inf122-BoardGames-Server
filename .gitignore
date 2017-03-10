@@ -27,6 +27,7 @@ hs_err_pid*
 # Eclipse
 .classpath
 .project
+.settings/
 
 # Build
 out/*
