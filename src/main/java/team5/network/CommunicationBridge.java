@@ -223,7 +223,7 @@ public class CommunicationBridge {
     }
 
     private void joinGameHandler(JsonElement json) {
-
+    	
     }
 
     private void listOpenGamesHandler(JsonElement json) {
@@ -330,8 +330,21 @@ public class CommunicationBridge {
 
     }
 
+    private void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
+    	JsonObject gameEndJson = new JsonObject();
+    	String endType = "type", endWin = "winner", endMsg = "message";
+    	gameEndJson.addProperty(endType, "GAME_END");
+    	gameEndJson.addProperty(endWin, winner);
+    	gameEndJson.addProperty(endMsg, "");
+    	sendMessage(gameEndJson);
+    }
     private void sendGameEnd(String winner, String message) {
-
+    	JsonObject gameEndJson = new JsonObject();
+    	String endType = "type", endWin = "winner", endMsg = "message";
+    	gameEndJson.addProperty(endType, "GAME_END");
+    	gameEndJson.addProperty(endWin, winner);
+    	gameEndJson.addProperty(endMsg, message);
+    	sendMessage(gameEndJson);
     }
 
     public String username() { return username; }
