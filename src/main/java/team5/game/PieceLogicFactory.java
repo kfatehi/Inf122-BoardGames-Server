@@ -41,10 +41,6 @@ public class PieceLogicFactory {
             return null;
         }
 
-        System.out.println("Created pieces for " + uniqueGameName);
-        for(Map.Entry<Integer, Piece> mEntry : gamePieces.entrySet()) {
-            System.out.println("Piece id: " + String.valueOf(mEntry.getKey()));
-        }
         return gamePieces;
     }
 
