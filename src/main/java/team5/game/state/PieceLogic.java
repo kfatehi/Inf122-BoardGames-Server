@@ -2,6 +2,8 @@ package team5.game.state;
 
 // Internal
 import team5.game.state.Piece;
+import team5.game.state.PieceCoordinate;
+import team5.game.state.Board;
 
 // Native
 import java.util.List;
@@ -14,5 +16,6 @@ import java.util.List;
 public abstract class PieceLogic {
     private Piece pieceRef;
    
-    //public abstract List<PieceCoordinat>
+    public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);
+    public abstract Piece canChangeToPiece();
 }
