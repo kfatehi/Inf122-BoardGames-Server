@@ -164,7 +164,7 @@ public class CommunicationBridge {
             }
 
             JsonArray jsonGamesArray = new JsonArray();
-
+            
             for (GameStat stat : userObj.getStats()) {
                 JsonObject gameStatJson = new JsonObject();
                 gameStatJson.addProperty(gameTypeKey, stat.getGameName());
@@ -277,6 +277,8 @@ public class CommunicationBridge {
             List<GameSession> waitingGames = GameManagerSingleton.instance().getGamesWaiting();
             int numOpenGames = waitingGames.size();
             
+            // Creating JsonObjects with info about each open game
+            // to add to openGamesJsonArray
             for (int i = 0; i < numOpenGames; i++) {
                 JsonObject  openGameJson = new JsonObject();
                 GameSession gameSession = waitingGames.get(i);
