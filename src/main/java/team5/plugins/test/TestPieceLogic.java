@@ -1,8 +1,8 @@
 package team5.plugins.test;
 
-import team5.game.state.PieceMovementLogic;
+import team5.game.state.PieceLogic;
 
-public class TestPieceLogic implements PieceMovementLogic {
+public class TestPieceLogic extends PieceLogic {
     public TestPieceLogic() {
         System.out.println("Building TestPieceLogic");
     }
