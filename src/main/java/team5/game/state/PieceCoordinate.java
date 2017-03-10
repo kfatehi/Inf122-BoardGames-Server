@@ -7,7 +7,9 @@ public class PieceCoordinate {
     private int row;
     private int col;
 
-    public PieceCoordinate() {}
+    private PieceCoordinate() {
+    }
+
     public PieceCoordinate(int r, int c) {
         row = r;
         col = c;
