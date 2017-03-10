@@ -63,12 +63,24 @@ public class GameManagerSingleton {
     }
 
     public GameSession createGameSession(CommunicationBridge commBridge, String gameName, String pugName) {
+        if (commBridge.username() == null || commBridge.username().equals("")) {
+            // Don't create if they're not logged in
+            return null;
+        }
+
         GameSession game = new GameSession(gameName, pugName);
+        game.addUser(commBridge.username(), commBridge);
         gamesWaiting.add(game);
         return game;
     }
 
     public GameSession joinGameSession(CommunicationBridge commBridge, final int gameSessionID) {
+        if (commBridge.username() == null || commBridge.username().equals("")) {
+            // Don't join if they're not logged in
+            return null;
+        }
+
+        // Find the game index
         int index = -1;
         for (int i = 0; i < gamesWaiting.size(); i++) {
             if (gamesWaiting.get(i).id() == gameSessionID) {
@@ -76,14 +88,20 @@ public class GameManagerSingleton {
                 break;
             }
         }
+        // No game, exit
         if (index == -1) { return null; }
 
-        GameSession game = gamesWaiting.remove(index);
-
+        // Add the user to the game
+        GameSession game = gamesWaiting.get(index);
         game.addUser(commBridge.username(), commBridge);
-        gamesInProgress.add(game);
 
-        // TODO: Indicate to the game that it is full? Or should that be in the logic/session itself.
+        // If the game has everyone, move it to inProgress and start it.
+        if (game.isFull()) {
+            gamesWaiting.remove(index);
+            gamesInProgress.add(game);
+
+            game.start();
+        }
 
         return game;
     }

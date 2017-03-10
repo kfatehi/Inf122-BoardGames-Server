@@ -1,6 +1,6 @@
-package team5.plugins.chess;
+package team5.plugins.test;
 
-//Internal
+// Internal
 import team5.game.state.Piece;
 import team5.game.state.PieceLogic;
 import team5.game.state.PieceCoordinate;
@@ -14,9 +14,9 @@ import java.util.List;
  * @author  Team5
  * @date    2017/03/09
  */
-public class Pawn extends PieceLogic {
-    public Pawn() {
-        System.out.println("Building pawn logic");
+public class TestPieceLogic extends PieceLogic {
+    public TestPieceLogic() {
+        System.out.println("Building TestPieceLogic");
     }
 
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
@@ -26,4 +26,5 @@ public class Pawn extends PieceLogic {
     public Piece canChangeToPiece() {
         return new Piece();
     }
+
 }

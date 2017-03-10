@@ -4,6 +4,7 @@ import static spark.Spark.*;
 import team5.network.MainWebSocketHandler;
 import team5.plugins.chess.Pawn;
 import team5.network.CommunicationBridge;
+
 // Does not do recursive import.
 import team5.game.*;
 
@@ -28,12 +29,17 @@ public class Main {
         gl.createGameLogic("Tic Tac Toe");
         gl.createGameLogic("Checkers");
         gl.createGameLogic("Chess");
+        gl.createGameLogic("Test Game");
 
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);
         }
-        //new GameSession();
-//        new User();
+
+        //PieceLogicFactory pl = new PieceLogicFactory();
+        //pl.createPieces("tic tac toe");
+        //pl.createPieces("Checkers");
+        //pl.createPieces("CHESS");
+        
 
     }
 

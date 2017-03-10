@@ -6,7 +6,7 @@ import team5.game.GameLogic;
 /*
  * @brief   Game logic for chess
  * @author  Team5
- * @date    2016/03/08
+ * @date    2017/03/08
  */
 public class ChessGameLogic extends GameLogic {
 
