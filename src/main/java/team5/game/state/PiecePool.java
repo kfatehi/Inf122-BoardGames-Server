@@ -32,7 +32,7 @@ public class PiecePool {
     public Piece getRandomPiece() {
         int max = pieces.size();
         //check if there are pieces in the piece pool otherwise return null
-        if( max != 0) {
+        if (max != 0) {
             Random ran = new Random();
             return this.removePiece(ran.nextInt(max));
         }
@@ -40,7 +40,7 @@ public class PiecePool {
     }
 
     public void addPiece(Piece p) {
-        //pieces.put(p.getId(), p);
+        pieces.put(p.getId(), p);
     }
 
     public Piece removePiece(int id) {
