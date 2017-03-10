@@ -2,6 +2,7 @@ package team5.plugins.chess;
 
 // Internal
 import team5.game.GameLogic;
+import team5.game.state.PieceCoordinate;
 
 /*
  * @brief   Game logic for chess
@@ -14,6 +15,19 @@ public class ChessGameLogic extends GameLogic {
         System.out.println("Created ChessGameLogic");
 
         gameName = "Chess";
+    }
+
+    public void initializePieces() {
+
+    }
+
+    public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+
+    }
+
+    public  String gameFinishedWinner() {
+
+        return null;
     }
 
 }
