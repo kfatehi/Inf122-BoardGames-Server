@@ -12,4 +12,6 @@ public class Piece {
         this.id = Piece.NEXT_UNIQUE_ID; 
         Piece.NEXT_UNIQUE_ID += 1;
     }
+
+    public int getId() { return id; }
 }
