@@ -2,6 +2,7 @@ package team5.plugins.checkers;
 
 // Internal
 import team5.game.GameLogic;
+import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
 
 /*
@@ -10,8 +11,11 @@ import team5.game.state.PieceCoordinate;
  * @date    2016/03/08
  */
 public class CheckersGameLogic extends GameLogic {
-    public CheckersGameLogic() {
+    public CheckersGameLogic(GameSession session) {
+        super(session);
         System.out.println("Created CheckersGameLogic");
+
+        gameName = "Checkers";
     }
 
     public void initializePieces() {

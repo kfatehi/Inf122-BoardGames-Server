@@ -2,6 +2,7 @@ package team5.plugins.chess;
 
 // Internal
 import team5.game.GameLogic;
+import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
 
 /*
@@ -11,7 +12,8 @@ import team5.game.state.PieceCoordinate;
  */
 public class ChessGameLogic extends GameLogic {
 
-    public ChessGameLogic() {
+    public ChessGameLogic(GameSession session) {
+        super(session);
         System.out.println("Created ChessGameLogic");
 
         gameName = "Chess";

@@ -1,6 +1,7 @@
 package team5.plugins.test;
 
 import team5.game.GameLogic;
+import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
 
 /*
@@ -9,7 +10,8 @@ import team5.game.state.PieceCoordinate;
  * @date    2017/03/08
  */
 public class TestGameLogic extends GameLogic {
-    public TestGameLogic() {
+    public TestGameLogic(GameSession session) {
+        super(session);
         System.out.println("Creating TestGameLogic");
 
         gameName = "Test";

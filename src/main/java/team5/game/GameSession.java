@@ -77,4 +77,5 @@ public class GameSession {
     public String pugName() { return pugName; }
     public String gameName() { return gameLogic.gameName(); }
     public List<String> getUsernames() { return usernames; }
+    public GameState gameState() { return gameState; }
 }

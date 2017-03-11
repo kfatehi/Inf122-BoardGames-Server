@@ -1,5 +1,6 @@
 package team5.game;
 
+import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 
 /*
@@ -12,6 +13,12 @@ import team5.game.state.PieceCoordinate;
 public abstract class GameLogic {
 
     protected String gameName = "";
+    protected GameSession session;
+    protected GameState state;
+
+    public GameLogic(GameSession session) { this.session = session; }
+    protected GameState state() { return session.gameState(); }
+
     public static void testDriverMethod() {
         System.out.println("Abstract Game Logic working");
     }
