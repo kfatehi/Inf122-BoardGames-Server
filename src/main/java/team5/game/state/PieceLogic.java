@@ -17,5 +17,5 @@ public abstract class PieceLogic {
     private Piece pieceRef;
    
     public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);
-    public abstract Piece canChangeToPiece();
+    public abstract String canChangeToPiece();
 }

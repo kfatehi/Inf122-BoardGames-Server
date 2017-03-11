@@ -2,6 +2,8 @@ package team5.plugins.chess;
 
 // Internal
 import team5.game.GameLogic;
+import team5.game.GameSession;
+import team5.game.state.PieceCoordinate;
 
 /*
  * @brief   Game logic for chess
@@ -10,10 +12,24 @@ import team5.game.GameLogic;
  */
 public class ChessGameLogic extends GameLogic {
 
-    public ChessGameLogic() {
+    public ChessGameLogic(GameSession session) {
+        super(session);
         System.out.println("Created ChessGameLogic");
 
         gameName = "Chess";
+    }
+
+    public void initializePieces() {
+
+    }
+
+    public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+
+    }
+
+    public  String gameFinishedWinner() {
+
+        return null;
     }
 
 }
