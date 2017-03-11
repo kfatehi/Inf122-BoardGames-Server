@@ -71,6 +71,8 @@ public class GameManagerSingleton {
         GameSession game = new GameSession(gameName, pugName);
         game.addUser(commBridge.username(), commBridge);
         gamesWaiting.add(game);
+
+        broadcastOpenGames();
         return game;
     }
 
@@ -103,7 +105,14 @@ public class GameManagerSingleton {
             game.start();
         }
 
+        broadcastOpenGames();
         return game;
+    }
+
+    private void broadcastOpenGames() {
+        for (CommunicationBridge commBridge : userSessions.values()) {
+            commBridge.listOpenGamesHandler(null);
+        }
     }
 
     public void userWon(String username, String gameName) {

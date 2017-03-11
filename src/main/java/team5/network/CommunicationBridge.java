@@ -256,7 +256,7 @@ public class CommunicationBridge {
         }
     }
 
-    private void listOpenGamesHandler(JsonElement json) {
+    public void listOpenGamesHandler(JsonElement json) {
         String  typeKey = "type",
                 openGamesKey = "openGames",
 
