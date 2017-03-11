@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class GameManagerSingleton {
     private static GameManagerSingleton instance;
-
     private List<GameSession> gamesWaiting = new ArrayList<GameSession>();
     private List<GameSession> gamesInProgress = new ArrayList<GameSession>();
     private List<User> users = new ArrayList<User>();
@@ -43,11 +42,25 @@ public class GameManagerSingleton {
         userSessions.remove(session);
     }
 
-    public boolean login(String username) {
+    public boolean login(String username, CommunicationBridge communicationBridge) {
 
         User user = user(username);
         if (user == null) {
             users.add(new User(username));
+        } else {
+            // user exists, it's probably trying to resume...
+
+            gamesInProgress.forEach(g->{
+                g.getUsernames().forEach(u->{
+                    if (username.equals(u)) {
+                        // im in this game, update my bridge
+                        g.updateBridge(u, communicationBridge);
+                        communicationBridge.setGameSession(g);
+                        communicationBridge.setUsername(username);
+                        g.start();
+                    }
+                });
+            });
         }
 
         return true;
@@ -68,9 +81,11 @@ public class GameManagerSingleton {
             return null;
         }
 
-        GameSession game = new GameSession(gameName, pugName);
+        GameSession game = new GameSession(gameName, pugName, commBridge.username());
         game.addUser(commBridge.username(), commBridge);
         gamesWaiting.add(game);
+
+        broadcastOpenGames();
         return game;
     }
 
@@ -103,7 +118,14 @@ public class GameManagerSingleton {
             game.start();
         }
 
+        broadcastOpenGames();
         return game;
+    }
+
+    private void broadcastOpenGames() {
+        for (CommunicationBridge commBridge : userSessions.values()) {
+            commBridge.listOpenGamesHandler(null);
+        }
     }
 
     public void userWon(String username, String gameName) {

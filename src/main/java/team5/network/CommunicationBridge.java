@@ -10,9 +10,7 @@ import team5.game.GameStat;
 
 // Native
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.ArrayList;
 
 // External
 import org.eclipse.jetty.websocket.api.Session;
@@ -21,9 +19,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-
-import javax.sound.midi.SysexMessage;
 
 
 /**
@@ -121,7 +116,7 @@ public class CommunicationBridge {
                 return;
             }
 
-            if(GameManagerSingleton.instance().login(username)) {
+            if(GameManagerSingleton.instance().login(username, this)) {
                 this.username = username;
                 sendMessage(successfulResponseJson);
             } else {
@@ -163,7 +158,7 @@ public class CommunicationBridge {
                 return;
             }
 
-            JsonArray jsonGamesArray = new JsonArray();
+            JsonArray jsonGamesArray = new JsonArray();					//TODO: something similar for game state change
             
             for (GameStat stat : userObj.getStats()) {
                 JsonObject gameStatJson = new JsonObject();
@@ -234,7 +229,7 @@ public class CommunicationBridge {
 
             int gameId = json.get(gameIdKey).getAsInt();
 
-            GameSession gameSession = GameManagerSingleton.instance().joinGameSession(this, gameId);
+            gameSession = GameManagerSingleton.instance().joinGameSession(this, gameId);
             if (gameSession == null) {
                 // Error!
                 JsonObject error = new JsonObject();
@@ -255,7 +250,7 @@ public class CommunicationBridge {
         }
     }
 
-    private void listOpenGamesHandler(JsonElement json) {
+    public void listOpenGamesHandler(JsonElement json) {
         String  typeKey = "type",
                 openGamesKey = "openGames",
 
@@ -357,9 +352,61 @@ public class CommunicationBridge {
 
     }
 
-    private void sendStateChange() {
-
-    }
+/*    private void sendStateChange(String currentTurn, String turnType, int diffs, int b) {
+    	//****TEMP VARS
+    		int numValidPlace = 3;	//temporary assignment of variables until corresponding code in game is implemented
+    		int rowVal = 0;
+    		int colVal = 0;
+    		int tmpPieceID = 0;
+    		int numberOfPieces = 6;
+    		int validMoveNum = 2;
+    	//*******
+    	/*
+    	 * TODO for making this work with rest of program:
+    	 * 		-need a way to get the list of valid placements (piecePool and board will be useful for this)
+    	 * 		-need a way to get the list of pieces that have valid moves (from board obviously, but piece pool as well?)
+    	 * 		-need to get whole board state and piecepool state ***Done, getBoard from board, getAllPiecesInPool
+    	 * 		-need diffs to be implemented
+    	 * 		-why the hell did i start on this so early lol
+    	 * *//*
+    	JsonObject stateChangeJson = new JsonObject();
+    	JsonArray validPlacements = new JsonArray();
+    	JsonArray validMovements = new JsonArray();
+    	stateChangeJson.addProperty("type", "SET_GAME_STATE");
+    	stateChangeJson.addProperty("turn", currentTurn);
+    	stateChangeJson.addProperty("turn_type", turnType);
+    	if(turnType.equals("place")){
+    		for(int i = 0; i < numValidPlace; i++){				//TODO: need a way to get the list of valid placements
+    			JsonObject perPieceJson = new JsonObject();
+    			perPieceJson.addProperty("r", rowVal);			//TODO: currently uses bullshit values, change as soon as board/pieces are changed
+    			perPieceJson.addProperty("c", colVal);
+    			rowVal++; colVal++;//TODO: delete this
+    			//if we're doing this with pieceLogic.movableCoordinates, going to have to detect and remove duplicates before adding to the json
+    			validPlacements.add(perPieceJson);
+    		}
+    		
+    	}
+    	else{	//insert into valid movements
+    		
+    		for(int i = 0; i < numberOfPieces; i++){				//for every piece that has valid moves
+    			JsonObject moveEntry = new JsonObject();
+    			moveEntry.addProperty("pieceId", tmpPieceID++);
+    			JsonArray moveList = new JsonArray();
+    			for(int j = 0; j < validMoveNum; j++){				//for list of valid moves TODO: replace with loop through pieceLogic.movableCoordinates()
+    				JsonObject validCoords = new JsonObject();
+    				validCoords.addProperty("r", i);		//TODO: more nonsense values, replace ASAP
+    				validCoords.addProperty("c", j);
+    				moveList.add(validCoords);
+    			}
+    			moveEntry.add("moves", moveList);
+    			validPlacements.add(moveEntry);
+    		}
+    	}
+    	stateChangeJson.add("valid_placements", validPlacements);
+    	stateChangeJson.add("valid_movements", validMovements);
+    	//TODO: board state, user pool, diffs
+    	sendMessage(stateChangeJson);
+    }*/
 
     private void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
     	JsonObject gameEndJson = new JsonObject();
@@ -369,6 +416,7 @@ public class CommunicationBridge {
     	gameEndJson.addProperty(endMsg, "");
     	sendMessage(gameEndJson);
     }
+
     private void sendGameEnd(String winner, String message) {
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
@@ -378,5 +426,44 @@ public class CommunicationBridge {
     	sendMessage(gameEndJson);
     }
 
+    public void sendGameStart(int gameId, String[] opponents, boolean needsFlip, boolean checkered, int rows, int cols) {
+        JsonObject gameStartJson = new JsonObject();
+        String startType = "type",
+                gameIdKey = "gameId",
+                opponentsKey = "opponents",
+                needsFlipKey = "needsFlip",
+                checkeredKey = "checkered",
+                rowsKey = "boardRows",
+                colsKey = "boardCols";
+
+        JsonArray opponentsArray = new JsonArray();
+        for (String opponent : opponents) opponentsArray.add(opponent);
+
+        gameStartJson.addProperty(startType, "GAME_INIT");
+        gameStartJson.addProperty(gameIdKey, gameId);
+        gameStartJson.add(opponentsKey, opponentsArray);
+        gameStartJson.addProperty(needsFlipKey, needsFlip);
+        gameStartJson.addProperty(checkeredKey, checkered);
+        gameStartJson.addProperty(rowsKey, rows);
+        gameStartJson.addProperty(colsKey, cols);
+
+        sendMessage(gameStartJson);
+    }
+
+    public void sendGameStateChange() {
+        JsonObject gameStateChangeJson = new JsonObject();
+        String stateChangeType = "type";
+
+        gameStateChangeJson.addProperty(stateChangeType, "SET_GAME_STATE");
+
+        JsonArray opponentsArray = new JsonArray();
+        sendMessage(gameStateChangeJson);
+    }
+
     public String username() { return username; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

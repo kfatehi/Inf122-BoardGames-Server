@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5.game.GameLogicFactory;
+
 /**
  * Created by james on 3/7/17.
  */
@@ -19,6 +21,7 @@ public class GameSession {
 
     private int id;
     private String pugName;
+    private String currentUserTurn;
 
     private List<String> usernames = new ArrayList<String>();
     private Map<String, CommunicationBridge> commBridges = new HashMap<String, CommunicationBridge>();
@@ -29,17 +32,21 @@ public class GameSession {
         id = nextId;
         nextId += 1;
     }
-    public GameSession(String gameName, String pugName) {
+    public GameSession(String gameName, String pugName, String currentUser) {
         System.out.println("Building GameSession");
 
         id = nextId;
         nextId += 1;
 
         this.pugName = pugName;
+        this.currentUserTurn = currentUser;
 
-        // Temp
-        gameLogic = new ChessGameLogic(this);
+        GameLogicFactory gameLogicFactory = new GameLogicFactory();
+        gameLogic = gameLogicFactory.createGameLogic(gameName, this);
+    }
 
+    public void updateBridge(String username, CommunicationBridge bridge) {
+        commBridges.put(username, bridge);
     }
 
     public void addUser(String username, CommunicationBridge commBridge) {
@@ -53,6 +60,15 @@ public class GameSession {
 
     public void start() {
         // TODO: start things with initial state change
+        usernames.forEach(user->{
+            String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
+            CommunicationBridge cbp = commBridges.get(user);
+            if (cbp != null) {
+                cbp.sendGameStart(id, opponents, false, true, 3, 3);
+            }
+        });
+
+        sendStateChange();
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
@@ -71,6 +87,13 @@ public class GameSession {
         // TODO: implement this
         // it will send the board and relevant pool data to each user
         // and it'll also use the diffs list in GameState to send the changes as well
+        usernames.forEach(user->{
+            CommunicationBridge cbp = commBridges.get(user);
+            if (cbp != null) {
+                cbp.sendGameStateChange();
+            }
+        });
+
     }
 
     public int id() { return id; }

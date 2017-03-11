@@ -46,5 +46,8 @@ public class PiecePool {
     public Piece removePiece(int id) {
         return pieces.remove(id);
     }
+    public ArrayList<Piece> getAllPiecesInPool(){		//TODO: make sure this actually works, haven't tested it yet
+    	return new ArrayList<Piece>(pieces.values());
+    }
 }
 
