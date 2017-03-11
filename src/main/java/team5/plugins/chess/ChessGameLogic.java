@@ -23,6 +23,9 @@ public class ChessGameLogic extends GameLogic {
     private static final int ROWS = 8;
     private static final int COLS = 8;
 
+    private String whitePlayer;
+    private String blackPlayer;
+
     public ChessGameLogic(GameSession session) {
         super(session);
         System.out.println("Created ChessGameLogic");
@@ -34,30 +37,28 @@ public class ChessGameLogic extends GameLogic {
         List<String> pieceNames = Arrays.asList("Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook");
 
         PieceLogicFactory fact = new PieceLogicFactory();
-        // Player 1 main pieces
-        int row = 0;
-        for (int col = 0; col < COLS; col++) {
-            Piece p = new Piece();
-//          p.setPieceLogic(fact.createLogic(pieceNames.get(row)));
-            state().newBoardPiece(p, new PieceCoordinate(row, col));
-        }
-        // Player 2 main pieces
-        row = 7;
-        for (int col = COLS-1; col >= 0; col--) {
-            Piece p = new Piece();
-//          p.setPieceLogic(fact.createLogic(pieceNames.get(col)));
-            state().newBoardPiece(p, new PieceCoordinate(row, col));
-        }
 
-        // Pawns
-        for (int aRow : Arrays.asList(1,6)) {
+        
+        // Main pieces
+        for (int row : Arrays.asList(0,7)) {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
-//                p.setPieceLogic(fact.createLogic(pieceNames.get("Pawn")));
-                state().newBoardPiece(p, new PieceCoordinate(aRow, col));
+//              p.setPieceLogic(fact.createLogic(pieceNames.get(row)));
+                state().newBoardPiece(p, new PieceCoordinate(row, col));
             }
         }
 
+        // Pawns
+        for (int row : Arrays.asList(1,6)) {
+            for (int col = 0; col < COLS; col++) {
+                Piece p = new Piece();
+//                p.setPieceLogic(fact.createLogic(pieceNames.get("Pawn")));
+                state().newBoardPiece(p, new PieceCoordinate(row, col));
+            }
+        }
+
+        whitePlayer = session.getUsernames().get(0);
+        blackPlayer = session.getUsernames().get(1);
 
     }
 
