@@ -44,7 +44,7 @@ public class Main {
         //pl.createPieces("CHESS");
 
 
-        PieceLogic pawn = PieceLogicFactory.createPieceLogic("Pawn");
+        PieceLogic pawn = PieceLogicFactory.createPieceLogic("PawnPieceLogic");
         Piece p = new Piece("jlinnell", "pawn.png", pawn, MovementDirection.Down);
     }
 
