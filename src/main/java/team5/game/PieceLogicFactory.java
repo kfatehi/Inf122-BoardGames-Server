@@ -3,15 +3,38 @@ package team5.game;
 // Internal
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
+import team5.game.state.PieceLogic;
+import team5.plugins.chess.Pawn;
+import team5.plugins.test.TestPieceLogic;
 
 // Native
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class PieceLogicFactory {
 
+    private static Map<String, Class> classMap = new HashMap<String, Class>() {{
+        put("Pawn", Pawn.class);
+        put("TestPieceLogic", TestPieceLogic.class);
+    }};
+
     public PieceLogicFactory() {}
+
+    public static PieceLogic createPieceLogic(String pieceName) {
+        Class theClass = classMap.get(pieceName);
+        if (theClass != null) {
+            try {
+                return (PieceLogic)theClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
     public Map<Integer, Piece> createPieces(String uniqueGameName) {
         Hashtable<Integer, Piece> gamePieces = new Hashtable<Integer, Piece>();

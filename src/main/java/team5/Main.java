@@ -1,6 +1,10 @@
 package team5;
 
 import static spark.Spark.*;
+
+import team5.game.state.MovementDirection;
+import team5.game.state.Piece;
+import team5.game.state.PieceLogic;
 import team5.network.MainWebSocketHandler;
 //import team5.plugins.chess.PawnPieceLogic;
 
@@ -38,8 +42,10 @@ public class Main {
         //pl.createPieces("tic tac toe");
         //pl.createPieces("Checkers");
         //pl.createPieces("CHESS");
-        
 
+
+        PieceLogic pawn = PieceLogicFactory.createPieceLogic("Pawn");
+        Piece p = new Piece("jlinnell", "pawn.png", pawn, MovementDirection.Down);
     }
 
     public static void startServer() {
