@@ -43,6 +43,10 @@ public class GameSession {
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
     }
 
+    public void updateBridge(String username, CommunicationBridge bridge) {
+        commBridges.put(username, bridge);
+    }
+
     public void addUser(String username, CommunicationBridge commBridge) {
         usernames.add(username);
         commBridges.put(username, commBridge);

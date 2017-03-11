@@ -42,11 +42,25 @@ public class GameManagerSingleton {
         userSessions.remove(session);
     }
 
-    public boolean login(String username) {
+    public boolean login(String username, CommunicationBridge communicationBridge) {
 
         User user = user(username);
         if (user == null) {
             users.add(new User(username));
+        } else {
+            // user exists, it's probably trying to resume...
+
+            gamesInProgress.forEach(g->{
+                g.getUsernames().forEach(u->{
+                    if (username.equals(u)) {
+                        // im in this game, update my bridge
+                        g.updateBridge(u, communicationBridge);
+                        communicationBridge.setGameSession(g);
+                        communicationBridge.setUsername(username);
+                        g.start();
+                    }
+                });
+            });
         }
 
         return true;

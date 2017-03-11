@@ -116,7 +116,7 @@ public class CommunicationBridge {
                 return;
             }
 
-            if(GameManagerSingleton.instance().login(username)) {
+            if(GameManagerSingleton.instance().login(username, this)) {
                 this.username = username;
                 sendMessage(successfulResponseJson);
             } else {
@@ -444,4 +444,8 @@ public class CommunicationBridge {
 
 
     public String username() { return username; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
