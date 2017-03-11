@@ -23,7 +23,7 @@ public class Pawn extends PieceLogic {
         return new ArrayList<PieceCoordinate>();    
     }
 
-    public Piece canChangeToPiece() {
-        return new Piece();
+    public String canChangeToPiece() {
+        return null;
     }
 }
