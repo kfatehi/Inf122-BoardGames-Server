@@ -14,8 +14,8 @@ import java.util.List;
  * @author  Team5
  * @date    2017/03/09
  */
-public class Pawn extends PieceLogic {
-    public Pawn() {
+public class PawnPieceLogic extends PieceLogic {
+    public PawnPieceLogic() {
         System.out.println("Building pawn logic");
     }
 
@@ -23,7 +23,7 @@ public class Pawn extends PieceLogic {
         return new ArrayList<PieceCoordinate>();    
     }
 
-    public Piece canChangeToPiece() {
-        return new Piece();
+    public String canChangeToPiece() {
+        return null;
     }
 }
