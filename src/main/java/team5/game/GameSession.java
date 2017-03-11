@@ -62,9 +62,11 @@ public class GameSession {
             String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendGameStart(opponents, id);
+                cbp.sendGameStart(id, opponents, false, true, 3, 3);
             }
         });
+
+        sendStateChange();
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {

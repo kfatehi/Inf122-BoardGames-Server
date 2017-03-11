@@ -426,20 +426,26 @@ public class CommunicationBridge {
     	sendMessage(gameEndJson);
     }
 
-    public void sendGameStart(String[] opponents, int gameId) {
+    public void sendGameStart(int gameId, String[] opponents, boolean needsFlip, boolean checkered, int rows, int cols) {
         JsonObject gameStartJson = new JsonObject();
         String startType = "type",
                 gameIdKey = "gameId",
-                opponentsKey = "opponents";
+                opponentsKey = "opponents",
+                needsFlipKey = "needsFlip",
+                checkeredKey = "checkered",
+                rowsKey = "boardRows",
+                colsKey = "boardCols";
+
+        JsonArray opponentsArray = new JsonArray();
+        for (String opponent : opponents) opponentsArray.add(opponent);
 
         gameStartJson.addProperty(startType, "GAME_INIT");
         gameStartJson.addProperty(gameIdKey, gameId);
-
-        JsonArray opponentsArray = new JsonArray();
-        for (String opponent : opponents) {
-            opponentsArray.add(opponent);
-        }
         gameStartJson.add(opponentsKey, opponentsArray);
+        gameStartJson.addProperty(needsFlipKey, needsFlip);
+        gameStartJson.addProperty(checkeredKey, checkered);
+        gameStartJson.addProperty(rowsKey, rows);
+        gameStartJson.addProperty(colsKey, cols);
 
         sendMessage(gameStartJson);
     }
