@@ -15,7 +15,9 @@ public class Board {
         this.cols = cols;
         board = new Piece[cols][rows];
     }
-
+    public Piece[][] getBoard(){
+    	return board;
+    }
     public Piece getPiece(PieceCoordinate coord) {
         // Get the Piece at that coordinate
         return board[coord.getColumn()][coord.getRow()];

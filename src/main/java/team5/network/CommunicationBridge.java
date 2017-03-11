@@ -369,9 +369,9 @@ public class CommunicationBridge {
     	//*******
     	/*
     	 * TODO for making this work with rest of program:
-    	 * 		-need a way to get the list of valid placements
+    	 * 		-need a way to get the list of valid placements (piecePool and board will be useful for this)
     	 * 		-need a way to get the list of pieces that have valid moves (from board obviously, but piece pool as well?)
-    	 * 		-need to get whole board state and piecepool state (may have to just pass the player's piece pool?)
+    	 * 		-need to get whole board state and piecepool state ***Done, getBoard from board, getAllPiecesInPool
     	 * 		-need diffs to be implemented
     	 * 		-why the hell did i start on this so early lol
     	 * *//*
