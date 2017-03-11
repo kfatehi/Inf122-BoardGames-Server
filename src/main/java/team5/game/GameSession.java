@@ -61,8 +61,9 @@ public class GameSession {
         usernames.forEach(user->{
             String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
             CommunicationBridge cbp = commBridges.get(user);
-            if (cbp != null)
-                cbp.sendGameStart(opponents);
+            if (cbp != null) {
+                cbp.sendGameStart(opponents, id);
+            }
         });
     }
 
@@ -82,6 +83,12 @@ public class GameSession {
         // TODO: implement this
         // it will send the board and relevant pool data to each user
         // and it'll also use the diffs list in GameState to send the changes as well
+        usernames.forEach(user->{
+            CommunicationBridge cbp = commBridges.get(user);
+            if (cbp != null) {
+                cbp.sendGameStateChange();
+            }
+        });
     }
 
     public int id() { return id; }

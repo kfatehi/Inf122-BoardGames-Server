@@ -426,12 +426,14 @@ public class CommunicationBridge {
     	sendMessage(gameEndJson);
     }
 
-    public void sendGameStart(String[] opponents) {
+    public void sendGameStart(String[] opponents, int gameId) {
         JsonObject gameStartJson = new JsonObject();
         String startType = "type",
+                gameIdKey = "gameId",
                 opponentsKey = "opponents";
 
         gameStartJson.addProperty(startType, "GAME_INIT");
+        gameStartJson.addProperty(gameIdKey, gameId);
 
         JsonArray opponentsArray = new JsonArray();
         for (String opponent : opponents) {
@@ -442,10 +444,20 @@ public class CommunicationBridge {
         sendMessage(gameStartJson);
     }
 
+    public void sendGameStateChange() {
+        JsonObject gameStateChangeJson = new JsonObject();
+        String stateChangeType = "type";
+
+        gameStateChangeJson.addProperty(stateChangeType, "SET_GAME_STATE");
+
+        JsonArray opponentsArray = new JsonArray();
+        sendMessage(gameStateChangeJson);
+    }
 
     public String username() { return username; }
 
     public void setUsername(String username) {
         this.username = username;
     }
+
 }
