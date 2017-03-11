@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team5.game.GameLogicFactory;
+
 /**
  * Created by james on 3/7/17.
  */
@@ -37,9 +39,8 @@ public class GameSession {
 
         this.pugName = pugName;
 
-        // Temp
-        gameLogic = new ChessGameLogic(this);
-
+        GameLogicFactory gameLogicFactory = new GameLogicFactory();
+        gameLogic = gameLogicFactory.createGameLogic(gameName, this);
     }
 
     public void addUser(String username, CommunicationBridge commBridge) {
@@ -53,6 +54,12 @@ public class GameSession {
 
     public void start() {
         // TODO: start things with initial state change
+        usernames.forEach(user->{
+            String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
+            CommunicationBridge cbp = commBridges.get(user);
+            if (cbp != null)
+                cbp.sendGameStart(opponents);
+        });
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {

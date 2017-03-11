@@ -13,7 +13,6 @@ import java.util.Map;
  */
 public class GameManagerSingleton {
     private static GameManagerSingleton instance;
-
     private List<GameSession> gamesWaiting = new ArrayList<GameSession>();
     private List<GameSession> gamesInProgress = new ArrayList<GameSession>();
     private List<User> users = new ArrayList<User>();

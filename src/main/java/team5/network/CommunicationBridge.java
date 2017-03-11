@@ -6,14 +6,11 @@ import team5.game.GameSession;
 import team5.game.GameLogicFactory;
 import team5.game.GameManagerSingleton;
 import team5.game.User;
-import team5.game.state.Board;
 import team5.game.GameStat;
 
 // Native
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.ArrayList;
 
 // External
 import org.eclipse.jetty.websocket.api.Session;
@@ -22,9 +19,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-
-import javax.sound.midi.SysexMessage;
 
 
 /**
@@ -235,7 +229,7 @@ public class CommunicationBridge {
 
             int gameId = json.get(gameIdKey).getAsInt();
 
-            GameSession gameSession = GameManagerSingleton.instance().joinGameSession(this, gameId);
+            gameSession = GameManagerSingleton.instance().joinGameSession(this, gameId);
             if (gameSession == null) {
                 // Error!
                 JsonObject error = new JsonObject();
@@ -422,6 +416,7 @@ public class CommunicationBridge {
     	gameEndJson.addProperty(endMsg, "");
     	sendMessage(gameEndJson);
     }
+
     private void sendGameEnd(String winner, String message) {
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
@@ -430,6 +425,23 @@ public class CommunicationBridge {
     	gameEndJson.addProperty(endMsg, message);
     	sendMessage(gameEndJson);
     }
+
+    public void sendGameStart(String[] opponents) {
+        JsonObject gameStartJson = new JsonObject();
+        String startType = "type",
+                opponentsKey = "opponents";
+
+        gameStartJson.addProperty(startType, "GAME_INIT");
+
+        JsonArray opponentsArray = new JsonArray();
+        for (String opponent : opponents) {
+            opponentsArray.add(opponent);
+        }
+        gameStartJson.add(opponentsKey, opponentsArray);
+
+        sendMessage(gameStartJson);
+    }
+
 
     public String username() { return username; }
 }
