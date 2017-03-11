@@ -5,6 +5,7 @@ import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
+import team5.game.state.MovementDirection;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
@@ -36,14 +37,17 @@ public class ChessGameLogic extends GameLogic {
     public void initializePieces() {
         List<String> pieceNames = Arrays.asList("Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook");
 
-        PieceLogicFactory fact = new PieceLogicFactory();
+        whitePlayer = session.getUsernames().get(0);
+        blackPlayer = session.getUsernames().get(1);
 
-        
         // Main pieces
         for (int row : Arrays.asList(0,7)) {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
-//              p.setPieceLogic(fact.createLogic(pieceNames.get(row)));
+                p.setPieceLogic(PieceLogicFactory.createPieceLogic(pieceNames.get(row)));
+                p.setImage(pieceNames.get(row));
+                p.setDirection(row == 0 ? MovementDirection.Up : MovementDirection.Down);
+                p.setUsername(row == 0 ? whitePlayer : blackPlayer);
                 state().newBoardPiece(p, new PieceCoordinate(row, col));
             }
         }
@@ -52,13 +56,14 @@ public class ChessGameLogic extends GameLogic {
         for (int row : Arrays.asList(1,6)) {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
-//                p.setPieceLogic(fact.createLogic(pieceNames.get("Pawn")));
+                p.setPieceLogic(PieceLogicFactory.createPieceLogic("Pawn"));
+                p.setImage("Pawn");
+                p.setDirection(row == 1 ? MovementDirection.Up : MovementDirection.Down);
+                p.setUsername(row == 1 ? whitePlayer : blackPlayer);
                 state().newBoardPiece(p, new PieceCoordinate(row, col));
             }
         }
 
-        whitePlayer = session.getUsernames().get(0);
-        blackPlayer = session.getUsernames().get(1);
 
     }
 
