@@ -17,6 +17,22 @@ public class GameState {
         board = new Board(rows, cols);
     }
 
+    public void newBoardPiece(Piece piece, PieceCoordinate coord) {
+
+    }
+
+    public void newServerPoolPiece(Piece piece) {
+
+    }
+
+    public void newCapturedPoolPiece(Piece piece) {
+
+    }
+
+    public void newUserPoolPiece(Piece piece, String username) {
+
+    }
+
     public void movePieceToBoard(int id) {
 
     }

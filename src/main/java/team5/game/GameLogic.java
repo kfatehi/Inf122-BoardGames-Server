@@ -14,7 +14,6 @@ public abstract class GameLogic {
 
     protected String gameName = "";
     protected GameSession session;
-    protected GameState state;
 
     public GameLogic(GameSession session) { this.session = session; }
     protected GameState state() { return session.gameState(); }
