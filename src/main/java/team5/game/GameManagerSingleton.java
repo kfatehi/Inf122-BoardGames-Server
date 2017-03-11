@@ -81,7 +81,7 @@ public class GameManagerSingleton {
             return null;
         }
 
-        GameSession game = new GameSession(gameName, pugName);
+        GameSession game = new GameSession(gameName, pugName, commBridge.username());
         game.addUser(commBridge.username(), commBridge);
         gamesWaiting.add(game);
 

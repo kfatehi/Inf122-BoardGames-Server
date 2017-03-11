@@ -21,6 +21,7 @@ public class GameSession {
 
     private int id;
     private String pugName;
+    private String currentUserTurn;
 
     private List<String> usernames = new ArrayList<String>();
     private Map<String, CommunicationBridge> commBridges = new HashMap<String, CommunicationBridge>();
@@ -31,13 +32,14 @@ public class GameSession {
         id = nextId;
         nextId += 1;
     }
-    public GameSession(String gameName, String pugName) {
+    public GameSession(String gameName, String pugName, String currentUser) {
         System.out.println("Building GameSession");
 
         id = nextId;
         nextId += 1;
 
         this.pugName = pugName;
+        this.currentUserTurn = currentUser;
 
         GameLogicFactory gameLogicFactory = new GameLogicFactory();
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
@@ -91,6 +93,7 @@ public class GameSession {
                 cbp.sendGameStateChange();
             }
         });
+
     }
 
     public int id() { return id; }
