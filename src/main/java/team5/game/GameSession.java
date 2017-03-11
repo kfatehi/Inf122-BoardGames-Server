@@ -38,7 +38,7 @@ public class GameSession {
         this.pugName = pugName;
 
         // Temp
-        gameLogic = new ChessGameLogic();
+        gameLogic = new ChessGameLogic(this);
 
     }
 

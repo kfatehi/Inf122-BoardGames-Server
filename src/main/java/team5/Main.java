@@ -23,12 +23,12 @@ public class Main {
         new PawnPieceLogic();
         //new GameManagerSingleton();
         //new CommunicationBridge();
-        new ChessGameLogic();
+//        new ChessGameLogic();
         GameLogicFactory gl = new GameLogicFactory();
-        gl.createGameLogic("Tic Tac Toe");
-        gl.createGameLogic("Checkers");
-        gl.createGameLogic("Chess");
-        gl.createGameLogic("Test Game");
+//        gl.createGameLogic("Tic Tac Toe");
+//        gl.createGameLogic("Checkers");
+//        gl.createGameLogic("Chess");
+//        gl.createGameLogic("Test Game");
 
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);

@@ -49,15 +49,15 @@ public class GameLogicFactory {
     public GameLogicFactory() {
     }
 
-    public GameLogic createGameLogic(String supportedGameName) {
+    public GameLogic createGameLogic(String supportedGameName, GameSession gameSession) {
         if(supportedGameName.equalsIgnoreCase("Checkers"))
-            return new CheckersGameLogic();
+            return new CheckersGameLogic(gameSession);
         else if(supportedGameName.equalsIgnoreCase("Tic Tac Toe"))
-            return new TicTacToeGameLogic();
+            return new TicTacToeGameLogic(gameSession);
         else if(supportedGameName.equalsIgnoreCase("Chess"))
-            return new ChessGameLogic();
+            return new ChessGameLogic(gameSession);
         else if (supportedGameName.equalsIgnoreCase("Test"))
-            return new TestGameLogic();
+            return new TestGameLogic(gameSession);
         else
             return null;
     }
