@@ -41,16 +41,13 @@ public class CheckersGameLogic extends GameLogic {
         ArrayList<String> usersList = (ArrayList)session.getUsernames();
         for(int row = 0; row < 3; row++) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
-//                System.out.println("Column: " + String.valueOf(col) + "Row: " + String.valueOf(row));
-
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
                 Piece p = new Piece(usersList.get(0), "http://cdnjs.cloudflare.com/ajax/libs/twemoji/2.2.0/2/svg/1f98d.svg",
                          checkerLogic, MovementDirection.Up);
                 checkerLogic.setPieceReference(p);
 
 
-                session.gameState().newUserPoolPiece(p, usersList.get(0));
-                session.gameState().movePieceToBoard(p.getId(), new PieceCoordinate(row, col));
+                session.gameState().newBoardPiece(p, new PieceCoordinate(row, col));
             }
         }
 
@@ -61,8 +58,7 @@ public class CheckersGameLogic extends GameLogic {
                 Piece p = new Piece(usersList.get(1), "http://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.6/assets/svg/1f34c.svg", checkerLogic, MovementDirection.Down);
                 checkerLogic.setPieceReference(p);
 
-                session.gameState().newUserPoolPiece(p, usersList.get(1));
-                session.gameState().movePieceToBoard(p.getId(), new PieceCoordinate(row, col));
+                session.gameState().newBoardPiece(p, new PieceCoordinate(row, col));
             }
         }
     }

@@ -4,6 +4,7 @@ package team5.plugins.chess;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
+import team5.game.TurnType;
 import team5.game.state.MovementDirection;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
@@ -47,11 +48,14 @@ public class ChessGameLogic extends GameLogic {
         whitePlayer = session.getUsernames().get(0);
         blackPlayer = session.getUsernames().get(1);
 
+        session.nextTurnType(TurnType.Move);
+
         // Main pieces
         for (int row : Arrays.asList(0,7)) {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
                 p.setPieceLogic(PieceLogicFactory.createPieceLogic(pieceNames.get(row)));
+                p.getPieceLogic().setPieceRef(p);
                 p.setImage(pieceNames.get(row));
                 p.setDirection(row == 0 ? MovementDirection.Up : MovementDirection.Down);
                 p.setUsername(row == 0 ? whitePlayer : blackPlayer);
@@ -64,6 +68,7 @@ public class ChessGameLogic extends GameLogic {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
                 p.setPieceLogic(PieceLogicFactory.createPieceLogic("Pawn"));
+                p.getPieceLogic().setPieceRef(p);
                 p.setImage("Pawn");
                 p.setDirection(row == 1 ? MovementDirection.Up : MovementDirection.Down);
                 p.setUsername(row == 1 ? whitePlayer : blackPlayer);

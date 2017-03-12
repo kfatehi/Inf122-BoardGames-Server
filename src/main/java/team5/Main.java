@@ -22,17 +22,6 @@ public class Main {
 
         startServer();
 
-        // Showing that nested packages work
-//        new PawnPieceLogic();
-        //new GameManagerSingleton();
-        //new CommunicationBridge();
-//        new ChessGameLogic();
-        GameLogicFactory gl = new GameLogicFactory();
-//        gl.createGameLogic("Tic Tac Toe");
-//        gl.createGameLogic("Checkers");
-//        gl.createGameLogic("Chess");
-//        gl.createGameLogic("Test Game");
-
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);
         }
