@@ -43,6 +43,10 @@ public class TestGameLogic extends GameLogic {
 
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
     	state().movePieceToBoard(pieceId, intendedCoord);
+    	if(username.equals(player1)){
+    		session.switchTurn(player2);
+    	}
+    	else session.switchTurn(player1);
     }
 
     public String gameFinishedWinner() {
