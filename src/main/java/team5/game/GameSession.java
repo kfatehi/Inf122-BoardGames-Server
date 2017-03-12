@@ -48,7 +48,12 @@ public class GameSession {
     public void updateBridge(String username, CommunicationBridge bridge) {
         commBridges.put(username, bridge);
     }
-
+    public void switchTurn(String username){
+    	if(usernames.contains(username)){
+    		currentUserTurn = username;
+    	}
+    	else System.out.println("INVALID USERNAME");
+    }
     public void addUser(String username, CommunicationBridge commBridge) {
         usernames.add(username);
         commBridges.put(username, commBridge);
