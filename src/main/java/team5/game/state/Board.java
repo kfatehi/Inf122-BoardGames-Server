@@ -94,7 +94,12 @@ public class Board {
         board[coord.getColumn()][coord.getRow()] = piece;
         return old;
     }
-
+    public Piece removePiece(int id){
+    	PieceCoordinate c = getPiece(id);
+    	Piece p = board[c.getColumn()][c.getRow()];
+    	board[c.getColumn()][c.getRow()] = null;
+    	return p;
+    }
     public Piece movePiece(PieceCoordinate coord1, PieceCoordinate coord2) {
         // Move the piece at coord1 to coord2, returning what was at coord2
         Piece thePiece = getPiece(coord1);
