@@ -32,7 +32,7 @@ public class MainWebSocketHandler {
 
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
-        System.out.println("New message: " + session.getRemoteAddress() + " " + message);
+        //System.out.println("New message: " + session.getRemoteAddress() + " " + message);
 
         // Get the CommBridge
         CommunicationBridge commBridge = GameManagerSingleton.instance().commBridge(session);
