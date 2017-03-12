@@ -389,14 +389,21 @@ public class CommunicationBridge {
     	stateChangeJson.addProperty("turn", currentTurn);
     	stateChangeJson.addProperty("turn_type", turnType);
     	if(turnType.equals("place")){
-    		for(Piece p : userPool.getAllPiecesInPool()){			//for all pieces in the user's pool, add valid placements for all
+    		Piece p = userPool.getAllPiecesInPool().get(0);
+    		for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
+				JsonObject perPieceJson = new JsonObject();
+				perPieceJson.addProperty("r", coord.getRow()); 
+				perPieceJson.addProperty("c", coord.getColumn());
+				validPlacements.add(perPieceJson);
+    		}
+    		/*for(Piece p : userPool.getAllPiecesInPool()){			//for all pieces in the user's pool, add valid placements for all
     			for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
     				JsonObject perPieceJson = new JsonObject();
     				perPieceJson.addProperty("r", coord.getRow());			//let me know if you need this to be a unique list instead, pieces can potentially overlap move spots right now 
     				perPieceJson.addProperty("c", coord.getColumn());
     				validPlacements.add(perPieceJson);
     			}
-    		}
+    		}*/
     		
     	}
     	else if(turnType.equals("move")){	//insert into valid movements
