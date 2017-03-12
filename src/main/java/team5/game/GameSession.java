@@ -64,6 +64,7 @@ public class GameSession {
     public void addUser(String username, CommunicationBridge commBridge) {
         usernames.add(username);
         commBridges.put(username, commBridge);
+        gameState.newUser(username);
     }
 
     public boolean isFull() {

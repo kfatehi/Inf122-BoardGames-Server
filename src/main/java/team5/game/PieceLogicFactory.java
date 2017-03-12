@@ -4,7 +4,7 @@ package team5.game;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
-import team5.plugins.chess.PawnPieceLogic;
+import team5.plugins.chess.*;
 import team5.plugins.chess.PawnPieceLogic;
 import team5.plugins.test.TestPieceLogic;
 
@@ -17,7 +17,15 @@ import java.util.Map.Entry;
 public class PieceLogicFactory {
 
     private static Map<String, Class> classMap = new HashMap<String, Class>() {{
-        put("PawnPieceLogic", PawnPieceLogic.class);
+        // Chess
+        put("Bishop", BishopPieceLogic.class);
+        put("King", KingPieceLogic.class);
+        put("Knight", KnightPieceLogic.class);
+        put("Pawn", PawnPieceLogic.class);
+        put("Queen", QueenPieceLogic.class);
+        put("Rook", RookPieceLogic.class);
+
+        // Test Game
         put("TestPieceLogic", TestPieceLogic.class);
     }};
 
@@ -33,6 +41,7 @@ public class PieceLogicFactory {
                 return null;
             }
         } else {
+            System.out.println("Error: Attempting to make ");
             return null;
         }
     }

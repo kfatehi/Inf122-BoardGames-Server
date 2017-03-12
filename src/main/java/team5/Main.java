@@ -23,29 +23,9 @@ public class Main {
 
         startServer();
 
-        // Showing that nested packages work
-//        new PawnPieceLogic();
-        //new GameManagerSingleton();
-        //new CommunicationBridge();
-//        new ChessGameLogic();
-        GameLogicFactory gl = new GameLogicFactory();
-//        gl.createGameLogic("Tic Tac Toe");
-//        gl.createGameLogic("Checkers");
-//        gl.createGameLogic("Chess");
-//        gl.createGameLogic("Test Game");
-
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);
         }
-
-        //PieceLogicFactory pl = new PieceLogicFactory();
-        //pl.createPieces("tic tac toe");
-        //pl.createPieces("Checkers");
-        //pl.createPieces("CHESS");
-
-
-        PieceLogic pawn = PieceLogicFactory.createPieceLogic("PawnPieceLogic");
-        Piece p = new Piece("jlinnell", "pawn.png", pawn, MovementDirection.Down);
     }
 
     public static void startServer() {

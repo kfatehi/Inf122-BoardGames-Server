@@ -63,6 +63,12 @@ public class GameState {
     	return true;
     }
 
+    public void newUser(String username) {
+		if (userPools.keySet().contains(username) == false) {
+			userPools.put(username, new PiecePool());
+		}
+	}
+
     public boolean newUserPoolPiece(Piece piece, String username) {
     	if(pieceExists(piece)) return false;
     	if (userPools.keySet().contains(username) == false) {
