@@ -61,7 +61,7 @@ public class PawnPieceLogic extends PieceLogic {
                     // Our own piece, can't go there. Also this will skip the below En Passant
                 }
             } else {
-                
+
                 // En Passant
                 // If the piece to your side just did a double move forward
                 // then you can still move diagonally into an empty space
