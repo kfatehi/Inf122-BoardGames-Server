@@ -376,7 +376,7 @@ public class CommunicationBridge {
         gameSession.userTurn(username, pieceId, new PieceCoordinate(row, col));
     }
 
-    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, int diffs) {
+    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, JsonArray diffs) {
     	/*
     	 * TODO for completing this function
     	 * 		-need diffs to be implemented
@@ -430,8 +430,7 @@ public class CommunicationBridge {
     		piecePoolArray.add(piece);
     	}
     	stateChangeJson.add("user_pool", piecePoolArray);
-    	//TODO: diffs
-    	stateChangeJson.add("diffs", new JsonArray());	//this will just be blank for now
+    	stateChangeJson.add("diffs", diffs);	//this will just be blank for now
     	sendMessage(stateChangeJson);
     }
 
