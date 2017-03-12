@@ -20,6 +20,7 @@ public class GameSession {
     private int id;
     private String pugName;
     private String currentUserTurn;
+    private TurnType currentTurnType;
 
     private List<String> usernames = new ArrayList<String>();
     private Map<String, CommunicationBridge> commBridges = new HashMap<String, CommunicationBridge>();
@@ -38,6 +39,7 @@ public class GameSession {
 
         this.pugName = pugName;
         this.currentUserTurn = currentUser;
+        this.currentTurnType = TurnType.Place;
 
         GameLogicFactory gameLogicFactory = new GameLogicFactory();
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
@@ -54,6 +56,9 @@ public class GameSession {
     		currentUserTurn = username;
     	}
     	else System.out.println("INVALID USERNAME");
+    }
+    public void nextTurnType(TurnType type) {
+        currentTurnType = type;
     }
     public void addUser(String username, CommunicationBridge commBridge) {
         usernames.add(username);
@@ -122,7 +127,7 @@ public class GameSession {
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendGameStateChange();
+                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), 0);
             }
         });
 

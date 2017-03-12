@@ -142,4 +142,7 @@ public class GameState {
     	return true;
     }
 
+    public Board getBoard() { return board; }
+    public PiecePool getUserPiecePool(String username) { return userPools.get(username); }
+
 }

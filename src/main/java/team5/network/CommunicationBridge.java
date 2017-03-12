@@ -376,7 +376,7 @@ public class CommunicationBridge {
         gameSession.userTurn(username, pieceId, new PieceCoordinate(row, col));
     }
 
-    private void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, int diffs) {
+    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, int diffs) {
     	/*
     	 * TODO for completing this function
     	 * 		-need diffs to be implemented
@@ -435,7 +435,7 @@ public class CommunicationBridge {
     	sendMessage(stateChangeJson);
     }
 
-    private void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
+    public void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
     	gameEndJson.addProperty(endType, "GAME_END");
@@ -444,7 +444,7 @@ public class CommunicationBridge {
     	sendMessage(gameEndJson);
     }
 
-    private void sendGameEnd(String winner, String message) {
+    public void sendGameEnd(String winner, String message) {
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
     	gameEndJson.addProperty(endType, "GAME_END");
