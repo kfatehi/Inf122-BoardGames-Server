@@ -61,6 +61,9 @@ public class GameState {
 
     public boolean newUserPoolPiece(Piece piece, String username) {
     	if(pieceExists(piece)) return false;
+    	if (userPools.keySet().contains(username) == false) {
+    		userPools.put(username, new PiecePool());
+		}
     	userPools.get(username).addPiece(piece);
     	return true;
     }

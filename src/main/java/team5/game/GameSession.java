@@ -1,5 +1,6 @@
 package team5.game;
 
+import javafx.util.Pair;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
@@ -43,6 +44,9 @@ public class GameSession {
 
         GameLogicFactory gameLogicFactory = new GameLogicFactory();
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
+
+        Pair<Integer, Integer> size = gameLogic.getBoardSize();
+        gameState = new GameState(size.getKey(), size.getValue());
     }
 
     public void updateBridge(String username, CommunicationBridge bridge) {

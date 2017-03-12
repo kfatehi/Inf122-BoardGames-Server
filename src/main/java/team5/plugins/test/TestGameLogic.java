@@ -1,5 +1,6 @@
 package team5.plugins.test;
 
+import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
@@ -23,6 +24,10 @@ public class TestGameLogic extends GameLogic {
 
         gameName = "Test";
     }
+
+    public Pair<Integer, Integer> getBoardSize() {
+    	return new Pair<Integer, Integer>(5, 5);
+	}
 
     public void initializePieces() {
     	player1 = session.getUsernames().get(0);
