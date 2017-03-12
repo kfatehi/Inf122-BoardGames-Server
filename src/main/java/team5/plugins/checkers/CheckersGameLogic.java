@@ -3,7 +3,12 @@ package team5.plugins.checkers;
 // Internal
 import team5.game.GameLogic;
 import team5.game.GameSession;
+import team5.game.PieceLogicFactory;
+import team5.game.TurnType;
+import team5.game.state.MovementDirection;
+import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
+import team5.game.state.PieceLogic;
 import team5.util.Pair;
 
 import java.util.ArrayList;
@@ -29,9 +34,41 @@ public class CheckersGameLogic extends GameLogic {
     public boolean needsFlip() { return true; }
 
     public void initializePieces() {
+        // Set turn type to be movement of piece
+        session.nextTurnType(TurnType.Move);
+
+        // Create red pieces
+        ArrayList<String> usersList = (ArrayList)session.getUsernames();
+        for(int row = 0; row < 3; row++) {
+            for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
+//                System.out.println("Column: " + String.valueOf(col) + "Row: " + String.valueOf(row));
+
+                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
+                Piece p = new Piece(usersList.get(0), "http://cdnjs.cloudflare.com/ajax/libs/twemoji/2.2.0/2/svg/1f98d.svg",
+                         checkerLogic, MovementDirection.Up);
+                checkerLogic.setPieceReference(p);
+
+
+                session.gameState().newUserPoolPiece(p, usersList.get(0));
+                session.gameState().movePieceToBoard(p.getId(), new PieceCoordinate(row, col));
+            }
+        }
+
+        // Create black pieces
+        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
+            for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
+                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
+                Piece p = new Piece(usersList.get(1), "http://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.6/assets/svg/1f34c.svg", checkerLogic, MovementDirection.Down);
+                checkerLogic.setPieceReference(p);
+
+                session.gameState().newUserPoolPiece(p, usersList.get(1));
+                session.gameState().movePieceToBoard(p.getId(), new PieceCoordinate(row, col));
+            }
+        }
     }
 
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+
 
     }
 
