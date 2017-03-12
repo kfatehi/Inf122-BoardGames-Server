@@ -37,6 +37,9 @@ public class GameState {
     public Piece getPieceAt(PieceCoordinate coord){
     	return board.getPiece(coord);
     }
+    public boolean validCoordinate(PieceCoordinate coord) {
+    	return board.validCoordinate(coord);
+	}
     //returns true if this is a valid initial placement, false if a piece is already in this square
     //presumably, you don't want to place two pieces down on the same square while setting up the game
     public boolean newBoardPiece(Piece piece, PieceCoordinate coord) {

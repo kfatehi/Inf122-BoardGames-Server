@@ -1,6 +1,7 @@
 package team5.plugins.chess;
 
 import team5.game.state.Board;
+import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
 import team5.util.Pair;
@@ -27,7 +28,22 @@ public class KnightPieceLogic extends PieceLogic {
             add(new Pair<>(+2, -1));
         }};
 
-        
+        for (Pair<Integer, Integer> delta : rawCoords) {
+            PieceCoordinate destCoord = new PieceCoordinate(pc.getRow()+delta.getFirst(), pc.getColumn()+delta.getSecond());
+            if (b.validCoordinate(destCoord)) {
+                Piece existingPiece = b.getPiece(destCoord);
+                if (existingPiece == null) {
+                    // Empty square
+                } else if (!existingPiece.getUsername().equals(pieceRef.getUsername())) {
+                    // Enemy piece is on the square
+                    coords.add(destCoord);
+                } else {
+                    // Our own piece, can't capture them!
+                    continue;
+                }
+
+            }
+        }
 
         return coords;
     }
