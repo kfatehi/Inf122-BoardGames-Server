@@ -14,7 +14,7 @@ import java.util.List;
  * @date    2017/03/09
  */
 public abstract class PieceLogic {
-    private Piece pieceRef;
+    protected Piece pieceRef;
    
     public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);		//return empty list if no moves 
     public abstract String canChangeToPiece();
