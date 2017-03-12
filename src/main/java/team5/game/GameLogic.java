@@ -1,5 +1,6 @@
 package team5.game;
 
+import javafx.util.Pair;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 
@@ -23,6 +24,7 @@ public abstract class GameLogic {
     }
 
     public String gameName() { return gameName; }
+    public abstract Pair<Integer,Integer> getBoardSize();
     public abstract void initializePieces();
     public abstract void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord);
     public abstract String gameFinishedWinner();

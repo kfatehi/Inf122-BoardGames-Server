@@ -64,8 +64,8 @@ public class CommunicationBridge {
                 getSupportedGamesHandler(entireJsonMsg);
             } else if (type.equals("GET_OPEN_GAMES")) {
                 listOpenGamesHandler(entireJsonMsg);
-            } else if (type.equals("GET_OPEN_GAMES")) {
-
+            } else if (type.equals("TURN")) {
+                clientTurnHandler(entireJsonMsg);
             } else {
                 // Print stub
                 System.out.println("Cannot handle provided type");
@@ -354,7 +354,26 @@ public class CommunicationBridge {
     }
 
     private void clientTurnHandler(JsonObject json) {
+        String typeKey = "type",
+                pieceIdKey = "pieceID",
+                rowKey = "r",
+                colKey = "c";
 
+        if (username == null || username.equals("")) {
+            System.out.println("Trying to send client turn but this comm bridge isn't associated with a User(name)");
+            return;
+        }
+        if (gameSession == null) {
+            System.out.println("Trying to send client turn but this comm bridge isn't associated with a GameSession");
+            return;
+        }
+
+
+        int pieceId = json.get(pieceIdKey).getAsInt();
+        int row = json.get(rowKey).getAsInt();
+        int col = json.get(colKey).getAsInt();
+
+        gameSession.userTurn(username, pieceId, new PieceCoordinate(row, col));
     }
 
     private void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, int diffs) {

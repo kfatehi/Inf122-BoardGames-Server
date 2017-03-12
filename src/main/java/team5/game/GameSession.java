@@ -1,5 +1,6 @@
 package team5.game;
 
+import javafx.util.Pair;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
@@ -43,6 +44,9 @@ public class GameSession {
 
         GameLogicFactory gameLogicFactory = new GameLogicFactory();
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
+
+        Pair<Integer, Integer> size = gameLogic.getBoardSize();
+        gameState = new GameState(size.getKey(), size.getValue());
     }
 
     public void updateBridge(String username, CommunicationBridge bridge) {
@@ -64,8 +68,13 @@ public class GameSession {
     }
 
     public void start() {
-        // TODO: start things with initial state change
+
+        // Prepare the game logic now that all players are in
+        gameLogic.initializePieces();
+
+        // Send GAME_INIT to all players
         usernames.forEach(user->{
+            // All users except the one we're sending it to
             String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
@@ -73,18 +82,38 @@ public class GameSession {
             }
         });
 
+        // And then send our initial state change for the players
         sendStateChange();
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+        // Give the turn to the game logic which will make changes to the state
+        // and also the next player, etc.
         gameLogic.commitTurn(username, pieceId, intendedCoord);
 
-        // TODO: send state change
+        // Send the corresponding state change
+        sendStateChange();
 
-        if (gameLogic.gameFinishedWinner() != null) {
-            // TODO: call comm bridges on both with winner
-            // and tell the singleton of winners/losers/draws
-            // and destroy this object (from the singleton too)
+
+        String winner = gameLogic.gameFinishedWinner();
+        if (winner != null) {
+            usernames.forEach(user->{
+                CommunicationBridge commBridge = commBridges.get(user);
+                if (commBridge != null) {
+                    // TODO: Send GAME_END
+                }
+            });
+
+            // Update the singleton
+            if (winner.equals("")) {
+                usernames.forEach(user-> GameManagerSingleton.instance().userDraw(user, gameName()));
+            } else {
+                GameManagerSingleton.instance().userWon(winner, gameName());
+                usernames.stream().
+                        filter(u->!u.equals(winner)).
+                        forEach(user->GameManagerSingleton.instance().userLost(user, gameName()));
+            }
+
         }
     }
 

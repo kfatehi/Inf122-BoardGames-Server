@@ -1,6 +1,7 @@
 package team5.plugins.chess;
 
 // Internal
+import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
@@ -17,6 +18,10 @@ public class ChessGameLogic extends GameLogic {
         System.out.println("Created ChessGameLogic");
 
         gameName = "Chess";
+    }
+
+    public Pair<Integer, Integer> getBoardSize() {
+        return new Pair<Integer, Integer>(5, 5);
     }
 
     public void initializePieces() {
