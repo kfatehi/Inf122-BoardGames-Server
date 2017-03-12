@@ -26,22 +26,29 @@ public class TestGameLogic extends GameLogic {
     }
 
     public team5.util.Pair<Integer, Integer> getBoardSize() {
-    	return new Pair<Integer, Integer>(5, 5);
+    	return new Pair<Integer, Integer>(ROWS, COLS);
 	}
 
     public void initializePieces() {
     	player1 = session.getUsernames().get(0);
     	player2 = session.getUsernames().get(1);
+    	Piece tester = new Piece();
+		tester.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
+		tester.setUsername(player1);
+		tester.setImage("http://i.imgur.com/MK41sNi.jpg");
+		state().newBoardPiece(tester, new PieceCoordinate(1,1));
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
+    		p.setUsername(player1);
     		p.setImage("http://i.imgur.com/MK41sNi.jpg");
     		state().newUserPoolPiece(p, player1);
     	}
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
-    		p.setImage("http://i.imgur.com/MK41sNi.jpg");
+    		p.setUsername(player2);
+    		p.setImage("http://i.imgur.com/Ps9p157.jpg");
     		state().newUserPoolPiece(p, player2);
     	}
     }
@@ -60,4 +67,11 @@ public class TestGameLogic extends GameLogic {
     	}
         return null;
     }
+	public boolean needsFlip() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean needsCheckered() {
+		return true;
+	}
 }

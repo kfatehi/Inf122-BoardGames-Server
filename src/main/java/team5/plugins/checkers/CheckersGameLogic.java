@@ -25,6 +25,9 @@ public class CheckersGameLogic extends GameLogic {
         return new Pair<Integer, Integer>(8, 8);
     }
 
+    public boolean needsCheckered() { return true; }
+    public boolean needsFlip() { return true; }
+
     public void initializePieces() {
     }
 

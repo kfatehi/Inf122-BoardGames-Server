@@ -82,7 +82,7 @@ public class GameSession {
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
                 Pair<Integer, Integer> size = gameLogic.getBoardSize();
-                cbp.sendGameStart(id, opponents, false, true, size.getFirst(), size.getSecond());
+                cbp.sendGameStart(id, opponents, gameLogic.needsFlip(), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
             }
         });
 
@@ -93,6 +93,7 @@ public class GameSession {
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
         // Give the turn to the game logic which will make changes to the state
         // and also the next player, etc.
+    	gameState.resetDiffs();
         gameLogic.commitTurn(username, pieceId, intendedCoord);
 
         // Send the corresponding state change
@@ -128,7 +129,7 @@ public class GameSession {
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), new JsonArray());
+                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), gameState.getDiffs());
             }
         });
 
