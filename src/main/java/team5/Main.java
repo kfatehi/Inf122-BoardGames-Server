@@ -49,10 +49,10 @@ public class Main {
         p.setPieceLogic(checkerLogic);
 
         Board b = new Board(8,8);
-        b.addPiece(new Piece(), new PieceCoordinate(1,1));
+        b.addPiece(new Piece(), new PieceCoordinate(1,4));
 
         System.out.println("Valid movements");
-        PieceCoordinate startPos = new PieceCoordinate(0,0);
+        PieceCoordinate startPos = new PieceCoordinate(0,3);
         for(PieceCoordinate pc : p.getPieceLogic().moveableCoordinates(b, startPos)) {
             System.out.println("Row: " + String.valueOf(pc.getRow()) + " Col: " + String.valueOf(pc.getColumn()));
         }
