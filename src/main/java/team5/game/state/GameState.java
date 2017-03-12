@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 /**
  * Created by james on 3/8/17.
  */
@@ -14,6 +17,7 @@ public class GameState {
     private PiecePool capturedPool = new PiecePool();
     private Map<String, PiecePool> userPools = new HashMap<String, PiecePool>();
     private ArrayList<Integer> ids = new ArrayList<Integer>();
+    private JsonArray diffs = new JsonArray();
 
     public GameState(int rows, int cols) {
         board = new Board(rows, cols);
@@ -94,8 +98,12 @@ public class GameState {
     	if(!pieceFound) return null;
     	foundPool.removePiece(id);
     	Piece p2 = board.addPiece(p, coord);
+    	addMoveToDiff(id, coord);
     	if(p2 == null) return p;
-    	else return p2;
+    	else{
+    		addMoveToDiff(p2.getId(), new PieceCoordinate(-1,-1));
+    		return p2;
+    	}
     }
     public boolean movePieceToUserPool(int id, String username) {
     	Piece p = null;
@@ -122,6 +130,7 @@ public class GameState {
     	if(!pieceFound) return false;
     	if(onBoard){
     		board.removePiece(id);
+    		addMoveToDiff(id, new PieceCoordinate(-1,-1));
     	}
     	else foundPool.removePiece(id);
     	if(userPools.get(username) != null){
@@ -132,11 +141,24 @@ public class GameState {
     }
 
     public boolean capturePiece(int id) {
+    	
     	PieceCoordinate pc = board.getPiece(id);
     	if(pc == null) return false;
     	capturedPool.addPiece(board.getPiece(pc));
-    	board.removePiece(id);
+    	addMoveToDiff(board.removePiece(id).getId(), new PieceCoordinate(-1,-1));
     	return true;
+    }
+    private void addMoveToDiff(int id, PieceCoordinate c){
+    	JsonObject removeDiff = new JsonObject();
+    	removeDiff.addProperty("id", board.removePiece(id).getId());
+    	removeDiff.addProperty("r", -1);
+    	removeDiff.addProperty("c", -1);
+    }
+    public JsonArray getDiffs(){
+    	return diffs;
+    }
+    public void resetDiffs(){	//call this before every turn
+    	diffs = new JsonArray();
     }
 
 }
