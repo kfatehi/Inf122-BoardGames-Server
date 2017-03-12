@@ -23,13 +23,15 @@ public abstract class PieceLogic {
         int rows = b.getRowCount(),
             cols = b.getColumnCount();
 
-        if(pc.getRow() < 0 || pc.getRow() > rows)
+        if(pc.getRow() < 0 || pc.getRow() >= rows)
             return false;
 
-        if(pc.getColumn() < 0 || pc.getColumn() > cols)
+        if(pc.getColumn() < 0 || pc.getColumn() >= cols)
             return false;
 
         return true;
     }
+
+    public void setPieceReference(Piece p) { pieceRef = p; }
 
 }
