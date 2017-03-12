@@ -35,13 +35,13 @@ public class PawnPieceLogic extends PieceLogic {
 
         // Move forward 1
         PieceCoordinate singleForwardPos = new PieceCoordinate(pc.getRow()+relativeForward, pc.getColumn());
-        if (b.getPiece(singleForwardPos) == null) {
+        if (b.validCoordinate(singleForwardPos) && b.getPiece(singleForwardPos) == null) {
             coords.add(singleForwardPos);
         }
 
         // Move forward 2
         PieceCoordinate doubleForwardPos = new PieceCoordinate(pc.getRow()+(2*relativeForward), pc.getColumn());
-        if (b.getPiece(doubleForwardPos) == null && hasMovedYet == false) {
+        if (b.validCoordinate(doubleForwardPos) && b.getPiece(doubleForwardPos) == null && hasMovedYet == false) {
             // also check +1
             coords.add(doubleForwardPos);
         }
@@ -50,6 +50,8 @@ public class PawnPieceLogic extends PieceLogic {
         PieceCoordinate captureLeft = new PieceCoordinate(pc.getRow()+relativeForward, pc.getColumn()-1);
         PieceCoordinate captureRight = new PieceCoordinate(pc.getRow()+relativeForward, pc.getColumn()+1);
         for (PieceCoordinate captPC : new PieceCoordinate[]{captureLeft, captureRight}) {
+            if (!b.validCoordinate(captPC)) continue;
+
             if (b.getPiece(captPC) != null) {
                 coords.add(captPC);
             } else {

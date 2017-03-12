@@ -54,7 +54,7 @@ public class ChessGameLogic extends GameLogic {
         for (int row : Arrays.asList(0,7)) {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
-                p.setPieceLogic(PieceLogicFactory.createPieceLogic(pieceNames.get(row)));
+                p.setPieceLogic(PieceLogicFactory.createPieceLogic(pieceNames.get(col)));
                 p.getPieceLogic().setPieceRef(p);
                 p.setImage(pieceNames.get(row));
                 p.setDirection(row == 0 ? MovementDirection.Up : MovementDirection.Down);
