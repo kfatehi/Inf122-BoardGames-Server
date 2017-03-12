@@ -26,7 +26,7 @@ public class TestGameLogic extends GameLogic {
     }
 
     public team5.util.Pair<Integer, Integer> getBoardSize() {
-    	return new Pair<Integer, Integer>(5, 5);
+    	return new Pair<Integer, Integer>(ROWS, COLS);
 	}
 
     public void initializePieces() {
