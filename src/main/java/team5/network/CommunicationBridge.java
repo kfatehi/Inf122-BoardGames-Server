@@ -419,6 +419,7 @@ public class CommunicationBridge {
     			JsonObject moveEntry = new JsonObject();
     			moveEntry.addProperty("pieceId", p.getId());
     			JsonArray moveList = new JsonArray();
+//    			System.out.println("Col: " + String.valueOf(b.getPiece(p.getId()).getColumn()) + " row:" + String.valueOf(b.getPiece(p.getId()).getRow()));
     			for(PieceCoordinate coord : b.getLegalMovesOfPiece(p.getId())){		//for list of valid moves
     				JsonObject validCoords = new JsonObject();
     				validCoords.addProperty("r", coord.getRow());					//add move
@@ -427,7 +428,7 @@ public class CommunicationBridge {
     			}
     			if(moveList.size() != 0){					//if a piece has valid moves, then write to main JSON object, otherwise ignore
     				moveEntry.add("moves", moveList);
-        			validPlacements.add(moveEntry);
+        			validMovements.add(moveEntry);
     			}
     		}
     	}

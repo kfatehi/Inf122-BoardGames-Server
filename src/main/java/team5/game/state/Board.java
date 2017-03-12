@@ -61,7 +61,7 @@ public class Board {
         // Get the coordinate of the piece by its id
         for (int c = 0; c < cols; c++) {
             for (int r = 0; r < rows; r++) {
-                if (board[c][r].getId() == id) {
+                if (board[c][r] != null && board[c][r].getId() == id) {
                     return new PieceCoordinate(r, c);
                 }
             }

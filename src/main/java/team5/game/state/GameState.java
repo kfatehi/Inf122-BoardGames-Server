@@ -101,7 +101,7 @@ public class GameState {
     	if(!pieceFound) return null;
     	foundPool.removePiece(id);
     	Piece p2 = board.addPiece(p, coord);
-    	addMoveToDiff(id, coord);
+//    	addMoveToDiff(id, coord);
     	if(p2 == null) return p;
     	else{
     		addMoveToDiff(p2.getId(), new PieceCoordinate(-1,-1));
@@ -153,6 +153,7 @@ public class GameState {
     }
     private void addMoveToDiff(int id, PieceCoordinate c){
     	JsonObject removeDiff = new JsonObject();
+    	// Why are we removing the piece we just added?
     	removeDiff.addProperty("id", board.removePiece(id).getId());
     	removeDiff.addProperty("r", -1);
     	removeDiff.addProperty("c", -1);
