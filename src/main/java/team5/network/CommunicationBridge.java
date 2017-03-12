@@ -52,7 +52,14 @@ public class CommunicationBridge {
             JsonObject entireJsonMsg = jParser.parse(json).getAsJsonObject();
             String type = entireJsonMsg.get("type").getAsString();
 
-            if(type.equals("LOGIN")) {
+            if (!type.equals("PING")) {
+                System.out.println("From<" + username + "," + wsSession.getRemoteAddress() + ">: " + json);
+            }
+
+
+            if (type.equals("PING")) {
+                // Ignore
+            } else if(type.equals("LOGIN")) {
                 loginHandler(entireJsonMsg);
             } else if(type.equals("GET_USER_PROFILE")) {
                 viewPersonalStats(entireJsonMsg);
