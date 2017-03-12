@@ -62,4 +62,11 @@ public class TestGameLogic extends GameLogic {
     	}
         return null;
     }
+	public boolean needsFlip() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean needsCheckered() {
+		return true;
+	}
 }
