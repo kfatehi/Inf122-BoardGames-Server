@@ -24,6 +24,15 @@ public class GameState {
     	}
     	return false;
     }
+    public boolean pieceExistsAt(PieceCoordinate coord){	//note: if this fork becomes public, add to UML
+    	if(board.getPiece(coord) != null){
+    		return true;
+    	}
+    	return false;
+    }
+    public Piece getPieceAt(PieceCoordinate coord){
+    	return board.getPiece(coord);
+    }
     //returns true if this is a valid initial placement, false if a piece is already in this square
     //presumably, you don't want to place two pieces down on the same square while setting up the game
     public boolean newBoardPiece(Piece piece, PieceCoordinate coord) {
