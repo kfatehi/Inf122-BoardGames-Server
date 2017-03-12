@@ -4,6 +4,7 @@ package team5.plugins.checkers;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * @brief   Game logic for checkers
@@ -16,6 +17,10 @@ public class CheckersGameLogic extends GameLogic {
         System.out.println("Created CheckersGameLogic");
 
         gameName = "Checkers";
+    }
+
+    public Pair<Integer, Integer> getBoardSize() {
+        return new Pair<Integer, Integer>(5, 5);
     }
 
     public void initializePieces() {

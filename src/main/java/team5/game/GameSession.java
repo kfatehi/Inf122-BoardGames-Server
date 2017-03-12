@@ -1,16 +1,15 @@
 package team5.game;
 
+import com.google.gson.JsonArray;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
 import team5.plugins.chess.ChessGameLogic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import team5.game.GameLogicFactory;
+import team5.util.Pair;
 
 /**
  * Created by james on 3/7/17.
@@ -22,6 +21,7 @@ public class GameSession {
     private int id;
     private String pugName;
     private String currentUserTurn;
+    private TurnType currentTurnType;
 
     private List<String> usernames = new ArrayList<String>();
     private Map<String, CommunicationBridge> commBridges = new HashMap<String, CommunicationBridge>();
@@ -40,15 +40,27 @@ public class GameSession {
 
         this.pugName = pugName;
         this.currentUserTurn = currentUser;
+        this.currentTurnType = TurnType.Place;
 
         GameLogicFactory gameLogicFactory = new GameLogicFactory();
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
+
+        Pair<Integer, Integer> size = gameLogic.getBoardSize();
+        gameState = new GameState(size.getFirst(), size.getSecond());
     }
 
     public void updateBridge(String username, CommunicationBridge bridge) {
         commBridges.put(username, bridge);
     }
-
+    public void switchTurn(String username){
+    	if(usernames.contains(username)){
+    		currentUserTurn = username;
+    	}
+    	else System.out.println("INVALID USERNAME");
+    }
+    public void nextTurnType(TurnType type) {
+        currentTurnType = type;
+    }
     public void addUser(String username, CommunicationBridge commBridge) {
         usernames.add(username);
         commBridges.put(username, commBridge);
@@ -59,27 +71,54 @@ public class GameSession {
     }
 
     public void start() {
-        // TODO: start things with initial state change
+
+        // Prepare the game logic now that all players are in
+        gameLogic.initializePieces();
+
+        // Send GAME_INIT to all players
         usernames.forEach(user->{
+            // All users except the one we're sending it to
             String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendGameStart(id, opponents, false, true, 3, 3);
+                Pair<Integer, Integer> size = gameLogic.getBoardSize();
+                cbp.sendGameStart(id, opponents, gameLogic.needsFlip(), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
             }
         });
 
+        // And then send our initial state change for the players
         sendStateChange();
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+        // Give the turn to the game logic which will make changes to the state
+        // and also the next player, etc.
+    	gameState.resetDiffs();
         gameLogic.commitTurn(username, pieceId, intendedCoord);
 
-        // TODO: send state change
+        // Send the corresponding state change
+        sendStateChange();
 
-        if (gameLogic.gameFinishedWinner() != null) {
-            // TODO: call comm bridges on both with winner
-            // and tell the singleton of winners/losers/draws
-            // and destroy this object (from the singleton too)
+
+        String winner = gameLogic.gameFinishedWinner();
+        if (winner != null) {
+            usernames.forEach(user->{
+                CommunicationBridge commBridge = commBridges.get(user);
+                if (commBridge != null) {
+                    commBridge.sendGameEnd(winner);
+                }
+            });
+
+            // Update the singleton
+            if (winner.equals("")) {
+                usernames.forEach(user-> GameManagerSingleton.instance().userDraw(user, gameName()));
+            } else {
+                GameManagerSingleton.instance().userWon(winner, gameName());
+                usernames.stream().
+                        filter(u->!u.equals(winner)).
+                        forEach(user->GameManagerSingleton.instance().userLost(user, gameName()));
+            }
+
         }
     }
 
@@ -90,7 +129,7 @@ public class GameSession {
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendGameStateChange();
+                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), gameState.getDiffs());
             }
         });
 

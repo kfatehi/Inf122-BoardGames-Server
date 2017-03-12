@@ -8,11 +8,15 @@ import team5.game.PieceLogicFactory;
 import team5.game.state.MovementDirection;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
+<<<<<<< HEAD
 import team5.game.state.PieceLogic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+=======
+import team5.util.Pair;
+>>>>>>> master
 
 /*
  * @brief   Game logic for chess
@@ -32,6 +36,10 @@ public class ChessGameLogic extends GameLogic {
         System.out.println("Created ChessGameLogic");
 
         gameName = "Chess";
+    }
+
+    public Pair<Integer, Integer> getBoardSize() {
+        return new Pair<Integer, Integer>(5, 5);
     }
 
     public void initializePieces() {

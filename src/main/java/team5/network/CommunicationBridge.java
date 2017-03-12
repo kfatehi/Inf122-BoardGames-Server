@@ -6,10 +6,15 @@ import team5.game.GameSession;
 import team5.game.GameLogicFactory;
 import team5.game.GameManagerSingleton;
 import team5.game.User;
+import team5.game.state.Board;
+import team5.game.state.Piece;
+import team5.game.state.PieceCoordinate;
+import team5.game.state.PiecePool;
 import team5.game.GameStat;
 
 // Native
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 // External
@@ -47,7 +52,14 @@ public class CommunicationBridge {
             JsonObject entireJsonMsg = jParser.parse(json).getAsJsonObject();
             String type = entireJsonMsg.get("type").getAsString();
 
-            if(type.equals("LOGIN")) {
+            if (!type.equals("PING")) {
+                System.out.println("From<" + username + "," + wsSession.getRemoteAddress() + ">: " + json);
+            }
+
+
+            if (type.equals("PING")) {
+                // Ignore
+            } else if(type.equals("LOGIN")) {
                 loginHandler(entireJsonMsg);
             } else if(type.equals("GET_USER_PROFILE")) {
                 viewPersonalStats(entireJsonMsg);
@@ -59,8 +71,8 @@ public class CommunicationBridge {
                 getSupportedGamesHandler(entireJsonMsg);
             } else if (type.equals("GET_OPEN_GAMES")) {
                 listOpenGamesHandler(entireJsonMsg);
-            } else if (type.equals("GET_OPEN_GAMES")) {
-
+            } else if (type.equals("TURN")) {
+                clientTurnHandler(entireJsonMsg);
             } else {
                 // Print stub
                 System.out.println("Cannot handle provided type");
@@ -349,26 +361,34 @@ public class CommunicationBridge {
     }
 
     private void clientTurnHandler(JsonObject json) {
+        String typeKey = "type",
+                pieceIdKey = "pieceID",
+                rowKey = "r",
+                colKey = "c";
 
+        if (username == null || username.equals("")) {
+            System.out.println("Trying to send client turn but this comm bridge isn't associated with a User(name)");
+            return;
+        }
+        if (gameSession == null) {
+            System.out.println("Trying to send client turn but this comm bridge isn't associated with a GameSession");
+            return;
+        }
+
+
+        int pieceId = json.get(pieceIdKey).getAsInt();
+        int row = json.get(rowKey).getAsInt();
+        int col = json.get(colKey).getAsInt();
+
+        gameSession.userTurn(username, pieceId, new PieceCoordinate(row, col));
     }
 
-/*    private void sendStateChange(String currentTurn, String turnType, int diffs, int b) {
-    	//****TEMP VARS
-    		int numValidPlace = 3;	//temporary assignment of variables until corresponding code in game is implemented
-    		int rowVal = 0;
-    		int colVal = 0;
-    		int tmpPieceID = 0;
-    		int numberOfPieces = 6;
-    		int validMoveNum = 2;
-    	//*******
+    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, JsonArray diffs) {
     	/*
-    	 * TODO for making this work with rest of program:
-    	 * 		-need a way to get the list of valid placements (piecePool and board will be useful for this)
-    	 * 		-need a way to get the list of pieces that have valid moves (from board obviously, but piece pool as well?)
-    	 * 		-need to get whole board state and piecepool state ***Done, getBoard from board, getAllPiecesInPool
+    	 * TODO for completing this function
     	 * 		-need diffs to be implemented
-    	 * 		-why the hell did i start on this so early lol
-    	 * *//*
+    	 * 		-need some sort of game logic to properly test the messages this is sending, *seems* to work with test data
+    	 * */
     	JsonObject stateChangeJson = new JsonObject();
     	JsonArray validPlacements = new JsonArray();
     	JsonArray validMovements = new JsonArray();
@@ -376,39 +396,59 @@ public class CommunicationBridge {
     	stateChangeJson.addProperty("turn", currentTurn);
     	stateChangeJson.addProperty("turn_type", turnType);
     	if(turnType.equals("place")){
-    		for(int i = 0; i < numValidPlace; i++){				//TODO: need a way to get the list of valid placements
-    			JsonObject perPieceJson = new JsonObject();
-    			perPieceJson.addProperty("r", rowVal);			//TODO: currently uses bullshit values, change as soon as board/pieces are changed
-    			perPieceJson.addProperty("c", colVal);
-    			rowVal++; colVal++;//TODO: delete this
-    			//if we're doing this with pieceLogic.movableCoordinates, going to have to detect and remove duplicates before adding to the json
-    			validPlacements.add(perPieceJson);
+    		Piece p = userPool.getAllPiecesInPool().get(0);
+    		for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
+				JsonObject perPieceJson = new JsonObject();
+				perPieceJson.addProperty("r", coord.getRow()); 
+				perPieceJson.addProperty("c", coord.getColumn());
+				validPlacements.add(perPieceJson);
     		}
+    		/*for(Piece p : userPool.getAllPiecesInPool()){			//for all pieces in the user's pool, add valid placements for all
+    			for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
+    				JsonObject perPieceJson = new JsonObject();
+    				perPieceJson.addProperty("r", coord.getRow());			//let me know if you need this to be a unique list instead, pieces can potentially overlap move spots right now 
+    				perPieceJson.addProperty("c", coord.getColumn());
+    				validPlacements.add(perPieceJson);
+    			}
+    		}*/
     		
     	}
-    	else{	//insert into valid movements
+    	else if(turnType.equals("move")){	//insert into valid movements
     		
-    		for(int i = 0; i < numberOfPieces; i++){				//for every piece that has valid moves
+    		for(Piece p : b.getAllPieces()){				//for every piece that has valid moves
     			JsonObject moveEntry = new JsonObject();
-    			moveEntry.addProperty("pieceId", tmpPieceID++);
+    			moveEntry.addProperty("pieceId", p.getId());
     			JsonArray moveList = new JsonArray();
-    			for(int j = 0; j < validMoveNum; j++){				//for list of valid moves TODO: replace with loop through pieceLogic.movableCoordinates()
+    			for(PieceCoordinate coord : b.getLegalMovesOfPiece(p.getId())){		//for list of valid moves
     				JsonObject validCoords = new JsonObject();
-    				validCoords.addProperty("r", i);		//TODO: more nonsense values, replace ASAP
-    				validCoords.addProperty("c", j);
+    				validCoords.addProperty("r", coord.getRow());					//add move
+    				validCoords.addProperty("c", coord.getColumn());
     				moveList.add(validCoords);
     			}
-    			moveEntry.add("moves", moveList);
-    			validPlacements.add(moveEntry);
+    			if(moveList.size() != 0){					//if a piece has valid moves, then write to main JSON object, otherwise ignore
+    				moveEntry.add("moves", moveList);
+        			validPlacements.add(moveEntry);
+    			}
     		}
     	}
     	stateChangeJson.add("valid_placements", validPlacements);
     	stateChangeJson.add("valid_movements", validMovements);
-    	//TODO: board state, user pool, diffs
+    	stateChangeJson.add("board", b.parseBoardIntoJson());		//dumps entire board state into message
+    	
+    	JsonArray piecePoolArray = new JsonArray();
+    	for(Piece p : userPool.getAllPiecesInPool()){		//gets state of piece pool
+    		JsonObject piece = new JsonObject();
+    		piece.addProperty("id", p.getId());
+    		piece.addProperty("owner", p.getUsername());
+    		piece.addProperty("image", p.getImage());
+    		piecePoolArray.add(piece);
+    	}
+    	stateChangeJson.add("user_pool", piecePoolArray);
+    	stateChangeJson.add("diffs", diffs);	//this will just be blank for now
     	sendMessage(stateChangeJson);
-    }*/
+    }
 
-    private void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
+    public void sendGameEnd(String winner) {	//overloaded to allow for easier plugin management, don't have to pass an empty string on game win if you don't want a message
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
     	gameEndJson.addProperty(endType, "GAME_END");
@@ -417,7 +457,7 @@ public class CommunicationBridge {
     	sendMessage(gameEndJson);
     }
 
-    private void sendGameEnd(String winner, String message) {
+    public void sendGameEnd(String winner, String message) {
     	JsonObject gameEndJson = new JsonObject();
     	String endType = "type", endWin = "winner", endMsg = "message";
     	gameEndJson.addProperty(endType, "GAME_END");

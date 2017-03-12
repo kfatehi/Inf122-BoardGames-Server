@@ -4,6 +4,7 @@ package team5.plugins.tictactoe;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * @brief   Game logic for Tic Tac Toe
@@ -15,6 +16,10 @@ public class TicTacToeGameLogic extends GameLogic {
         super(session);
         System.out.println("Created TicTacToeGameLogic");
         gameName = "Tic Tac Toe";
+    }
+
+    public Pair<Integer, Integer> getBoardSize() {
+        return new Pair<Integer, Integer>(5, 5);
     }
 
     public void initializePieces() {
