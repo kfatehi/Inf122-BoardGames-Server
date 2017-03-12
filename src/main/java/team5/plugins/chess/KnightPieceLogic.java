@@ -27,7 +27,12 @@ public class KnightPieceLogic extends PieceLogic {
             add(new Pair<>(+2, -1));
         }};
 
-        
+        for (Pair<Integer, Integer> delta : rawCoords) {
+            PieceCoordinate destCoord = new PieceCoordinate(pc.getRow()+delta.getFirst(), pc.getColumn()+delta.getSecond());
+            if (b.validCoordinate(destCoord)) {
+                coords.add(destCoord);
+            }
+        }
 
         return coords;
     }
