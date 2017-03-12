@@ -30,12 +30,14 @@ public class TestGameLogic extends GameLogic {
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
+    		p.setUsername(player1);
     		p.setImage("http://i.imgur.com/MK41sNi.jpg");
     		state().newUserPoolPiece(p, player1);
     	}
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
+    		p.setUsername(player2);
     		p.setImage("http://i.imgur.com/MK41sNi.jpg");
     		state().newUserPoolPiece(p, player2);
     	}

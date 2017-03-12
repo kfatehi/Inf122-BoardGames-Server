@@ -6,6 +6,7 @@ import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
 import team5.plugins.chess.Pawn;
 import team5.plugins.test.TestPieceLogic;
+import team5.plugins.tictactoe.TicTacToePieceLogic;
 
 // Native
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class PieceLogicFactory {
     private static Map<String, Class> classMap = new HashMap<String, Class>() {{
         put("Pawn", Pawn.class);
         put("TestPieceLogic", TestPieceLogic.class);
+        put("TicTacToePiece", TicTacToePieceLogic.class);
     }};
 
     public PieceLogicFactory() {}
