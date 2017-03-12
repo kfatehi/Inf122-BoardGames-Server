@@ -1,6 +1,7 @@
 package team5.plugins.chess;
 
 import team5.game.state.Board;
+import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
 import team5.util.Pair;
@@ -31,14 +32,22 @@ public class RookPieceLogic extends PieceLogic {
                 workingPC.setColumn(workingPC.getColumn() + delta.getFirst());
 
                 if (b.validCoordinate(workingPC)) {
-                    // If the space to the current direction exists, add it
-                    coords.add(new PieceCoordinate(workingPC.getRow(), workingPC.getColumn()));
 
-                    if (b.getPiece(workingPC) != null) {
-                        // If that space also happens to have a piece, then this is the extent
-                        // to which it can move in this direction
+                    Piece existingPiece = b.getPiece(workingPC);
+                    if (existingPiece == null) {
+                        // If the space to the current diagonal exists and is empty, add it
+                        coords.add(new PieceCoordinate(workingPC.getRow(), workingPC.getColumn()));
+                    } else if (!existingPiece.getUsername().equals(pieceRef.getUsername())) {
+                        // If that space happens to have a piece that is NOT ours
+                        // then we can capture it
+                        coords.add(new PieceCoordinate(workingPC.getRow(), workingPC.getColumn()));
+                        // and we can't go farther in this direction
+                        break;
+                    } else {
+                        // It's one of our pieces, can't go farther in this direction
                         break;
                     }
+
                 } else {
                     // If it's off the board, stop
                     break;
