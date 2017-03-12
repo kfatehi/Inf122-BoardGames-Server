@@ -6,10 +6,7 @@ import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
 import team5.plugins.chess.ChessGameLogic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import team5.game.GameLogicFactory;
 
@@ -78,7 +75,8 @@ public class GameSession {
             String[] opponents = usernames.stream().filter(u->!u.equals(user)).toArray(String[]::new);
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendGameStart(id, opponents, false, true, 3, 3);
+                Pair<Integer, Integer> size = gameLogic.getBoardSize();
+                cbp.sendGameStart(id, opponents, false, true, size.getKey(), size.getValue());
             }
         });
 
@@ -100,7 +98,7 @@ public class GameSession {
             usernames.forEach(user->{
                 CommunicationBridge commBridge = commBridges.get(user);
                 if (commBridge != null) {
-                    // TODO: Send GAME_END
+                    commBridge.sendGameEnd(winner);
                 }
             });
 
