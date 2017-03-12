@@ -1,11 +1,10 @@
 package team5.plugins.chess;
 
-import javafx.util.Pair;
 import team5.game.state.Board;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 import java.util.ArrayList;
-import java.util.IntSummaryStatistics;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class KnightPieceLogic {
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
         List<PieceCoordinate> coords = new ArrayList<PieceCoordinate>();
 
-        List<Pair<Integer, Integer>> rawCoords = new List<Pair<Integer, Integer>>() {{
+        List<Pair<Integer, Integer>> rawCoords = new ArrayList<Pair<Integer, Integer>>() {{
             add(new Pair<>(+2,+1));
             add(new Pair<>(+1, +2));
             add(new Pair<>(-1, +2));

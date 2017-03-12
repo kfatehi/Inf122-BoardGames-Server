@@ -1,22 +1,18 @@
 package team5.plugins.chess;
 
 // Internal
-import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
 import team5.game.state.MovementDirection;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
-<<<<<<< HEAD
 import team5.game.state.PieceLogic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-=======
 import team5.util.Pair;
->>>>>>> master
 
 /*
  * @brief   Game logic for chess
@@ -39,8 +35,11 @@ public class ChessGameLogic extends GameLogic {
     }
 
     public Pair<Integer, Integer> getBoardSize() {
-        return new Pair<Integer, Integer>(5, 5);
+        return new Pair<Integer, Integer>(ROWS, COLS);
     }
+
+    public boolean needsCheckered() { return true; }
+    public boolean needsFlip() { return true; }
 
     public void initializePieces() {
         List<String> pieceNames = Arrays.asList("Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook");

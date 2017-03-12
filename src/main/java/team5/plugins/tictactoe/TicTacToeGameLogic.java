@@ -19,8 +19,11 @@ public class TicTacToeGameLogic extends GameLogic {
     }
 
     public Pair<Integer, Integer> getBoardSize() {
-        return new Pair<Integer, Integer>(5, 5);
+        return new Pair<Integer, Integer>(3, 3);
     }
+
+    public boolean needsCheckered() { return false; }
+    public boolean needsFlip() { return false; }
 
     public void initializePieces() {
 
