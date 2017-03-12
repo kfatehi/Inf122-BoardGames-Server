@@ -1,6 +1,6 @@
 package team5.game;
 
-import javafx.util.Pair;
+import com.google.gson.JsonArray;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
@@ -9,6 +9,7 @@ import team5.plugins.chess.ChessGameLogic;
 import java.util.*;
 
 import team5.game.GameLogicFactory;
+import team5.util.Pair;
 
 /**
  * Created by james on 3/7/17.
@@ -45,7 +46,7 @@ public class GameSession {
         gameLogic = gameLogicFactory.createGameLogic(gameName, this);
 
         Pair<Integer, Integer> size = gameLogic.getBoardSize();
-        gameState = new GameState(size.getKey(), size.getValue());
+        gameState = new GameState(size.getFirst(), size.getSecond());
     }
 
     public void updateBridge(String username, CommunicationBridge bridge) {
@@ -81,7 +82,7 @@ public class GameSession {
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
                 Pair<Integer, Integer> size = gameLogic.getBoardSize();
-                cbp.sendGameStart(id, opponents, false, true, size.getKey(), size.getValue());
+                cbp.sendGameStart(id, opponents, false, true, size.getFirst(), size.getSecond());
             }
         });
 
@@ -127,7 +128,7 @@ public class GameSession {
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), 0);
+                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), new JsonArray());
             }
         });
 

@@ -1,8 +1,8 @@
 package team5.game;
 
-import javafx.util.Pair;
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * Abstract class that holds the basic things that every game logic 

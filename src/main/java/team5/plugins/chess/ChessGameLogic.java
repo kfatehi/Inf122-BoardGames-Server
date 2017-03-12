@@ -1,10 +1,10 @@
 package team5.plugins.chess;
 
 // Internal
-import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * @brief   Game logic for chess

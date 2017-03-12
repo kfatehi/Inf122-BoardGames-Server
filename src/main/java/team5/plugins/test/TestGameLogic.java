@@ -1,11 +1,11 @@
 package team5.plugins.test;
 
-import javafx.util.Pair;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * @brief   Game Logic for a simple test game
@@ -25,7 +25,7 @@ public class TestGameLogic extends GameLogic {
         gameName = "Test";
     }
 
-    public Pair<Integer, Integer> getBoardSize() {
+    public team5.util.Pair<Integer, Integer> getBoardSize() {
     	return new Pair<Integer, Integer>(5, 5);
 	}
 
