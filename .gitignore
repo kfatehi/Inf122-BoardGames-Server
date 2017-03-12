@@ -35,3 +35,7 @@ out/*
 # Maven
 /target
 /bin/
+
+# Intellij
+*.iml
+*.xml

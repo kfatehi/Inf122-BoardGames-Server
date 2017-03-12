@@ -111,4 +111,7 @@ public class Board {
         PieceCoordinate oldCoord = getPiece(id);
         return movePiece(oldCoord, newCoord);
     }
+
+    public int getColumnCount() { return this.cols; }
+    public int getRowCount() { return this.rows; }
 }

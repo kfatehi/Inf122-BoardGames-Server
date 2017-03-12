@@ -49,5 +49,6 @@ public class PiecePool {
     public ArrayList<Piece> getAllPiecesInPool(){		//TODO: make sure this actually works, haven't tested it yet
     	return new ArrayList<Piece>(pieces.values());
     }
+    public int getPieceCount() { return pieces.size(); }
 }
 
