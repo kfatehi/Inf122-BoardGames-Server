@@ -32,6 +32,11 @@ public class TestGameLogic extends GameLogic {
     public void initializePieces() {
     	player1 = session.getUsernames().get(0);
     	player2 = session.getUsernames().get(1);
+    	Piece tester = new Piece();
+		tester.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
+		tester.setUsername(player1);
+		tester.setImage("http://i.imgur.com/MK41sNi.jpg");
+		state().newBoardPiece(tester, new PieceCoordinate(1,1));
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
