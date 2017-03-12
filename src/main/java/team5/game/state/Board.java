@@ -57,6 +57,11 @@ public class Board {
         return board[coord.getColumn()][coord.getRow()];
     }
 
+    public boolean validCoordinate(PieceCoordinate coord) {
+        return (coord.getRow() >= 0 && coord.getRow() < rows) &&
+                (coord.getColumn() >= 0 && coord.getColumn() < cols);
+    }
+
     public PieceCoordinate getPiece(int id) {
         // Get the coordinate of the piece by its id
         for (int c = 0; c < cols; c++) {
