@@ -4,9 +4,14 @@ package team5.plugins.tictactoe;
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
+import team5.game.state.Board;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
+import team5.game.state.PiecePool;
 import team5.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @brief   Game logic for Tic Tac Toe
@@ -33,7 +38,19 @@ public class TicTacToeGameLogic extends GameLogic {
     public boolean needsCheckered() { return false; }
     public boolean needsFlip() { return false; }
 
-    public void initializePieces() {
+    public List<PieceCoordinate> getValidPlacements(String username) {
+        ArrayList<PieceCoordinate> validPlacements = new ArrayList<PieceCoordinate>();
+
+        Board b = session.gameState().getBoard();
+        ArrayList<Piece> userPieces = session.gameState().getUserPiecePool(username).getAllPiecesInPool();
+        if(userPieces.size() > 0) {
+            return userPieces.get(0).getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1, -1));
+        }
+
+        return validPlacements;
+    }
+
+        public void initializePieces() {
     	player1 = session.getUsernames().get(0);
     	player2 = session.getUsernames().get(1);
     	for (int i = 0; i < 5; i++) {
