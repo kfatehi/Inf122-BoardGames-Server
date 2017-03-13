@@ -34,6 +34,7 @@ public class KingPieceLogic extends PieceLogic {
                 Piece existingPiece = b.getPiece(destCoord);
                 if (existingPiece == null) {
                     // Empty square
+                    coords.add(destCoord);
                 } else if (!existingPiece.getUsername().equals(pieceRef.getUsername())) {
                     // Enemy piece is on the square
                     coords.add(destCoord);
