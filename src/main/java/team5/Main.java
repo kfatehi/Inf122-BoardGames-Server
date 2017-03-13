@@ -3,6 +3,7 @@ package team5;
 import static spark.Spark.*;
 
 import team5.game.state.*;
+import team5.network.CommunicationBridge;
 import team5.network.MainWebSocketHandler;
 //import team5.plugins.chess.PawnPieceLogic;
 
@@ -12,6 +13,8 @@ import team5.game.*;
 // This is why this is needed in order to import ChessGameLogic
 import team5.plugins.checkers.CheckerPieceLogic;
 import team5.plugins.chess.ChessGameLogic;
+
+import java.util.ArrayList;
 
 /**
  * Created by james on 3/5/17.
@@ -30,8 +33,6 @@ public class Main {
         //pl.createPieces("tic tac toe");
         //pl.createPieces("Checkers");
         //pl.createPieces("CHESS");
-
-
 
     }
 

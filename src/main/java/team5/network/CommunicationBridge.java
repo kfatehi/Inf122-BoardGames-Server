@@ -77,7 +77,7 @@ public class CommunicationBridge {
                 clientTurnHandler(entireJsonMsg);
             } else {
                 // Print stub
-                System.out.println("Cannot handle provided type");
+                System.out.println("Cannot handle provided type '" + type + "'");
             }
 
         } catch(JsonParseException e) {

@@ -130,7 +130,8 @@ public class GameState {
 		// Assume that since no two pieces can be in the same place
 		// that moving one to another causes the other to be captured
 		Piece capturedPiece = board.movePiece(id, coord);
-    	capturedPool.addPiece(capturedPiece);
+    	if(capturedPiece != null )
+            capturedPool.addPiece(capturedPiece);
     	// Return the captured if they want to put it elsewhere
     	return capturedPiece;
 	}
