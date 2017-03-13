@@ -57,11 +57,16 @@ public class Board {
         return board[coord.getColumn()][coord.getRow()];
     }
 
+    public boolean validCoordinate(PieceCoordinate coord) {
+        return (coord.getRow() >= 0 && coord.getRow() < rows) &&
+                (coord.getColumn() >= 0 && coord.getColumn() < cols);
+    }
+
     public PieceCoordinate getPiece(int id) {
         // Get the coordinate of the piece by its id
         for (int c = 0; c < cols; c++) {
             for (int r = 0; r < rows; r++) {
-                if (board[c][r].getId() == id) {
+                if (board[c][r] != null && board[c][r].getId() == id) {
                     return new PieceCoordinate(r, c);
                 }
             }
@@ -111,4 +116,7 @@ public class Board {
         PieceCoordinate oldCoord = getPiece(id);
         return movePiece(oldCoord, newCoord);
     }
+
+    public int getColumnCount() { return this.cols; }
+    public int getRowCount() { return this.rows; }
 }

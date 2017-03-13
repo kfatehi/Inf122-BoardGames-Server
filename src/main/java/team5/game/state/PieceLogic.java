@@ -14,8 +14,26 @@ import java.util.List;
  * @date    2017/03/09
  */
 public abstract class PieceLogic {
-    private Piece pieceRef;
+    protected Piece pieceRef;
+
+    public void setPieceRef(Piece ref) { pieceRef = ref; }
    
     public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);		//return empty list if no moves 
     public abstract String canChangeToPiece();
+
+    public boolean coordinateWithinBounds(Board b, PieceCoordinate pc) {
+        int rows = b.getRowCount(),
+            cols = b.getColumnCount();
+
+        if(pc.getRow() < 0 || pc.getRow() >= rows)
+            return false;
+
+        if(pc.getColumn() < 0 || pc.getColumn() >= cols)
+            return false;
+
+        return true;
+    }
+
+    public void setPieceReference(Piece p) { pieceRef = p; }
+
 }

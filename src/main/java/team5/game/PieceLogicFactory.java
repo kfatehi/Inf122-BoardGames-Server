@@ -4,7 +4,8 @@ package team5.game;
 import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
-import team5.plugins.chess.Pawn;
+import team5.plugins.checkers.*;
+import team5.plugins.chess.*;
 import team5.plugins.test.TestPieceLogic;
 import team5.plugins.tictactoe.TicTacToePieceLogic;
 
@@ -17,9 +18,22 @@ import java.util.Map.Entry;
 public class PieceLogicFactory {
 
     private static Map<String, Class> classMap = new HashMap<String, Class>() {{
-        put("Pawn", Pawn.class);
+        // Chess
+        put("Bishop", BishopPieceLogic.class);
+        put("King", KingPieceLogic.class);
+        put("Knight", KnightPieceLogic.class);
+        put("Pawn", PawnPieceLogic.class);
+        put("Queen", QueenPieceLogic.class);
+        put("Rook", RookPieceLogic.class);
+
+        // Test Game
         put("TestPieceLogic", TestPieceLogic.class);
+        
+        // Tic-Tac-Toe Game
         put("TicTacToePiece", TicTacToePieceLogic.class);
+
+        // Checkers Game
+        put("Checker", CheckerPieceLogic.class);
     }};
 
     public PieceLogicFactory() {}
@@ -34,6 +48,7 @@ public class PieceLogicFactory {
                 return null;
             }
         } else {
+            System.out.println("Error: Attempting to make ");
             return null;
         }
     }

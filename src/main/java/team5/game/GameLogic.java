@@ -2,6 +2,7 @@ package team5.game;
 
 import team5.game.state.GameState;
 import team5.game.state.PieceCoordinate;
+import team5.util.Pair;
 
 /*
  * Abstract class that holds the basic things that every game logic 
@@ -23,6 +24,9 @@ public abstract class GameLogic {
     }
 
     public String gameName() { return gameName; }
+    public abstract Pair<Integer,Integer> getBoardSize();
+    public abstract boolean needsFlip();
+    public abstract boolean needsCheckered();
     public abstract void initializePieces();
     public abstract void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord);
     public abstract String gameFinishedWinner();
@@ -32,6 +36,5 @@ public abstract class GameLogic {
     public void turnError() {
 
     }
-
 
 }

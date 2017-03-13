@@ -18,6 +18,15 @@ public class Piece {
         direction = MovementDirection.Up; // Default direction
     }
 
+    public Piece(String username, String image, MovementDirection dir) {
+        this.id = Piece.NEXT_UNIQUE_ID;
+        Piece.NEXT_UNIQUE_ID += 1;
+
+        this.username = username;
+        this.image = image;
+        this.direction = dir;
+    }
+
     public Piece(String username, String image, PieceLogic logic, MovementDirection dir) {
         this.id = Piece.NEXT_UNIQUE_ID;
         Piece.NEXT_UNIQUE_ID += 1;

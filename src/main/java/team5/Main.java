@@ -2,9 +2,7 @@ package team5;
 
 import static spark.Spark.*;
 
-import team5.game.state.MovementDirection;
-import team5.game.state.Piece;
-import team5.game.state.PieceLogic;
+import team5.game.state.*;
 import team5.network.MainWebSocketHandler;
 //import team5.plugins.chess.PawnPieceLogic;
 
@@ -12,6 +10,7 @@ import team5.network.MainWebSocketHandler;
 import team5.game.*;
 
 // This is why this is needed in order to import ChessGameLogic
+import team5.plugins.checkers.CheckerPieceLogic;
 import team5.plugins.chess.ChessGameLogic;
 
 /**
@@ -23,17 +22,6 @@ public class Main {
 
         startServer();
 
-        // Showing that nested packages work
-//        new PawnPieceLogic();
-        //new GameManagerSingleton();
-        //new CommunicationBridge();
-//        new ChessGameLogic();
-        GameLogicFactory gl = new GameLogicFactory();
-//        gl.createGameLogic("Tic Tac Toe");
-//        gl.createGameLogic("Checkers");
-//        gl.createGameLogic("Chess");
-//        gl.createGameLogic("Test Game");
-
         for(String game : GameLogicFactory.getAllSupportedGames()) {
             System.out.println("We currently support " + game);
         }
@@ -44,8 +32,19 @@ public class Main {
         //pl.createPieces("CHESS");
 
 
-        PieceLogic pawn = PieceLogicFactory.createPieceLogic("Pawn");
-        Piece p = new Piece("jlinnell", "pawn.png", pawn, MovementDirection.Down);
+
+        Piece p = new Piece("alvin", "pawn.png", MovementDirection.Down);
+        PieceLogic checkerLogic = new CheckerPieceLogic(p);
+        p.setPieceLogic(checkerLogic);
+
+        Board b = new Board(8,8);
+        b.addPiece(new Piece(), new PieceCoordinate(6,1));
+
+        System.out.println("Valid movements");
+        PieceCoordinate startPos = new PieceCoordinate(7,0);
+        for(PieceCoordinate pc : p.getPieceLogic().moveableCoordinates(b, startPos)) {
+            System.out.println("Row: " + String.valueOf(pc.getRow()) + " Col: " + String.valueOf(pc.getColumn()));
+        }
     }
 
     public static void startServer() {
