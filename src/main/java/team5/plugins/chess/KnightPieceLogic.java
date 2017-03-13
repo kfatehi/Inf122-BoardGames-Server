@@ -18,11 +18,11 @@ public class KnightPieceLogic extends PieceLogic {
         List<PieceCoordinate> coords = new ArrayList<PieceCoordinate>();
 
         List<Pair<Integer, Integer>> rawCoords = new ArrayList<Pair<Integer, Integer>>() {{
-            add(new Pair<>(+2,+1));
+            add(new Pair<>(+2, +1));
             add(new Pair<>(+1, +2));
             add(new Pair<>(-1, +2));
             add(new Pair<>(-2, +1));
-            add(new Pair<>(-2,-1));
+            add(new Pair<>(-2, -1));
             add(new Pair<>(-1, -2));
             add(new Pair<>(+1, -2));
             add(new Pair<>(+2, -1));
@@ -34,6 +34,7 @@ public class KnightPieceLogic extends PieceLogic {
                 Piece existingPiece = b.getPiece(destCoord);
                 if (existingPiece == null) {
                     // Empty square
+                    coords.add(destCoord);
                 } else if (!existingPiece.getUsername().equals(pieceRef.getUsername())) {
                     // Enemy piece is on the square
                     coords.add(destCoord);

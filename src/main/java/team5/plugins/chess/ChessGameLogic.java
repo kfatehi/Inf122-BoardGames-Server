@@ -23,7 +23,7 @@ public class ChessGameLogic extends GameLogic {
 
     private static Map<String, Pair<String, String>> images = new HashMap<String, Pair<String, String>>() {{
         put("Rook",   new Pair<>("http://localhost:4567/Chess_rlt.png", "http://localhost:4567/Chess_rdt.png"));
-        put("Knight", new Pair<>("http://localhost:4567/Chess_klt.png", "http://localhost:4567/Chess_kdt.png"));
+        put("Knight", new Pair<>("http://localhost:4567/Chess_nlt.png", "http://localhost:4567/Chess_ndt.png"));
         put("Bishop", new Pair<>("http://localhost:4567/Chess_blt.png", "http://localhost:4567/Chess_bdt.png"));
         put("Queen",  new Pair<>("http://localhost:4567/Chess_qlt.png", "http://localhost:4567/Chess_qdt.png"));
         put("King",   new Pair<>("http://localhost:4567/Chess_klt.png", "http://localhost:4567/Chess_kdt.png"));
@@ -150,9 +150,26 @@ public class ChessGameLogic extends GameLogic {
         }
     }
 
-    public  String gameFinishedWinner() {
+    public String gameFinishedWinner() {
 
         return null;
+    }
+
+    @Override
+    public Map<Piece, List<PieceCoordinate>> getValidMovements(String username) {
+        Map<Piece, List<PieceCoordinate>> map = new HashMap<>();
+
+        // For now, simply add everything
+        for (Piece piece : state().getBoard().getAllPieces()) {
+            if (piece.getUsername().equals(username)) {
+                List<PieceCoordinate> moves = piece.getPieceLogic().moveableCoordinates(state().getBoard(), state().getBoard().getPiece(piece.getId()));
+                map.put(piece, moves);
+            }
+        }
+
+        // TODO: Cull if there's a check
+
+        return map;
     }
 
     private boolean inCheck() {
