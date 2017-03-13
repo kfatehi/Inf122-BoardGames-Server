@@ -48,6 +48,7 @@ public class TestGameLogic extends GameLogic {
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
     		p.setUsername(player2);
+
     		p.setImage("http://i.imgur.com/Ps9p157.jpg");
     		state().newUserPoolPiece(p, player2);
     	}

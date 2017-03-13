@@ -110,13 +110,31 @@ public class GameState {
     	if(!pieceFound) return null;
     	foundPool.removePiece(id);
     	Piece p2 = board.addPiece(p, coord);
-//    	addMoveToDiff(id, coord);
+    	addMoveToDiff(id, coord);
     	if(p2 == null) return p;
     	else{
     		addMoveToDiff(p2.getId(), new PieceCoordinate(-1,-1));
     		return p2;
     	}
     }
+
+    public Piece movePiece(int id, PieceCoordinate coord) {
+    	PieceCoordinate movingPieceCoord = board.getPiece(id);
+    	if (movingPieceCoord == null) {
+    		// That piece isn't on the board
+			// Do nothing
+			return null;
+		}
+
+		// Piece is on the board, move it
+		// Assume that since no two pieces can be in the same place
+		// that moving one to another causes the other to be captured
+		Piece capturedPiece = board.movePiece(id, coord);
+    	capturedPool.addPiece(capturedPiece);
+    	// Return the captured if they want to put it elsewhere
+    	return capturedPiece;
+	}
+
     public boolean movePieceToUserPool(int id, String username) {
     	Piece p = null;
     	PiecePool foundPool = null;
@@ -161,11 +179,11 @@ public class GameState {
     	return true;
     }
     private void addMoveToDiff(int id, PieceCoordinate c){
-    	JsonObject removeDiff = new JsonObject();
-    	// Why are we removing the piece we just added?
-    	removeDiff.addProperty("id", board.removePiece(id).getId());
-    	removeDiff.addProperty("r", -1);
-    	removeDiff.addProperty("c", -1);
+    	JsonObject addDiff = new JsonObject();
+    	addDiff.addProperty("id", id);
+    	addDiff.addProperty("r", c.getColumn());
+    	addDiff.addProperty("c", c.getRow());
+    	diffs.add(addDiff);
     }
     public JsonArray getDiffs(){
     	return diffs;

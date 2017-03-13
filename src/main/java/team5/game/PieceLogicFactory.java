@@ -7,6 +7,7 @@ import team5.game.state.PieceLogic;
 import team5.plugins.checkers.*;
 import team5.plugins.chess.*;
 import team5.plugins.test.TestPieceLogic;
+import team5.plugins.tictactoe.TicTacToePieceLogic;
 
 // Native
 import java.util.HashMap;
@@ -27,6 +28,9 @@ public class PieceLogicFactory {
 
         // Test Game
         put("TestPieceLogic", TestPieceLogic.class);
+        
+        // Tic-Tac-Toe Game
+        put("TicTacToePiece", TicTacToePieceLogic.class);
 
         // Checkers Game
         put("Checker", CheckerPieceLogic.class);
