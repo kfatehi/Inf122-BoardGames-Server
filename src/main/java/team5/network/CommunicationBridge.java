@@ -489,16 +489,6 @@ public class CommunicationBridge {
         sendMessage(gameStartJson);
     }
 
-    public void sendGameStateChange() {
-        JsonObject gameStateChangeJson = new JsonObject();
-        String stateChangeType = "type";
-
-        gameStateChangeJson.addProperty(stateChangeType, "SET_GAME_STATE");
-
-        JsonArray opponentsArray = new JsonArray();
-        sendMessage(gameStateChangeJson);
-    }
-
     public String username() { return username; }
 
     public void setUsername(String username) {

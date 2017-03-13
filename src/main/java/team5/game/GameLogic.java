@@ -25,10 +25,6 @@ public abstract class GameLogic {
     public GameLogic(GameSession session) { this.session = session; }
     protected GameState state() { return session.gameState(); }
 
-    public static void testDriverMethod() {
-        System.out.println("Abstract Game Logic working");
-    }
-
     public String gameName() { return gameName; }
     public abstract Pair<Integer,Integer> getBoardSize();
     public abstract boolean needsFlip();
