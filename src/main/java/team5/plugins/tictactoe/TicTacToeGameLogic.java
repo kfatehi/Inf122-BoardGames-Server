@@ -47,13 +47,14 @@ public class TicTacToeGameLogic extends GameLogic {
     		Piece p = new Piece();
     		p.setUsername(player2);
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TicTacToePiece"));
-    		p.setImage("https://upload.wikimedia.org/wikipedia/commons/c/ca/Transparent_X.png");
+    		p.setImage("http://i.imgur.com/IiuYPb4.png");
     		state().newUserPoolPiece(p, player2);    		
     	}
     }
 
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
     	state().movePieceToBoard(pieceId, intendedCoord);
+    	//session.switchTurn((username.equals(player1)) ? player2 : player1);
     }
 
     public String gameFinishedWinner() {
