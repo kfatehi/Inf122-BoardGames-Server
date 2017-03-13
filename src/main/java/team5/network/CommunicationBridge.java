@@ -15,7 +15,9 @@ import team5.game.GameStat;
 // Native
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 // External
 import org.eclipse.jetty.websocket.api.Session;
@@ -383,57 +385,76 @@ public class CommunicationBridge {
         gameSession.userTurn(username, pieceId, new PieceCoordinate(row, col));
     }
 
-    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, JsonArray diffs) {
+//    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool, JsonArray diffs) {
+    public void sendStateChange(String currentTurn, String turnType, Board b, PiecePool userPool,
+                                List<PieceCoordinate> validPlacements, Map<Piece, List<PieceCoordinate>> validMovements,
+                                JsonArray diffs) {
     	/*
     	 * TODO for completing this function
     	 * 		-need diffs to be implemented
     	 * 		-need some sort of game logic to properly test the messages this is sending, *seems* to work with test data
     	 * */
     	JsonObject stateChangeJson = new JsonObject();
-    	JsonArray validPlacements = new JsonArray();
-    	JsonArray validMovements = new JsonArray();
+    	JsonArray validPlacementsJson = new JsonArray();
+    	JsonArray validMovementsJson = new JsonArray();
     	stateChangeJson.addProperty("type", "SET_GAME_STATE");
     	stateChangeJson.addProperty("turn", currentTurn);
     	stateChangeJson.addProperty("turn_type", turnType);
+
     	if(turnType.equals("place")){
-    		Piece p = userPool.getAllPiecesInPool().get(0);
-    		for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
-				JsonObject perPieceJson = new JsonObject();
-				perPieceJson.addProperty("r", coord.getRow()); 
-				perPieceJson.addProperty("c", coord.getColumn());
-				validPlacements.add(perPieceJson);
-    		}
-    		/*for(Piece p : userPool.getAllPiecesInPool()){			//for all pieces in the user's pool, add valid placements for all
-    			for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
-    				JsonObject perPieceJson = new JsonObject();
-    				perPieceJson.addProperty("r", coord.getRow());			//let me know if you need this to be a unique list instead, pieces can potentially overlap move spots right now 
-    				perPieceJson.addProperty("c", coord.getColumn());
-    				validPlacements.add(perPieceJson);
-    			}
-    		}*/
-    		
+//    		Piece p = userPool.getAllPiecesInPool().get(0);
+//    		for(PieceCoordinate coord : p.getPieceLogic().moveableCoordinates(b, new PieceCoordinate(-1,-1))){
+//				JsonObject perPieceJson = new JsonObject();
+//				perPieceJson.addProperty("r", coord.getRow());
+//				perPieceJson.addProperty("c", coord.getColumn());
+//				validPlacementsJson.add(perPieceJson);
+//    		}
+            for(PieceCoordinate coord : validPlacements){
+                JsonObject perPieceJson = new JsonObject();
+                perPieceJson.addProperty("r", coord.getRow());			//let me know if you need this to be a unique list instead, pieces can potentially overlap move spots right now
+                perPieceJson.addProperty("c", coord.getColumn());
+                validPlacementsJson.add(perPieceJson);
+            }
+
     	}
-    	else if(turnType.equals("move")){	//insert into valid movements
-    		
-    		for(Piece p : b.getAllPieces()){				//for every piece that has valid moves
-    			JsonObject moveEntry = new JsonObject();
-    			moveEntry.addProperty("pieceId", p.getId());
-    			JsonArray moveList = new JsonArray();
+    	else if(turnType.equals("move")) {    //insert into valid movements
+
+            for (Map.Entry<Piece, List<PieceCoordinate>> entry : validMovements.entrySet()) {
+                JsonArray moveList = new JsonArray();
+                JsonObject moveEntry = new JsonObject();
+                moveEntry.addProperty("pieceId", entry.getKey().getId());
+                for (PieceCoordinate coord : entry.getValue()) {        //for list of valid moves
+                    JsonObject validCoords = new JsonObject();
+                    validCoords.addProperty("r", coord.getRow());                    //add move
+                    validCoords.addProperty("c", coord.getColumn());
+                    moveList.add(validCoords);
+                }
+                if (moveList.size() != 0) {                    //if a piece has valid moves, then write to main JSON object, otherwise ignore
+                    moveEntry.add("moves", moveList);
+                    validMovementsJson.add(moveEntry);
+                }
+            }
+        }
+
+//    		for(Piece p : b.getAllPieces()){				//for every piece that has valid moves
+//    			JsonObject moveEntry = new JsonObject();
+//    			moveEntry.addProperty("pieceId", p.getId());
+//    			JsonArray moveList = new JsonArray();
 //    			System.out.println("Col: " + String.valueOf(b.getPiece(p.getId()).getColumn()) + " row:" + String.valueOf(b.getPiece(p.getId()).getRow()));
-    			for(PieceCoordinate coord : b.getLegalMovesOfPiece(p.getId())){		//for list of valid moves
-    				JsonObject validCoords = new JsonObject();
-    				validCoords.addProperty("r", coord.getRow());					//add move
-    				validCoords.addProperty("c", coord.getColumn());
-    				moveList.add(validCoords);
-    			}
-    			if(moveList.size() != 0){					//if a piece has valid moves, then write to main JSON object, otherwise ignore
-    				moveEntry.add("moves", moveList);
-        			validMovements.add(moveEntry);
-    			}
-    		}
-    	}
-    	stateChangeJson.add("valid_placements", validPlacements);
-    	stateChangeJson.add("valid_movements", validMovements);
+//    			for(PieceCoordinate coord : b.getLegalMovesOfPiece(p.getId())){		//for list of valid moves
+//    				JsonObject validCoords = new JsonObject();
+//    				validCoords.addProperty("r", coord.getRow());					//add move
+//    				validCoords.addProperty("c", coord.getColumn());
+//    				moveList.add(validCoords);
+//    			}
+//    			if(moveList.size() != 0){					//if a piece has valid moves, then write to main JSON object, otherwise ignore
+//    				moveEntry.add("moves", moveList);
+//        			validMovementsJson.add(moveEntry);
+//    			}
+//    		}
+//    	}
+    	stateChangeJson.add("valid_placements", validPlacementsJson);
+    	stateChangeJson.add("valid_movements", validMovementsJson);
     	stateChangeJson.add("board", b.parseBoardIntoJson());		//dumps entire board state into message
     	
     	JsonArray piecePoolArray = new JsonArray();

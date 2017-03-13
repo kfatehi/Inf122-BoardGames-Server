@@ -1,7 +1,9 @@
 package team5.game;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import team5.game.state.GameState;
+import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.network.CommunicationBridge;
 import team5.plugins.chess.ChessGameLogic;
@@ -130,7 +132,11 @@ public class GameSession {
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
-                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(), gameState.getUserPiecePool(user), gameState.getDiffs());
+                List<PieceCoordinate> validPlacements = gameLogic.getValidPlacements(user);
+                Map<Piece, List<PieceCoordinate>> validMovements = gameLogic.getValidMovements(user);
+
+                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(),
+                                    gameState.getUserPiecePool(user), validPlacements, validMovements, gameState.getDiffs());
             }
         });
 

@@ -5,13 +5,13 @@ import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
 import team5.game.TurnType;
-import team5.game.state.MovementDirection;
-import team5.game.state.Piece;
-import team5.game.state.PieceCoordinate;
-import team5.game.state.PieceLogic;
+import team5.game.state.*;
 import team5.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /*
  * @brief   Game logic for checkers

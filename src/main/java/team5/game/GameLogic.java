@@ -1,8 +1,14 @@
 package team5.game;
 
 import team5.game.state.GameState;
+import team5.game.state.Piece;
 import team5.game.state.PieceCoordinate;
 import team5.util.Pair;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /*
  * Abstract class that holds the basic things that every game logic 
@@ -30,6 +36,15 @@ public abstract class GameLogic {
     public abstract void initializePieces();
     public abstract void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord);
     public abstract String gameFinishedWinner();
+
+    // These two methods return empty valid moves. You must override for filtering.
+    public List<PieceCoordinate> getValidPlacements(String username) {
+        return new ArrayList<PieceCoordinate>();
+    }
+
+    public Map<Piece, List<PieceCoordinate>> getValidMovements(String username) {
+        return new Hashtable<Piece, List<PieceCoordinate>>();
+    }
 
 
 
