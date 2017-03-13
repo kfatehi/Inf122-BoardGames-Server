@@ -57,7 +57,7 @@ public class GameManagerSingleton {
                         g.updateBridge(u, communicationBridge);
                         communicationBridge.setGameSession(g);
                         communicationBridge.setUsername(username);
-                        g.start();
+                        g.userRejoined(u); // Resend game init/game state change
                     }
                 });
             });
@@ -120,6 +120,20 @@ public class GameManagerSingleton {
 
         broadcastOpenGames();
         return game;
+    }
+
+    public void destroyGameSession(GameSession gameSession) {
+        gamesInProgress.remove(gameSession);
+
+        // Disassociate the bridges from the game session
+        userSessions.forEach((s, cb) -> {
+            gameSession.getUsernames().forEach(u-> {
+                if (cb.username().equals(u)) {
+                    cb.setGameSession(null);
+                }
+            });
+        });
+
     }
 
     private void broadcastOpenGames() {

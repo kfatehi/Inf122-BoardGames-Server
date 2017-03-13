@@ -93,6 +93,18 @@ public class GameSession {
         sendStateChange();
     }
 
+    public void userRejoined(String username) {
+        CommunicationBridge commBridge = commBridges.get(username);
+        String[] opponents = usernames.stream().filter(u->!u.equals(username)).toArray(String[]::new);
+
+        if (commBridge != null) {
+            Pair<Integer, Integer> size = gameLogic.getBoardSize();
+            commBridge.sendGameStart(id, opponents, gameLogic.needsFlip(), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
+        }
+
+        sendStateChangeFor(username);
+    }
+
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
         // Ignore turns from the wrong player
         if (!username.equals(currentUserTurn)) {
@@ -127,22 +139,30 @@ public class GameSession {
                         forEach(user->GameManagerSingleton.instance().userLost(user, gameName()));
             }
 
+            // Delete the game
+            GameManagerSingleton.instance().destroyGameSession(this);
         }
     }
 
-    public void sendStateChange() {
+    private void sendStateChange() {
 
-        usernames.forEach(user->{
-            CommunicationBridge cbp = commBridges.get(user);
-            if (cbp != null) {
-                List<PieceCoordinate> validPlacements = gameLogic.getValidPlacements(user);
-                Map<Piece, List<PieceCoordinate>> validMovements = gameLogic.getValidMovements(user);
+        usernames.forEach(this::sendStateChangeFor);
+    }
 
-                cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(),
-                                    gameState.getUserPiecePool(user), validPlacements, validMovements, gameState.getDiffs());
+    private void sendStateChangeFor(String user) {
+        CommunicationBridge cbp = commBridges.get(user);
+        if (cbp != null) {
+            List<PieceCoordinate> validPlacements = new ArrayList<PieceCoordinate>();
+            Map<Piece, List<PieceCoordinate>> validMovements = new HashMap<Piece, List<PieceCoordinate>>();
+            // Only send (and calc) valid moves for whose turn it is
+            if (user.equals(currentUserTurn)) {
+                validPlacements = gameLogic.getValidPlacements(user);
+                validMovements = gameLogic.getValidMovements(user);
             }
-        });
 
+            cbp.sendStateChange(currentUserTurn, currentTurnType.toString(), gameState.getBoard(),
+                    gameState.getUserPiecePool(user), validPlacements, validMovements, gameState.getDiffs());
+        }
     }
 
     public int id() { return id; }
