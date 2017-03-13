@@ -34,9 +34,11 @@ public class KingPieceLogic extends PieceLogic {
                 Piece existingPiece = b.getPiece(destCoord);
                 if (existingPiece == null) {
                     // Empty square
+                    //TODO can't move to this spot if an enemy piece can also move to this spot
                     coords.add(destCoord);
                 } else if (!existingPiece.getUsername().equals(pieceRef.getUsername())) {
                     // Enemy piece is on the square
+                    //TODO can't move to this spot if an enemy piece can also move to this spot unless it is the opponents king
                     coords.add(destCoord);
                 } else {
                     // Our own piece, can't capture them!

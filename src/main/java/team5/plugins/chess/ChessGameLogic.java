@@ -192,6 +192,7 @@ public class ChessGameLogic extends GameLogic {
             for (PieceCoordinate moveableCoord : moveableCoords) {
                 if (moveableCoord.equals(kingCoord)) {
                     // And if they can move onto and capture our King, we're in check
+
                     return true;
                 }
             }
