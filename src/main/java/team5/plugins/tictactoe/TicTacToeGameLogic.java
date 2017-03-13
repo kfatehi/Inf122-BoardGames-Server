@@ -84,7 +84,11 @@ public class TicTacToeGameLogic extends GameLogic {
     	if (checkDiagonals() != null) {
     		return checkDiagonals();
     	}
-    	return null;    }
+    	if (checkDraw() != null) {
+    		return checkDraw();
+    	}
+    	return null;
+    }
     
     private String getUsernameAtCoordinate(PieceCoordinate pc) {
     	if (session.gameState().pieceExistsAt(pc)) {
@@ -182,5 +186,16 @@ public class TicTacToeGameLogic extends GameLogic {
 			}
 		}
     	return null;
+    }
+    
+    private String checkDraw() {
+    	for (int row = 0; row < 3; row++) {
+    		for (int col = 0; col < 3; col++) {
+    			if (getUsernameAtCoordinate(new PieceCoordinate(row, col)) == null) {
+    				return null;
+    			}
+    		}
+    	}
+    	return "";
     }
 }
