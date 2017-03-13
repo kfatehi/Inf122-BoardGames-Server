@@ -33,6 +33,9 @@ public class ChessGameLogic extends GameLogic {
     private String whitePlayer;
     private String blackPlayer;
 
+    private int whiteKingId;
+    private int blackKingId;
+
     public ChessGameLogic(GameSession session) {
         super(session);
         System.out.println("Created ChessGameLogic");
@@ -66,6 +69,15 @@ public class ChessGameLogic extends GameLogic {
                 p.setDirection(row == 0 ? MovementDirection.Up : MovementDirection.Down);
                 p.setUsername(u);
                 state().newBoardPiece(p, new PieceCoordinate(row, col));
+
+                // Store the ids of the Kings for later lookup
+                if (pieceNames.get(col).equals("King")) {
+                    if (u.equals(whitePlayer)) {
+                        whiteKingId = p.getId();
+                    } else {
+                        blackKingId = p.getId();
+                    }
+                }
             }
         }
 
@@ -144,6 +156,30 @@ public class ChessGameLogic extends GameLogic {
     }
 
     private boolean inCheck() {
+        PieceCoordinate kingCoord;
+        if (session.getCurrentUserTurn().equals(whitePlayer)) {
+            kingCoord = state().getBoard().getPiece(whiteKingId);
+        } else {
+            kingCoord = state().getBoard().getPiece(blackKingId);
+        }
+        Piece king = state().getBoard().getPiece(kingCoord);
+
+        for (Piece p : state().getBoard().getAllPieces()) {
+            if (p.getUsername().equals(session.getCurrentUserTurn())) {
+                // Dont check our own pieces, only enemy
+                continue;
+            }
+
+            // Check all the places enemy pieces can move to
+            List<PieceCoordinate> moveableCoords = p.getPieceLogic().moveableCoordinates(state().getBoard(), state().getBoard().getPiece(p.getId()));
+            for (PieceCoordinate moveableCoord : moveableCoords) {
+                if (moveableCoord.getRow() == kingCoord.getRow() && moveableCoord.getColumn() == kingCoord.getColumn()) {
+                    // And if they can move onto and capture our King, we're in check
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
