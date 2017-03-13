@@ -57,14 +57,14 @@ public class TicTacToeGameLogic extends GameLogic {
     		Piece p = new Piece();
     		p.setUsername(player1);
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TicTacToePiece"));
-    		p.setImage("http://localhost:4567/TicTacToe_x.png");
+    		p.setImage("/TicTacToe_x.png");
     		state().newUserPoolPiece(p, player1);    		
     	}
        	for (int i = 0; i < 5; i++) {
     		Piece p = new Piece();
     		p.setUsername(player2);
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TicTacToePiece"));
-    		p.setImage("http://localhost:4567/TicTacToe_o.png");
+    		p.setImage("/TicTacToe_o.png");
     		state().newUserPoolPiece(p, player2);    		
     	}
     }
