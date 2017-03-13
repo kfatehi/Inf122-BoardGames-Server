@@ -63,6 +63,19 @@ public class CheckersGameLogic extends GameLogic {
         }
     }
 
+    @Override
+    public Map<Piece, List<PieceCoordinate>> getValidMovements(String username) {
+        Hashtable<Piece, List<PieceCoordinate>> validMoves = new Hashtable<Piece, List<PieceCoordinate>>();
+
+        Board b = session.gameState().getBoard();
+        for(Piece p : b.getAllPieces()) {
+            List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
+            validMoves.put(p, legalMoves);
+        }
+
+        return validMoves;
+    }
+
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
 
 
