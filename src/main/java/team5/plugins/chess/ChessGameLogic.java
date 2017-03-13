@@ -5,10 +5,7 @@ import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
 import team5.game.TurnType;
-import team5.game.state.MovementDirection;
-import team5.game.state.Piece;
-import team5.game.state.PieceCoordinate;
-import team5.game.state.PieceLogic;
+import team5.game.state.*;
 
 import java.util.*;
 
@@ -90,12 +87,64 @@ public class ChessGameLogic extends GameLogic {
     }
 
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+        Board board = state().getBoard();
+        PieceCoordinate current = board.getPiece(pieceId);
+        Piece piece = board.getPiece(current);
 
+        // First check for the move's validity
+        boolean validMove = false;
+        for (PieceCoordinate moveableCoord : piece.getPieceLogic().moveableCoordinates(board, current)) {
+            if (intendedCoord.getRow() == moveableCoord.getRow() && intendedCoord.getColumn() == moveableCoord.getColumn()) {
+                validMove = true;
+            }
+        }
+        if (!validMove) {
+            System.out.println("Unexpected error, client moving piece to a place that's not allowed");
+            return;
+        }
+
+        // Commit it to the state
+        state().movePiece(pieceId, intendedCoord);
+
+        // Pawn-specific
+        Piece pawnPiece = state().getPieceAt(intendedCoord);
+        if (PawnPieceLogic.class.isInstance(piece.getPieceLogic())) {
+
+            // Is a Pawn, need to notify it so it knows its first move and such
+            PawnPieceLogic pawnPL = (PawnPieceLogic)piece.getPieceLogic();
+            pawnPL.movedFromTo(current, intendedCoord);
+
+            // Pawn Promotion
+            if ((intendedCoord.getRow() == 0 && pawnPiece.getUsername().equals(blackPlayer)) ||
+                    (intendedCoord.getRow() == ROWS-1 && pawnPiece.getUsername().equals(whitePlayer))) {
+                // This piece that was just moved is a pawn
+                // and it was moved by the player to the other side of the board
+
+                // TODO: Send a dialog to the same user asking to promote their pawn
+                // can select from: Rook, Bishop, Knight, Queen (no pawn, no king)
+
+                // And we won't let the turn change to the other player
+                // or do other calcs since this is still the player's turn
+                //return;
+            }
+        }
+
+
+        // Change the turn
+        if (username.equals(whitePlayer)) {
+            session.switchTurn(blackPlayer);
+        } else {
+            session.switchTurn(whitePlayer);
+        }
     }
 
     public  String gameFinishedWinner() {
 
         return null;
+    }
+
+    private boolean inCheck() {
+        return false;
     }
 
     private String imageFor(String pieceName, String username) {
