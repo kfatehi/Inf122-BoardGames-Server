@@ -22,12 +22,12 @@ public class ChessGameLogic extends GameLogic {
     private static final int COLS = 8;
 
     private static Map<String, Pair<String, String>> images = new HashMap<String, Pair<String, String>>() {{
-        put("Rook",   new Pair<>("http://localhost:4567/Chess_rlt.png", "http://localhost:4567/Chess_rdt.png"));
-        put("Knight", new Pair<>("http://localhost:4567/Chess_nlt.png", "http://localhost:4567/Chess_ndt.png"));
-        put("Bishop", new Pair<>("http://localhost:4567/Chess_blt.png", "http://localhost:4567/Chess_bdt.png"));
-        put("Queen",  new Pair<>("http://localhost:4567/Chess_qlt.png", "http://localhost:4567/Chess_qdt.png"));
-        put("King",   new Pair<>("http://localhost:4567/Chess_klt.png", "http://localhost:4567/Chess_kdt.png"));
-        put("Pawn",   new Pair<>("http://localhost:4567/Chess_plt.png", "http://localhost:4567/Chess_pdt.png"));
+        put("Rook",   new Pair<>("/Chess_rlt.png", "/Chess_rdt.png"));
+        put("Knight", new Pair<>("/Chess_nlt.png", "/Chess_ndt.png"));
+        put("Bishop", new Pair<>("/Chess_blt.png", "/Chess_bdt.png"));
+        put("Queen",  new Pair<>("/Chess_qlt.png", "/Chess_qdt.png"));
+        put("King",   new Pair<>("/Chess_klt.png", "/Chess_kdt.png"));
+        put("Pawn",   new Pair<>("/Chess_plt.png", "/Chess_pdt.png"));
     }};
 
     private String whitePlayer;
