@@ -106,7 +106,7 @@ public class ChessGameLogic extends GameLogic {
         // First check for the move's validity
         boolean validMove = false;
         for (PieceCoordinate moveableCoord : piece.getPieceLogic().moveableCoordinates(board, current)) {
-            if (intendedCoord.getRow() == moveableCoord.getRow() && intendedCoord.getColumn() == moveableCoord.getColumn()) {
+            if (intendedCoord.equals(moveableCoord)) {
                 validMove = true;
             }
         }
@@ -190,7 +190,7 @@ public class ChessGameLogic extends GameLogic {
             // Check all the places enemy pieces can move to
             List<PieceCoordinate> moveableCoords = p.getPieceLogic().moveableCoordinates(state().getBoard(), state().getBoard().getPiece(p.getId()));
             for (PieceCoordinate moveableCoord : moveableCoords) {
-                if (moveableCoord.getRow() == kingCoord.getRow() && moveableCoord.getColumn() == kingCoord.getColumn()) {
+                if (moveableCoord.equals(kingCoord)) {
                     // And if they can move onto and capture our King, we're in check
                     return true;
                 }
