@@ -92,6 +92,11 @@ public class GameSession {
     }
 
     public void userTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
+        // Ignore turns from the wrong player
+        if (!username.equals(currentUserTurn)) {
+            return;
+        }
+
         // Give the turn to the game logic which will make changes to the state
         // and also the next player, etc.
     	gameState.resetDiffs();

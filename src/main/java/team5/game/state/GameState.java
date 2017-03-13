@@ -117,6 +117,24 @@ public class GameState {
     		return p2;
     	}
     }
+
+    public Piece movePiece(int id, PieceCoordinate coord) {
+    	PieceCoordinate movingPieceCoord = board.getPiece(id);
+    	if (movingPieceCoord == null) {
+    		// That piece isn't on the board
+			// Do nothing
+			return null;
+		}
+
+		// Piece is on the board, move it
+		// Assume that since no two pieces can be in the same place
+		// that moving one to another causes the other to be captured
+		Piece capturedPiece = board.movePiece(id, coord);
+    	capturedPool.addPiece(capturedPiece);
+    	// Return the captured if they want to put it elsewhere
+    	return capturedPiece;
+	}
+
     public boolean movePieceToUserPool(int id, String username) {
     	Piece p = null;
     	PiecePool foundPool = null;
