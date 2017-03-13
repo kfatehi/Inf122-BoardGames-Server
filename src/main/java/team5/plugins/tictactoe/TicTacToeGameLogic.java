@@ -71,7 +71,7 @@ public class TicTacToeGameLogic extends GameLogic {
 
     public void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord) {
     	state().movePieceToBoard(pieceId, intendedCoord);
-    	//session.switchTurn((username.equals(player1)) ? player2 : player1);
+    	session.switchTurn((username.equals(player1)) ? player2 : player1);
     }
 
     public String gameFinishedWinner() {
