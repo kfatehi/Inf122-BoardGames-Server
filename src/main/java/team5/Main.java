@@ -37,6 +37,7 @@ public class Main {
 
     public static void startServer() {
         webSocket("/games", MainWebSocketHandler.class);
+        staticFiles.location("/images");
         init();
     }
 }

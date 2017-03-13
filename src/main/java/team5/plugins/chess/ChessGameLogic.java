@@ -22,12 +22,12 @@ public class ChessGameLogic extends GameLogic {
     private static final int COLS = 8;
 
     private static Map<String, Pair<String, String>> images = new HashMap<String, Pair<String, String>>() {{
-        put("Rook",   new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_rlt.png", "http://jamamp.ddns.net/inf122icons/Chess_rdt.png"));
-        put("Knight", new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_klt.png", "http://jamamp.ddns.net/inf122icons/Chess_kdt.png"));
-        put("Bishop", new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_blt.png", "http://jamamp.ddns.net/inf122icons/Chess_bdt.png"));
-        put("Queen",  new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_qlt.png", "http://jamamp.ddns.net/inf122icons/Chess_qdt.png"));
-        put("King",   new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_klt.png", "http://jamamp.ddns.net/inf122icons/Chess_kdt.png"));
-        put("Pawn",   new Pair<>("http://jamamp.ddns.net/inf122icons/Chess_plt.png", "http://jamamp.ddns.net/inf122icons/Chess_pdt.png"));
+        put("Rook",   new Pair<>("http://localhost:4567/Chess_rlt.png", "http://localhost:4567/Chess_rdt.png"));
+        put("Knight", new Pair<>("http://localhost:4567/Chess_klt.png", "http://localhost:4567/Chess_kdt.png"));
+        put("Bishop", new Pair<>("http://localhost:4567/Chess_blt.png", "http://localhost:4567/Chess_bdt.png"));
+        put("Queen",  new Pair<>("http://localhost:4567/Chess_qlt.png", "http://localhost:4567/Chess_qdt.png"));
+        put("King",   new Pair<>("http://localhost:4567/Chess_klt.png", "http://localhost:4567/Chess_kdt.png"));
+        put("Pawn",   new Pair<>("http://localhost:4567/Chess_plt.png", "http://localhost:4567/Chess_pdt.png"));
     }};
 
     private String whitePlayer;
