@@ -69,12 +69,14 @@ public class CheckerPieceLogic extends PieceLogic {
         PieceCoordinate hopOneForwardLeft =  new PieceCoordinate(moveOneForwardLeft.getRow() + verticalDirInt, moveOneForwardLeft.getColumn() - 1),
                 hopOneForwardRight =  new PieceCoordinate(moveOneForwardRight.getRow() + verticalDirInt, moveOneForwardRight.getColumn() +  1);
 
-        if(this.coordinateWithinBounds(b, moveOneForwardLeft) &&(b.getPiece(moveOneForwardLeft) != null) ) {
+        if(this.coordinateWithinBounds(b, moveOneForwardLeft) &&(b.getPiece(moveOneForwardLeft) != null) &&
+                ! b.getPiece(moveOneForwardLeft).getUsername().equals(pieceRef.getUsername())) {
             if(this.coordinateWithinBounds(b, hopOneForwardLeft) && b.getPiece(hopOneForwardLeft) == null)
                 moveableCoordinates.add(hopOneForwardLeft);
         }
 
-        if(this.coordinateWithinBounds(b, moveOneForwardRight) && b.getPiece(moveOneForwardRight) != null) {
+        if(this.coordinateWithinBounds(b, moveOneForwardRight) && b.getPiece(moveOneForwardRight) != null &&
+                ! b.getPiece(moveOneForwardRight).getUsername().equals(pieceRef.getUsername()) ) {
             if(this.coordinateWithinBounds(b, hopOneForwardRight) && b.getPiece(hopOneForwardRight) == null)
                 moveableCoordinates.add(hopOneForwardRight);
         }

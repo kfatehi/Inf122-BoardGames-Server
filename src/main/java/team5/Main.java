@@ -33,18 +33,6 @@ public class Main {
 
 
 
-        Piece p = new Piece("alvin", "pawn.png", MovementDirection.Down);
-        PieceLogic checkerLogic = new CheckerPieceLogic(p);
-        p.setPieceLogic(checkerLogic);
-
-        Board b = new Board(8,8);
-        b.addPiece(new Piece(), new PieceCoordinate(6,1));
-
-        System.out.println("Valid movements");
-        PieceCoordinate startPos = new PieceCoordinate(7,0);
-        for(PieceCoordinate pc : p.getPieceLogic().moveableCoordinates(b, startPos)) {
-            System.out.println("Row: " + String.valueOf(pc.getRow()) + " Col: " + String.valueOf(pc.getColumn()));
-        }
     }
 
     public static void startServer() {
