@@ -126,9 +126,7 @@ public class GameSession {
     }
 
     public void sendStateChange() {
-        // TODO: implement this
-        // it will send the board and relevant pool data to each user
-        // and it'll also use the diffs list in GameState to send the changes as well
+
         usernames.forEach(user->{
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
