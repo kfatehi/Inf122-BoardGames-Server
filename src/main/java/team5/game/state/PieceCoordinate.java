@@ -20,4 +20,11 @@ public class PieceCoordinate {
 
     public int getRow() { return this.row; }
     public int getColumn() { return this.col; }
+
+    @Override
+    public boolean equals(Object otherObj) {
+        PieceCoordinate otherPC = (PieceCoordinate) otherObj;
+
+        return (row == otherPC.getRow() && col == otherPC.getColumn());
+    }
 }
