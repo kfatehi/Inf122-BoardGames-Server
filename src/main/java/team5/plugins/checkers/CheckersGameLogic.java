@@ -234,7 +234,6 @@ public class CheckersGameLogic extends GameLogic {
         if(pl instanceof CheckersKingPieceLogic) {
             pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Down));
             pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Up));
-
         }
         // Regular
         else {
