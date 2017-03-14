@@ -24,8 +24,4 @@ public class CheckersKingPieceLogic extends CheckerPieceLogic{
     }
 
 
-    @Override
-    public String canChangeToPiece() {
-        return null;
-    }
 }

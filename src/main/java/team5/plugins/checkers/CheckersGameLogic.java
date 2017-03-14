@@ -156,6 +156,7 @@ public class CheckersGameLogic extends GameLogic {
 
         // Check for phase change :) DK COMING IN HOT
 
+
         if(!userCanHopAgain) {
             session.switchTurn(switchUsers(session.getCurrentUserTurn()));
         }
@@ -234,7 +235,6 @@ public class CheckersGameLogic extends GameLogic {
         if(pl instanceof CheckersKingPieceLogic) {
             pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Down));
             pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Up));
-
         }
         // Regular
         else {

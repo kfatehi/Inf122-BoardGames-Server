@@ -1,7 +1,6 @@
 package team5.plugins.test;
 
 // Internal
-import team5.game.state.Piece;
 import team5.game.state.PieceLogic;
 import team5.game.state.PieceCoordinate;
 import team5.game.state.Board;
@@ -32,10 +31,6 @@ public class TestPieceLogic extends PieceLogic {
     		}
     	}
     	return valid;
-    }
-
-    public String canChangeToPiece() {
-        return null;
     }
 
 }

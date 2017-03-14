@@ -93,7 +93,4 @@ public class PawnPieceLogic extends PieceLogic {
         }
     }
 
-    public String canChangeToPiece() {
-        return null;
-    }
 }

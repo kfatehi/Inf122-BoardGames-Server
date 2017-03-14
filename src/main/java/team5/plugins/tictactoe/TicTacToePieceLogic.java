@@ -1,7 +1,6 @@
 package team5.plugins.tictactoe;
 
 //Internal
-import team5.game.state.Piece;
 import team5.game.state.PieceLogic;
 import team5.game.state.PieceCoordinate;
 
@@ -38,9 +37,5 @@ public class TicTacToePieceLogic extends PieceLogic {
         return valid;
 	}
 
-	public String canChangeToPiece() {
-		return null;
-	}
-	
-	
+
 }

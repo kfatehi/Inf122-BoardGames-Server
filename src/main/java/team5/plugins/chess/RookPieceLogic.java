@@ -58,7 +58,4 @@ public class RookPieceLogic extends PieceLogic {
         return coords;
     }
 
-    public String canChangeToPiece() {
-        return null;
-    }
 }

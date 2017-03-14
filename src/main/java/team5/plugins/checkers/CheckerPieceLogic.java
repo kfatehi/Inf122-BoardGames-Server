@@ -84,8 +84,4 @@ public class CheckerPieceLogic extends PieceLogic {
         return moveableCoordinates;
     }
 
-    @Override
-    public String canChangeToPiece() {
-        return null;
-    }
 }

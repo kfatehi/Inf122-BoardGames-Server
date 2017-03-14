@@ -57,7 +57,4 @@ public class BishopPieceLogic extends PieceLogic {
         return coords;
     }
 
-    public String canChangeToPiece() {
-        return null;
-    }
 }
