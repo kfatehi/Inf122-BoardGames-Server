@@ -66,8 +66,7 @@ public class TestGameLogic extends GameLogic {
     	}
         return null;
     }
-	public boolean needsFlip() {
-		// TODO Auto-generated method stub
+	public boolean needsFlip(String username) {
 		return false;
 	}
 	public boolean needsCheckered() {

@@ -54,7 +54,7 @@ public class CheckersGameLogic extends GameLogic {
     }
 
     public boolean needsCheckered() { return true; }
-    public boolean needsFlip() { return true; }
+    public boolean needsFlip(String username) { return !username.equals(player1); }
 
     public void initializePieces() {
         // Set turn type to be movement of piece

@@ -85,7 +85,7 @@ public class GameSession {
             CommunicationBridge cbp = commBridges.get(user);
             if (cbp != null) {
                 Pair<Integer, Integer> size = gameLogic.getBoardSize();
-                cbp.sendGameStart(id, opponents, gameLogic.needsFlip(), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
+                cbp.sendGameStart(id, opponents, gameLogic.needsFlip(user), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
             }
         });
 
@@ -99,7 +99,7 @@ public class GameSession {
 
         if (commBridge != null) {
             Pair<Integer, Integer> size = gameLogic.getBoardSize();
-            commBridge.sendGameStart(id, opponents, gameLogic.needsFlip(), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
+            commBridge.sendGameStart(id, opponents, gameLogic.needsFlip(username), gameLogic.needsCheckered(), size.getFirst(), size.getSecond());
         }
 
         sendStateChangeFor(username);

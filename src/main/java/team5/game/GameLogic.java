@@ -27,7 +27,7 @@ public abstract class GameLogic {
 
     public String gameName() { return gameName; }
     public abstract Pair<Integer,Integer> getBoardSize();
-    public abstract boolean needsFlip();
+    public abstract boolean needsFlip(String username);
     public abstract boolean needsCheckered();
     public abstract void initializePieces();
     public abstract void commitTurn(String username, int pieceId, PieceCoordinate intendedCoord);

@@ -48,7 +48,7 @@ public class ChessGameLogic extends GameLogic {
     }
 
     public boolean needsCheckered() { return true; }
-    public boolean needsFlip() { return true; }
+    public boolean needsFlip(String username) { return !username.equals(whitePlayer); }
 
     public void initializePieces() {
         List<String> pieceNames = Arrays.asList("Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook");

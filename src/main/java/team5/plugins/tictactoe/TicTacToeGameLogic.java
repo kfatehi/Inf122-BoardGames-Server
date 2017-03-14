@@ -36,7 +36,7 @@ public class TicTacToeGameLogic extends GameLogic {
     }
 
     public boolean needsCheckered() { return false; }
-    public boolean needsFlip() { return false; }
+    public boolean needsFlip(String username) { return false; }
 
     public List<PieceCoordinate> getValidPlacements(String username) {
         ArrayList<PieceCoordinate> validPlacements = new ArrayList<PieceCoordinate>();
