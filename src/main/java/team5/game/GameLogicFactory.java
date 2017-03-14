@@ -29,7 +29,7 @@ public class GameLogicFactory {
     
     private static Map<String, String> IMAGE_MAP = new HashMap<String, String>() {
     	{
-    		put("Tic Tac Toe", "https://d30y9cdsu7xlg0.cloudfront.net/png/96852-200.png");
+    		put("Tic Tac Toe", "/TicTacToe.png");
     		put("Checkers", "https://d30y9cdsu7xlg0.cloudfront.net/png/139786-200.png");
     		put("Chess", "/Chess.png");
     		put("Test", "http://i.imgur.com/Tvfwy6j.png");
