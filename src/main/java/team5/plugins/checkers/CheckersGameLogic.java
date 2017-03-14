@@ -156,6 +156,7 @@ public class CheckersGameLogic extends GameLogic {
 
         // Check for phase change :) DK COMING IN HOT
 
+
         if(!userCanHopAgain) {
             session.switchTurn(switchUsers(session.getCurrentUserTurn()));
         }

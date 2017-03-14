@@ -62,7 +62,4 @@ public class QueenPieceLogic extends PieceLogic {
         return coords;
     }
 
-    public String canChangeToPiece() {
-        return null;
-    }
 }

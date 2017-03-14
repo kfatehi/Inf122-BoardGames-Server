@@ -18,8 +18,7 @@ public abstract class PieceLogic {
 
     public void setPieceRef(Piece ref) { pieceRef = ref; }
    
-    public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);		//return empty list if no moves 
-    public abstract String canChangeToPiece();
+    public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);		//return empty list if no moves
 
     public boolean coordinateWithinBounds(Board b, PieceCoordinate pc) {
         int rows = b.getRowCount(),
