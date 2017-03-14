@@ -220,9 +220,7 @@ public class CheckersGameLogic extends GameLogic {
 
         // Win Condition 2: If a player cannot make anymore moves and its their turn
         //      - Check who has more kings wins.
-
-
-        return null;
+        return noMoveGameEndWinner();
     }
 
     private List<PieceCoordinate> getHoppableBasedOnPieceLogic(Piece p, PieceCoordinate pieceCoordinate) {
@@ -241,6 +239,19 @@ public class CheckersGameLogic extends GameLogic {
         }
 
         return pcList;
+    }
+    
+    private String noMoveGameEndWinner() {
+    	String currentPlayer = session.getCurrentUserTurn();
+    	Map<Piece, List<PieceCoordinate>> validMoveMap = getValidMovements(currentPlayer);
+    	for (List<PieceCoordinate> pcList : validMoveMap.values()) {
+    		if (pcList.size() > 0) {
+    			return null;
+    		}
+    	}
+    	
+    	// return the username of the opposite of the player that doeesn't have moves left
+    	return currentPlayer.equals(player1) ? player2 : player1;
     }
 }
 
