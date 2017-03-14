@@ -48,8 +48,8 @@ public class CheckersGameLogic extends GameLogic {
     }
 
     public Pair<Integer, Integer> getBoardSize() {
-//        return new Pair<Integer, Integer>(8, 8);
-        return new Pair<Integer, Integer>(3, 3);
+        return new Pair<Integer, Integer>(8, 8);
+//        return new Pair<Integer, Integer>(5, 5);
     }
 
     public boolean needsCheckered() { return true; }
@@ -64,8 +64,8 @@ public class CheckersGameLogic extends GameLogic {
         player2 = session.getUsernames().get(1);
 
         // Create Bottom Board pieces -> Gorilla Pieces
-//        for(int row = 0; row < 3; row++) {
-        for(int row = 0; row < 1; row++) {
+        for(int row = 0; row < 3; row++) {
+//        for(int row = 0; row < 1; row++) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
                 Piece p = new Piece(player1, relativeImages.get("Regular_Player1"),
@@ -78,8 +78,8 @@ public class CheckersGameLogic extends GameLogic {
         }
 
         // Create top Board Pieces -> Banana Pieces
-//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
-        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
+        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
+//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
                 Piece p = new Piece(player2, relativeImages.get("Regular_Player2"), checkerLogic, MovementDirection.Down);
@@ -94,13 +94,16 @@ public class CheckersGameLogic extends GameLogic {
     public Map<Piece, List<PieceCoordinate>> getValidMovements(String username) {
         Hashtable<Piece, List<PieceCoordinate>> validMoves = new Hashtable<Piece, List<PieceCoordinate>>();
 
+        Board b = session.gameState().getBoard();
         // Check if player just hopped. If so, only get hoppable moves for that single piece
         if(userCanHopAgain) {
+            List<PieceCoordinate> pieceNextValidCoordinate = ((CheckerPieceLogic)pieceToHopAgain.getPieceLogic()).moveableForwardHops(b, b.getPiece(pieceToHopAgain.getId()));
+            validMoves.put(pieceToHopAgain, pieceNextValidCoordinate);
 
+            return validMoves;
         }
 
         // If not, then get regular moves
-        Board b = session.gameState().getBoard();
         for(Piece p : b.getAllPieces()) {
             if(p.getUsername().equals(username)) {
                 List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
