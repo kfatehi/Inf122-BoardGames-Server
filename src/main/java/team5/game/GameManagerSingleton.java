@@ -110,6 +110,9 @@ public class GameManagerSingleton {
         GameSession game = gamesWaiting.get(index);
         game.addUser(commBridge.username(), commBridge);
 
+        // Set joining users commBridge with game session
+        commBridge.setGameSession(game);
+
         // If the game has everyone, move it to inProgress and start it.
         if (game.isFull()) {
             gamesWaiting.remove(index);
