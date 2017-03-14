@@ -241,6 +241,8 @@ public class CheckersGameLogic extends GameLogic {
         return pcList;
     }
     
+    // returns the username (String) of the winner in the case that
+    // one player does not have any valid moves left
     private String noMoveGameEndWinner() {
     	String currentPlayer = session.getCurrentUserTurn();
     	Map<Piece, List<PieceCoordinate>> validMoveMap = getValidMovements(currentPlayer);
@@ -250,7 +252,7 @@ public class CheckersGameLogic extends GameLogic {
     		}
     	}
     	
-    	// return the username of the opposite of the player that doeesn't have moves left
+    	// return the username who is the opposite of the player that doeesn't have moves left
     	return currentPlayer.equals(player1) ? player2 : player1;
     }
 }
