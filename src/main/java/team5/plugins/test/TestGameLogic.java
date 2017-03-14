@@ -1,5 +1,8 @@
 package team5.plugins.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import team5.game.GameLogic;
 import team5.game.GameSession;
 import team5.game.PieceLogicFactory;
@@ -32,11 +35,6 @@ public class TestGameLogic extends GameLogic {
     public void initializePieces() {
     	player1 = session.getUsernames().get(0);
     	player2 = session.getUsernames().get(1);
-    	Piece tester = new Piece();
-		tester.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
-		tester.setUsername(player1);
-		tester.setImage("http://i.imgur.com/MK41sNi.jpg");
-		state().newBoardPiece(tester, new PieceCoordinate(1,1));
     	for(int i = 0; i < 4; i++){
     		Piece p = new Piece();
     		p.setPieceLogic(PieceLogicFactory.createPieceLogic("TestPieceLogic"));
@@ -75,4 +73,8 @@ public class TestGameLogic extends GameLogic {
 	public boolean needsCheckered() {
 		return true;
 	}
+	@Override
+	public List<PieceCoordinate> getValidPlacements(String username) {
+        return session.gameState().getUserPiecePool(username).getAllPiecesInPool().get(0).getPieceLogic().moveableCoordinates(session.gameState().getBoard(), new PieceCoordinate(-1,-1));
+    }
 }
