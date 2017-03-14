@@ -21,6 +21,16 @@ import java.util.Map;
  */
 public class CheckersGameLogic extends GameLogic {
 
+    // Checker Piece Images
+    private Hashtable<String, String> relativeImages = new Hashtable<String, String>() {
+        {
+            put("Regular_Player1", "/Checkers_Regular_Gorilla.svg");
+            put("Regular_Player2", "/Checkers_Regular_Banana.svg");
+            put("King_Player1", "/Checkers_King_Gorilla.png");
+            put("King_Player2", "/Checkers_King_Banana.jpg");
+        }
+    };
+
     private String  player1,
                     player2;
     // Allows for multihopping
@@ -38,7 +48,8 @@ public class CheckersGameLogic extends GameLogic {
     }
 
     public Pair<Integer, Integer> getBoardSize() {
-        return new Pair<Integer, Integer>(8, 8);
+//        return new Pair<Integer, Integer>(8, 8);
+        return new Pair<Integer, Integer>(3, 3);
     }
 
     public boolean needsCheckered() { return true; }
@@ -54,9 +65,10 @@ public class CheckersGameLogic extends GameLogic {
 
         // Create Bottom Board pieces -> Gorilla Pieces
         for(int row = 0; row < 3; row++) {
+//        for(int row = 0; row < 1; row++) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
-                Piece p = new Piece(player1, "http://cdnjs.cloudflare.com/ajax/libs/twemoji/2.2.0/2/svg/1f98d.svg",
+                Piece p = new Piece(player1, relativeImages.get("Regular_Player1"),
                          checkerLogic, MovementDirection.Up);
                 checkerLogic.setPieceReference(p);
 
@@ -67,9 +79,10 @@ public class CheckersGameLogic extends GameLogic {
 
         // Create top Board Pieces -> Banana Pieces
         for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
+//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
-                Piece p = new Piece(player2, "http://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.6/assets/svg/1f34c.svg", checkerLogic, MovementDirection.Down);
+                Piece p = new Piece(player2, relativeImages.get("Regular_Player2"), checkerLogic, MovementDirection.Down);
                 checkerLogic.setPieceReference(p);
 
                 session.gameState().newBoardPiece(p, new PieceCoordinate(row, col));
@@ -89,8 +102,10 @@ public class CheckersGameLogic extends GameLogic {
         // If not, then get regular moves
         Board b = session.gameState().getBoard();
         for(Piece p : b.getAllPieces()) {
-            List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
-            validMoves.put(p, legalMoves);
+            if(p.getUsername().equals(username)) {
+                List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
+                validMoves.put(p, legalMoves);
+            }
         }
 
         return validMoves;
@@ -120,9 +135,11 @@ public class CheckersGameLogic extends GameLogic {
 
             if(capturedPC == null) {
                 System.out.println("ERROR:CommitTurn>>>Could Not find piece hopped over");
+            } else {
+                // Safety Precaution
+                gs.capturePiece(b.getPiece(capturedPC).getId());
             }
 
-            gs.capturePiece(b.getPiece(capturedPC).getId());
         } else {
             session.switchTurn(switchUsers(session.getCurrentUserTurn()));
         }
@@ -144,13 +161,13 @@ public class CheckersGameLogic extends GameLogic {
         int colOffset = endPC.getColumn() - startPC.getColumn();
 
         // Make sure that they are +1 or -1
-        rowOffset = rowOffset / rowOffset;
-        colOffset = colOffset / colOffset;
+        rowOffset = rowOffset / Math.abs(rowOffset);
+        colOffset = colOffset / Math.abs(colOffset);
 
         GameState gs = session.gameState();
         // For loop until enemy piece coordinate found
-        for(int row = startPC.getRow(); row < endPC.getRow(); row += rowOffset) {
-            for(int col = startPC.getColumn(); col < endPC.getColumn(); col += colOffset) {
+        for(int row = startPC.getRow() + rowOffset; row != endPC.getRow(); row += rowOffset) {
+            for(int col = startPC.getColumn() + colOffset; col != endPC.getColumn(); col += colOffset) {
                 PieceCoordinate calculatedPC = new PieceCoordinate(row, col);
 
                 if(gs.pieceExistsAt(calculatedPC))
@@ -171,11 +188,26 @@ public class CheckersGameLogic extends GameLogic {
         String player1 = usersList.get(0);
         String player2 = usersList.get(1);
 
-        if(session.gameState().getUserPiecePool(player1).getPieceCount() == 0)
-            return player2;
+        ArrayList<Piece> allPiecesOnBoard = session.gameState().getBoard().getAllPieces();
+        int player1PieceCount = 0,
+            player2PieceCount = 0;
 
-        if(session.gameState().getUserPiecePool(player2).getPieceCount() == 0)
+        for(Piece p : allPiecesOnBoard) {
+            if(p.getUsername().equals(player1))
+                player1PieceCount += 1;
+            if(p.getUsername().equals(player2))
+                player2PieceCount += 1;
+        }
+
+        // Win Condition 1: No more pieces for a player
+        if(player1PieceCount == 0)
+            return player2;
+        if(player2PieceCount == 0)
             return player1;
+
+        // Win Condition 2: If a player cannot make anymore moves and its their turn
+        //      - Check who has more kings wins.
+
 
         return null;
     }
