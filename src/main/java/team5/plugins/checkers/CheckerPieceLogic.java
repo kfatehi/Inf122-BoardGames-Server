@@ -19,8 +19,8 @@ public class CheckerPieceLogic extends PieceLogic {
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
         ArrayList<PieceCoordinate> moveableCoordinates = new ArrayList<PieceCoordinate>();
 
-        moveableCoordinates.addAll(moveableForwardNoHops(b, pc));
-        moveableCoordinates.addAll(moveableForwardHops(b, pc));
+        moveableCoordinates.addAll(moveableNoHops(b, pc, pieceRef.getDirection()));
+        moveableCoordinates.addAll(moveableHops(b, pc, pieceRef.getDirection()));
 
         return moveableCoordinates;
     }
@@ -28,11 +28,11 @@ public class CheckerPieceLogic extends PieceLogic {
     /*
     @brief  Returns a list of PieceCoordinates that a checker piece can move to without hopping
      */
-    public List<PieceCoordinate> moveableForwardNoHops(Board b, PieceCoordinate pc) {
+    public List<PieceCoordinate> moveableNoHops(Board b, PieceCoordinate pc, MovementDirection movement) {
         ArrayList<PieceCoordinate> moveableCoordinates = new ArrayList<PieceCoordinate>();
 
         int verticalDirInt = 0;
-        if(pieceRef.getDirection() == MovementDirection.Up)
+        if(movement == MovementDirection.Up)
             verticalDirInt = 1;
         else
             verticalDirInt = -1;
@@ -53,11 +53,11 @@ public class CheckerPieceLogic extends PieceLogic {
     /*
     @brief  Returns a list of PieceCoordinates that a checker piece can move to with hopping
      */
-    public List<PieceCoordinate> moveableForwardHops(Board b, PieceCoordinate pc) {
+    public List<PieceCoordinate> moveableHops(Board b, PieceCoordinate pc, MovementDirection movement) {
         ArrayList<PieceCoordinate> moveableCoordinates = new ArrayList<PieceCoordinate>();
 
         int verticalDirInt = 0;
-        if(pieceRef.getDirection() == MovementDirection.Up)
+        if(movement == MovementDirection.Up)
             verticalDirInt = 1;
         else
             verticalDirInt = -1;

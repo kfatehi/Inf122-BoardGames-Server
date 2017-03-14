@@ -98,8 +98,13 @@ public class CheckersGameLogic extends GameLogic {
         Board b = session.gameState().getBoard();
         // Check if player just hopped. If so, only get hoppable moves for that single piece
         if(userCanHopAgain) {
-            List<PieceCoordinate> pieceNextValidCoordinate = ((CheckerPieceLogic)pieceToHopAgain.getPieceLogic()).moveableForwardHops(b, b.getPiece(pieceToHopAgain.getId()));
-            validMoves.put(pieceToHopAgain, pieceNextValidCoordinate);
+            // If king piece, get hops for any direction else get next hop moving "forward"
+            if(pieceToHopAgain.getPieceLogic() instanceof CheckersKingPieceLogic) {
+
+            } else {
+                List<PieceCoordinate> pieceNextValidCoordinate = ((CheckerPieceLogic) pieceToHopAgain.getPieceLogic()).moveableHops(b, b.getPiece(pieceToHopAgain.getId()), pieceToHopAgain.getDirection());
+                validMoves.put(pieceToHopAgain, pieceNextValidCoordinate);
+            }
 
             return validMoves;
         }
@@ -122,9 +127,11 @@ public class CheckersGameLogic extends GameLogic {
         GameState gs = session.gameState();
 
         // Determine if chosen coordinate is hoppable and then check if you can hop again.
-        List<PieceCoordinate> hoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableForwardHops(b, pieceCurrentCoordinate);
+//        List<PieceCoordinate> hoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableHops(b, pieceCurrentCoordinate, p.getDirection());
+        List<PieceCoordinate> hoppableCoordinates = this.getHoppableBasedOnPieceLogic(p, pieceCurrentCoordinate) ;
         if(hoppableCoordinates.contains(intendedCoord)) {
-            List<PieceCoordinate> nextHoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableForwardHops(b, intendedCoord);
+//            List<PieceCoordinate> nextHoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableHops(b, intendedCoord, p.getDirection());
+            List<PieceCoordinate> nextHoppableCoordinates = this.getHoppableBasedOnPieceLogic(p, intendedCoord);
 
             // User can hop again, so allow hop for this one piece
             if(nextHoppableCoordinates.size() > 0) {
@@ -146,6 +153,8 @@ public class CheckersGameLogic extends GameLogic {
             }
 
         }
+
+        // Check for phase change :) DK COMING IN HOT
 
         if(!userCanHopAgain) {
             session.switchTurn(switchUsers(session.getCurrentUserTurn()));
@@ -214,6 +223,25 @@ public class CheckersGameLogic extends GameLogic {
 
 
         return null;
+    }
+
+    private List<PieceCoordinate> getHoppableBasedOnPieceLogic(Piece p, PieceCoordinate pieceCurrentCoordinate) {
+        Board b = session.gameState().getBoard();
+        PieceLogic pl = p.getPieceLogic();
+
+        List<PieceCoordinate> pcList = new ArrayList<>();
+        // King
+        if(pl instanceof CheckersKingPieceLogic) {
+            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Down));
+            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Up));
+
+        }
+        // Regular
+        else {
+            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, p.getDirection()));
+        }
+
+        return pcList;
     }
 }
 
