@@ -29,7 +29,7 @@ public class RookPieceLogic extends PieceLogic {
 
             while (true) {
                 workingPC.setRow(workingPC.getRow() + delta.getFirst());
-                workingPC.setColumn(workingPC.getColumn() + delta.getFirst());
+                workingPC.setColumn(workingPC.getColumn() + delta.getSecond());
 
                 if (b.validCoordinate(workingPC)) {
 

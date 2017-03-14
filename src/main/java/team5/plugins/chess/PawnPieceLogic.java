@@ -54,7 +54,7 @@ public class PawnPieceLogic extends PieceLogic {
             if (!b.validCoordinate(captPC)) continue;
 
             if (b.getPiece(captPC) != null) {
-                if (b.getPiece(captPC).getUsername().equals(pieceRef.getUsername())) {
+                if (!b.getPiece(captPC).getUsername().equals(pieceRef.getUsername())) {
                     // There's an Enemy piece in the diagonal capture coord, so we can capture it
                     coords.add(captPC);
                 } else {
@@ -70,7 +70,7 @@ public class PawnPieceLogic extends PieceLogic {
                 Piece sidePiece = b.getPiece(new PieceCoordinate(captPC.getRow()-relativeForward, captPC.getColumn()));
                 if (sidePiece != null && PawnPieceLogic.class.isInstance(sidePiece.getPieceLogic())) {
                     PawnPieceLogic sidePiecePawnLogic = (PawnPieceLogic)sidePiece.getPieceLogic();
-                    if (sidePiecePawnLogic.justDidADoubleForward()) {
+                    if (sidePiecePawnLogic.justDidADoubleForward() && !sidePiece.getUsername().equals(pieceRef.getUsername())) {
                         coords.add(captPC);
                     }
                 }
