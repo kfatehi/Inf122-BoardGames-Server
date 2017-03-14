@@ -24,8 +24,8 @@ public class CheckersGameLogic extends GameLogic {
     // Checker Piece Images
     private Hashtable<String, String> relativeImages = new Hashtable<String, String>() {
         {
-            put("Regular_Player1", "/Checkers_Regular_Gorilla.svg");
-            put("Regular_Player2", "/Checkers_Regular_Banana.svg");
+            put("Regular_Player1", "/Checkers_Regular_Gorilla.png");
+            put("Regular_Player2", "/Checkers_Regular_Banana.png");
             //put("King_Player1", "/Checkers_King_Gorilla.png");
             put("King_Player1", "/Checkers_King_DK.png");
             put("King_Player2", "/Checkers_King_Banana.jpg");
