@@ -8,7 +8,6 @@ import team5.game.TurnType;
 import team5.game.state.*;
 import team5.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -50,7 +49,6 @@ public class CheckersGameLogic extends GameLogic {
 
     public Pair<Integer, Integer> getBoardSize() {
         return new Pair<Integer, Integer>(8, 8);
-//        return new Pair<Integer, Integer>(5, 5);
     }
 
     public boolean needsCheckered() { return true; }
@@ -66,9 +64,8 @@ public class CheckersGameLogic extends GameLogic {
 
         // Create Bottom Board pieces -> Gorilla Pieces
         for(int row = 0; row < 3; row++) {
-//        for(int row = 0; row < 1; row++) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
-                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
+                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checkers");
                 Piece p = new Piece(player1, relativeImages.get("Regular_Player1"),
                          checkerLogic, MovementDirection.Up);
                 checkerLogic.setPieceReference(p);
@@ -80,9 +77,8 @@ public class CheckersGameLogic extends GameLogic {
 
         // Create top Board Pieces -> Banana Pieces
         for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
-//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
-                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
+                PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checkers");
                 Piece p = new Piece(player2, relativeImages.get("Regular_Player2"), checkerLogic, MovementDirection.Down);
                 checkerLogic.setPieceReference(p);
 
@@ -98,18 +94,13 @@ public class CheckersGameLogic extends GameLogic {
         Board b = session.gameState().getBoard();
         // Check if player just hopped. If so, only get hoppable moves for that single piece
         if(userCanHopAgain) {
-            // If king piece, get hops for any direction else get next hop moving "forward"
-            if(pieceToHopAgain.getPieceLogic() instanceof CheckersKingPieceLogic) {
-
-            } else {
-                List<PieceCoordinate> pieceNextValidCoordinate = ((CheckerPieceLogic) pieceToHopAgain.getPieceLogic()).moveableHops(b, b.getPiece(pieceToHopAgain.getId()), pieceToHopAgain.getDirection());
-                validMoves.put(pieceToHopAgain, pieceNextValidCoordinate);
-            }
+            List<PieceCoordinate> pieceNextValidCoordinate = this.getHoppableBasedOnPieceLogic(pieceToHopAgain, b.getPiece(pieceToHopAgain.getId()));
+            validMoves.put(pieceToHopAgain, pieceNextValidCoordinate);
 
             return validMoves;
         }
 
-        // If not, then get regular moves
+        // If not, then check all regular pieces
         for(Piece p : b.getAllPieces()) {
             if(p.getUsername().equals(username)) {
                 List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
@@ -127,10 +118,8 @@ public class CheckersGameLogic extends GameLogic {
         GameState gs = session.gameState();
 
         // Determine if chosen coordinate is hoppable and then check if you can hop again.
-//        List<PieceCoordinate> hoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableHops(b, pieceCurrentCoordinate, p.getDirection());
         List<PieceCoordinate> hoppableCoordinates = this.getHoppableBasedOnPieceLogic(p, pieceCurrentCoordinate) ;
         if(hoppableCoordinates.contains(intendedCoord)) {
-//            List<PieceCoordinate> nextHoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableHops(b, intendedCoord, p.getDirection());
             List<PieceCoordinate> nextHoppableCoordinates = this.getHoppableBasedOnPieceLogic(p, intendedCoord);
 
             // User can hop again, so allow hop for this one piece
@@ -155,6 +144,17 @@ public class CheckersGameLogic extends GameLogic {
         }
 
         // Check for phase change :) DK COMING IN HOT
+        if((intendedCoord.getRow() == 0 || intendedCoord.getRow() == b.getRowCount() - 1) && p.getPieceLogic() instanceof CheckersPieceLogic) {
+            // Set image
+            if(p.getUsername().equals(player1)) {
+                p.setImage(relativeImages.get("King_Player1"));
+            } else {
+                p.setImage(relativeImages.get("King_Player2"));
+            }
+
+            // Set piece logic
+            p.setPieceLogic(new CheckersKingPieceLogic(p));
+        }
 
 
         if(!userCanHopAgain) {
@@ -226,19 +226,19 @@ public class CheckersGameLogic extends GameLogic {
         return null;
     }
 
-    private List<PieceCoordinate> getHoppableBasedOnPieceLogic(Piece p, PieceCoordinate pieceCurrentCoordinate) {
+    private List<PieceCoordinate> getHoppableBasedOnPieceLogic(Piece p, PieceCoordinate pieceCoordinate) {
         Board b = session.gameState().getBoard();
         PieceLogic pl = p.getPieceLogic();
 
         List<PieceCoordinate> pcList = new ArrayList<>();
         // King
         if(pl instanceof CheckersKingPieceLogic) {
-            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Down));
-            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, MovementDirection.Up));
+            pcList.addAll(((CheckersPieceLogic)pl).moveableHops(b, pieceCoordinate, MovementDirection.Down));
+            pcList.addAll(((CheckersPieceLogic)pl).moveableHops(b, pieceCoordinate, MovementDirection.Up));
         }
         // Regular
         else {
-            pcList.addAll(((CheckerPieceLogic)pl).moveableHops(b, pieceCurrentCoordinate, p.getDirection()));
+            pcList.addAll(((CheckersPieceLogic)pl).moveableHops(b, pieceCoordinate, p.getDirection()));
         }
 
         return pcList;

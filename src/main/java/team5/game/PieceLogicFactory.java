@@ -1,8 +1,6 @@
 package team5.game;
 
 // Internal
-import team5.game.state.Piece;
-import team5.game.state.PieceCoordinate;
 import team5.game.state.PieceLogic;
 import team5.plugins.checkers.*;
 import team5.plugins.chess.*;
@@ -11,9 +9,7 @@ import team5.plugins.tictactoe.TicTacToePieceLogic;
 
 // Native
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class PieceLogicFactory {
 
@@ -33,7 +29,8 @@ public class PieceLogicFactory {
         put("TicTacToePiece", TicTacToePieceLogic.class);
 
         // Checkers Game
-        put("Checker", CheckerPieceLogic.class);
+        put("Checkers", CheckersPieceLogic.class);
+        put("CheckersKing", CheckersKingPieceLogic.class);
     }};
 
     public PieceLogicFactory() {}

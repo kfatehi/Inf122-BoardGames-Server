@@ -8,10 +8,12 @@ import java.util.List;
 /**
  * Created by hero on 3/11/17.
  */
-public class CheckerPieceLogic extends PieceLogic {
+public class CheckersPieceLogic extends PieceLogic {
 
-    public CheckerPieceLogic() {}
-    public CheckerPieceLogic(Piece p) {
+    public CheckersPieceLogic() {
+        super();
+    }
+    public CheckersPieceLogic(Piece p) {
         pieceRef = p;
     }
 

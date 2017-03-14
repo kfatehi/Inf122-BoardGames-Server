@@ -7,7 +7,15 @@ import java.util.List;
 /**
  * Created by hero on 3/13/17.
  */
-public class CheckersKingPieceLogic extends CheckerPieceLogic{
+public class CheckersKingPieceLogic extends CheckersPieceLogic {
+
+    public CheckersKingPieceLogic() {
+        super();
+    }
+    public CheckersKingPieceLogic(Piece p) {
+        super(p);
+    }
+
     @Override
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
         ArrayList<PieceCoordinate> validMove = new ArrayList<>();
