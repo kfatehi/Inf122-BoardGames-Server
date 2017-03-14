@@ -124,7 +124,12 @@ public class ChessGameLogic extends GameLogic {
 
             // Is a Pawn, need to notify it so it knows its first move and such
             PawnPieceLogic pawnPL = (PawnPieceLogic)piece.getPieceLogic();
-            pawnPL.movedFromTo(current, intendedCoord);
+            Piece enPassantCapturedPiece = pawnPL.movedFromTo(current, intendedCoord);
+
+            if (enPassantCapturedPiece != null) {
+                // Moving that Pawn caused an En Passant capture. The piece coordinate returned is the one it captured
+                state().capturePiece(enPassantCapturedPiece.getId());
+            }
 
             // Pawn Promotion
             if ((intendedCoord.getRow() == 0 && pawnPiece.getUsername().equals(blackPlayer)) ||

@@ -2,6 +2,7 @@ package team5.plugins.chess;
 
 //Internal
 import team5.game.state.*;
+import team5.util.Pair;
 
 // Native
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class PawnPieceLogic extends PieceLogic {
     private boolean hasMovedYet;
     private boolean justDidADoubleForward;
 
+    private List<Pair<PieceCoordinate, Piece>> enPassantMoves = new ArrayList<Pair<PieceCoordinate, Piece>>();
+
     public PawnPieceLogic() {
         System.out.println("Building pawn logic");
         hasMovedYet = false;
@@ -24,6 +27,7 @@ public class PawnPieceLogic extends PieceLogic {
     public boolean justDidADoubleForward() { return justDidADoubleForward; }
 
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
+        enPassantMoves.clear();
 
         // Piece not on the board, no normal placement behavior
         if (pc.getRow() == -1 || pc.getColumn() == -1) {
@@ -67,10 +71,15 @@ public class PawnPieceLogic extends PieceLogic {
                 // then you can still move diagonally into an empty space
                 // capturing the piece to your side
                 // https://en.wikipedia.org/wiki/Pawn_(chess)#Capturing
-                Piece sidePiece = b.getPiece(new PieceCoordinate(captPC.getRow()-relativeForward, captPC.getColumn()));
+                PieceCoordinate sidePieceCoord = new PieceCoordinate(captPC.getRow()-relativeForward, captPC.getColumn());
+                Piece sidePiece = b.getPiece(sidePieceCoord);
                 if (sidePiece != null && PawnPieceLogic.class.isInstance(sidePiece.getPieceLogic())) {
                     PawnPieceLogic sidePiecePawnLogic = (PawnPieceLogic)sidePiece.getPieceLogic();
-                    if (sidePiecePawnLogic.justDidADoubleForward() && !sidePiece.getUsername().equals(pieceRef.getUsername())) {
+                    if (sidePiece.getUsername().equals(pieceRef.getUsername())) {
+                        continue;
+                    }
+                    if (sidePiecePawnLogic.justDidADoubleForward()) {
+                        enPassantMoves.add(new Pair<>(captPC, sidePiece));
                         coords.add(captPC);
                     }
                 }
@@ -83,7 +92,8 @@ public class PawnPieceLogic extends PieceLogic {
 
     // This is a custom function that ChessGameLogic will have to call
     // It is specific to this class, so ChessGameLogic will do casting
-    public void movedFromTo(PieceCoordinate coord1, PieceCoordinate coord2) {
+    // Return: boolean signifying if it was an En Passant capture
+    public Piece movedFromTo(PieceCoordinate coord1, PieceCoordinate coord2) {
         hasMovedYet = true;
         justDidADoubleForward = false;
 
@@ -91,6 +101,13 @@ public class PawnPieceLogic extends PieceLogic {
             // The piece was moved two spaces forward
             justDidADoubleForward = true;
         }
+        
+        for(Pair<PieceCoordinate, Piece> pair : enPassantMoves) {
+            if (pair.getFirst().equals(coord2)) {
+                return pair.getSecond();
+            }
+        }
+        return null;
     }
 
 }
