@@ -64,8 +64,8 @@ public class CheckersGameLogic extends GameLogic {
         player2 = session.getUsernames().get(1);
 
         // Create Bottom Board pieces -> Gorilla Pieces
-        for(int row = 0; row < 3; row++) {
-//        for(int row = 0; row < 1; row++) {
+//        for(int row = 0; row < 3; row++) {
+        for(int row = 0; row < 1; row++) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
                 Piece p = new Piece(player1, relativeImages.get("Regular_Player1"),
@@ -78,8 +78,8 @@ public class CheckersGameLogic extends GameLogic {
         }
 
         // Create top Board Pieces -> Banana Pieces
-        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
-//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
+//        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 3; row--) {
+        for(int row = getBoardSize().getFirst() - 1; row >= getBoardSize().getFirst() - 1; row--) {
             for (int col = row % 2; col < getBoardSize().getSecond(); col += 2) {
                 PieceLogic checkerLogic = PieceLogicFactory.createPieceLogic("Checker");
                 Piece p = new Piece(player2, relativeImages.get("Regular_Player2"), checkerLogic, MovementDirection.Down);
@@ -117,17 +117,18 @@ public class CheckersGameLogic extends GameLogic {
         Piece p = b.getPiece(pieceCurrentCoordinate);
         GameState gs = session.gameState();
 
-        // Assuming user piece is "legal"
-
         // Determine if chosen coordinate is hoppable and then check if you can hop again.
         List<PieceCoordinate> hoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableForwardHops(b, pieceCurrentCoordinate);
         if(hoppableCoordinates.contains(intendedCoord)) {
-            List<PieceCoordinate> nextHoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableForwardHops(b, pieceCurrentCoordinate);
+            List<PieceCoordinate> nextHoppableCoordinates = ((CheckerPieceLogic)p.getPieceLogic()).moveableForwardHops(b, intendedCoord);
 
             // User can hop again, so allow hop for this one piece
             if(nextHoppableCoordinates.size() > 0) {
                 userCanHopAgain = true;
                 pieceToHopAgain = p;
+            } else {
+                userCanHopAgain = false;
+                pieceToHopAgain = null;
             }
 
             // Get piece hopped over and Capture piece
@@ -140,7 +141,9 @@ public class CheckersGameLogic extends GameLogic {
                 gs.capturePiece(b.getPiece(capturedPC).getId());
             }
 
-        } else {
+        }
+
+        if(!userCanHopAgain) {
             session.switchTurn(switchUsers(session.getCurrentUserTurn()));
         }
 
@@ -183,11 +186,6 @@ public class CheckersGameLogic extends GameLogic {
         // Win if no more pieces..
         // TODO need to also check if no moves loses.
         // TODO more kings win if no more moves.
-        ArrayList<String> usersList = (ArrayList)session.getUsernames();
-
-        String player1 = usersList.get(0);
-        String player2 = usersList.get(1);
-
         ArrayList<Piece> allPiecesOnBoard = session.gameState().getBoard().getAllPieces();
         int player1PieceCount = 0,
             player2PieceCount = 0;
@@ -199,6 +197,8 @@ public class CheckersGameLogic extends GameLogic {
                 player2PieceCount += 1;
         }
 
+//        System.out.println("Player 1 count: " + String.valueOf(player1PieceCount));
+//        System.out.println("Player 2 count: " + String.valueOf(player2PieceCount));
         // Win Condition 1: No more pieces for a player
         if(player1PieceCount == 0)
             return player2;
