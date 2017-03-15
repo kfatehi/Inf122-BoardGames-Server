@@ -99,11 +99,32 @@ public class CheckersGameLogic extends GameLogic {
             return validMoves;
         }
 
-        // If not, then check all regular pieces
+        // Check if any piece can hop.
+        boolean canSomePieceHop = false;
         for(Piece p : b.getAllPieces()) {
             if(p.getUsername().equals(username)) {
-                List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
-                validMoves.put(p, legalMoves);
+                // Determines if pieces can hop
+                p.getPieceLogic().moveableCoordinates(b, b.getPiece(p.getId()));
+
+                if(((CheckersPieceLogic)p.getPieceLogic()).canPieceHop()) {
+                    canSomePieceHop = true;
+                }
+            }
+        }
+
+        // Get all valid moves for any piece for current user
+        for(Piece p : b.getAllPieces()) {
+            if(p.getUsername().equals(username)) {
+//                 If we find that a piece can hop, then we only get coordinates for pieces that can hop
+                if(canSomePieceHop) {
+                    if(((CheckersPieceLogic)p.getPieceLogic()).canPieceHop()) {
+                        List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
+                        validMoves.put(p, legalMoves);
+                    }
+                } else {
+                    List<PieceCoordinate> legalMoves = b.getLegalMovesOfPiece(p.getId());
+                    validMoves.put(p, legalMoves);
+                }
             }
         }
 
