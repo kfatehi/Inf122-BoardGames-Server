@@ -17,6 +17,7 @@ public class GameState {
     private PiecePool capturedPool = new PiecePool();
     private Map<String, PiecePool> userPools = new HashMap<String, PiecePool>();
     private ArrayList<Integer> ids = new ArrayList<Integer>();
+    private boolean addDiffs = true;
     private JsonArray diffs = new JsonArray();
 
     public GameState(int rows, int cols) {
@@ -182,7 +183,11 @@ public class GameState {
     	addMoveToDiff(board.removePiece(id).getId(), new PieceCoordinate(-1,-1));
     	return true;
     }
+
+    public void enableDiffs() { addDiffs = true; }
+    public void disableDiffs() { addDiffs = false; }
     private void addMoveToDiff(int id, PieceCoordinate c){
+    	if (!addDiffs) { return; }
     	JsonObject addDiff = new JsonObject();
     	addDiff.addProperty("id", id);
     	addDiff.addProperty("r", c.getColumn());

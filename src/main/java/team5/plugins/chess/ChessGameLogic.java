@@ -162,7 +162,7 @@ public class ChessGameLogic extends GameLogic {
 
     @Override
     public Map<Piece, List<PieceCoordinate>> getValidMovements(String username) {
-        Map<Piece, List<PieceCoordinate>> map = new HashMap<>();
+        Map<Piece, List<PieceCoordinate>> map = new HashMap<Piece, List<PieceCoordinate>>();
 
         // For now, simply add everything
         for (Piece piece : state().getBoard().getAllPieces()) {
@@ -172,14 +172,47 @@ public class ChessGameLogic extends GameLogic {
             }
         }
 
-        // TODO: Cull if there's a check
+        if (inCheck(username)) {
+            // This is not normal behavior, when there IS a check on the board.
+
+            System.out.println("\nUser " + username + " is in check.");
+
+            /* Plan of attack:
+             * - The King is in a position such that an enemy piece can capture it.
+             * - If the line of sight of capture is not broken then the King can
+             * be captured resulting in a loss.
+             * - The line of sight can be disrupted by the King moving, OR
+             * by any other friendly piece moving in the way.
+             *
+             * 1. Go through all possible valid movements of all pieces
+             * 2. For each of those try simulating it and seeing if it removes the check
+             *   - If so, that's a valid move.
+             *   - If not, they're not allowed to do that as it sacrifices the King
+             */
+
+            Map<Piece, List<PieceCoordinate>> validCheckMoves = new HashMap<Piece, List<PieceCoordinate>>();
+
+            map.forEach((piece, moves) -> {
+                moves.forEach(move -> {
+                    if (!simulateMoveForCheck(username, piece.getId(), move)) {
+                        // If the simulation resulted in no more check, add the move
+                        if (!validCheckMoves.containsKey(piece)) {
+                            validCheckMoves.put(piece, new ArrayList<PieceCoordinate>());
+                        }
+                        validCheckMoves.get(piece).add(move);
+                    }
+                });
+            });
+
+            return validCheckMoves;
+        }
 
         return map;
     }
 
-    private boolean inCheck() {
+    private boolean inCheck(String username) {
         PieceCoordinate kingCoord;
-        if (session.getCurrentUserTurn().equals(whitePlayer)) {
+        if (username.equals(whitePlayer)) {
             kingCoord = state().getBoard().getPiece(whiteKingId);
         } else {
             kingCoord = state().getBoard().getPiece(blackKingId);
@@ -204,6 +237,33 @@ public class ChessGameLogic extends GameLogic {
         }
 
         return false;
+    }
+
+    private boolean simulateMoveForCheck(String username, int pieceId, PieceCoordinate testCoord) {
+        // Simulates the movement of a piece to see if it still results in inCheck being true or not.
+
+        // Temporarily disable diffs, as we're making only temp changes to the board
+        state().disableDiffs();
+
+        PieceCoordinate oldCoord = state().getBoard().getPiece(pieceId);
+
+        // Make the move
+        Piece capturedPiece = state().movePiece(pieceId, testCoord);
+
+        // Sample the function
+        boolean isStillInCheck = inCheck(username);
+
+        // Undo the movement
+        state().movePiece(pieceId, oldCoord);
+        // Re-add any captured pieces
+        if (capturedPiece != null) {
+            state().movePieceToBoard(capturedPiece.getId(), testCoord);
+        }
+
+        // Undo diff disable
+        state().enableDiffs();
+
+        return isStillInCheck;
     }
 
     private String imageFor(String pieceName, String username) {
