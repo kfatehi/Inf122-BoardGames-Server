@@ -176,19 +176,31 @@ public class ChessGameLogic extends GameLogic {
     }
 
     public String gameFinishedWinner() {
+        boolean blackPlayerCanMove = true;
+        boolean whitePlayerCanMove = true;
         for (String user : session.getUsernames()) {
             if (getValidMovements(user).size() == 0) {
                 // The user can't make any moves because it's in check
                 // but can't get out of check
                 // So the other player wins
                 if (user.equals(whitePlayer)) {
-                    return blackPlayer;
+                    whitePlayerCanMove = false;
                 } else {
-                    return whitePlayer;
+                    blackPlayerCanMove = false;
                 }
             }
         }
-        return null;
+
+        if (!whitePlayerCanMove && !blackPlayerCanMove) {
+            return ""; // Draw
+        } else if (whitePlayerCanMove && !blackPlayerCanMove) {
+            return whitePlayer;
+        } else if (!whitePlayerCanMove && blackPlayerCanMove) {
+            return blackPlayer;
+        } else {
+            return null;
+        }
+        
     }
 
     @Override
