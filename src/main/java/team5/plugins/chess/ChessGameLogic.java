@@ -172,42 +172,37 @@ public class ChessGameLogic extends GameLogic {
             }
         }
 
-        if (inCheck(username)) {
-            // This is not normal behavior, when there IS a check on the board.
+        
+        // This logic needs to happen regardless of if the King is in check
+        // If the King is in check, then this gives only the moves that places the King out of check in some way
+        // But if the King is not in check, it gives only legal moves that don't put the King in check.
 
-            System.out.println("\nUser " + username + " is in check.");
+        /* Plan of attack:
+         * - The King is in a position such that an enemy piece can capture it.
+         * - If the line of sight of capture is not broken then the King can
+         * be captured resulting in a loss.
+         * - The line of sight can be disrupted by the King moving, OR
+         * by any other friendly piece moving in the way.
+         *
+         * 1. Go through all possible valid movements of all pieces
+         * 2. For each of those try simulating it and seeing if it removes the check
+         *   - If so, that's a valid move.
+         *   - If not, they're not allowed to do that as it sacrifices the King
+         */
 
-            /* Plan of attack:
-             * - The King is in a position such that an enemy piece can capture it.
-             * - If the line of sight of capture is not broken then the King can
-             * be captured resulting in a loss.
-             * - The line of sight can be disrupted by the King moving, OR
-             * by any other friendly piece moving in the way.
-             *
-             * 1. Go through all possible valid movements of all pieces
-             * 2. For each of those try simulating it and seeing if it removes the check
-             *   - If so, that's a valid move.
-             *   - If not, they're not allowed to do that as it sacrifices the King
-             */
-
-            Map<Piece, List<PieceCoordinate>> validCheckMoves = new HashMap<Piece, List<PieceCoordinate>>();
-
-            map.forEach((piece, moves) -> {
-                moves.forEach(move -> {
-                    if (!simulateMoveForCheck(username, piece.getId(), move)) {
-                        // If the simulation resulted in no more check, add the move
-                        if (!validCheckMoves.containsKey(piece)) {
-                            validCheckMoves.put(piece, new ArrayList<PieceCoordinate>());
-                        }
-                        validCheckMoves.get(piece).add(move);
+        Map<Piece, List<PieceCoordinate>> validCheckMoves = new HashMap<Piece, List<PieceCoordinate>>();
+        map.forEach((piece, moves) -> {
+            moves.forEach(move -> {
+                if (!simulateMoveForCheck(username, piece.getId(), move)) {
+                    // If the simulation resulted in no more check, add the move
+                    if (!validCheckMoves.containsKey(piece)) {
+                        validCheckMoves.put(piece, new ArrayList<PieceCoordinate>());
                     }
-                });
+                    validCheckMoves.get(piece).add(move);
+                }
             });
-
-            return validCheckMoves;
-        }
-
-        return map;
+        });
+        return validCheckMoves;
     }
 
     private boolean inCheck(String username) {
