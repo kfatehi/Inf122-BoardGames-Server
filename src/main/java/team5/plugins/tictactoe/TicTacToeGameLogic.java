@@ -168,10 +168,10 @@ public class TicTacToeGameLogic extends GameLogic {
     			previousPieceOwner = currentPieceOwner;
 	    	}
 		}
-		previousPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(0, 2));
+		previousPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(2, 0));
 		if (previousPieceOwner != null) {
 			for (int i = 1; i < 3; i++) {
-				currentPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(i, 2 - i));
+				currentPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(2 - i, i));
     			if (currentPieceOwner == null) {
     				break;
     			}
