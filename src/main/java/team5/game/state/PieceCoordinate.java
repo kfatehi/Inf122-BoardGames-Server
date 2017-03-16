@@ -27,4 +27,9 @@ public class PieceCoordinate {
 
         return (row == otherPC.getRow() && col == otherPC.getColumn());
     }
+
+    @Override
+    public String toString() {
+        return "[" + row + ", " + col + "]";
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by james on 3/10/17.
  */
-public class RookPieceLogic extends PieceLogic {
+public class RookPieceLogic extends FirstMovePieceLogic {
 
     public List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc) {
         List<PieceCoordinate> coords = new ArrayList<PieceCoordinate>();
@@ -56,6 +56,11 @@ public class RookPieceLogic extends PieceLogic {
         }
 
         return coords;
+    }
+
+    public Piece movedFromTo(PieceCoordinate coord1, PieceCoordinate coord2) {
+        hasMovedYet = true;
+        return null;
     }
 
 }

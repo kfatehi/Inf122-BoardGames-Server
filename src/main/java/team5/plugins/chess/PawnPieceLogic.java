@@ -12,8 +12,7 @@ import java.util.List;
  * @author  Team5
  * @date    2017/03/09
  */
-public class PawnPieceLogic extends PieceLogic {
-    private boolean hasMovedYet;
+public class PawnPieceLogic extends FirstMovePieceLogic {
     private boolean justDidADoubleForward;
 
     private List<Pair<PieceCoordinate, Piece>> enPassantMoves = new ArrayList<Pair<PieceCoordinate, Piece>>();

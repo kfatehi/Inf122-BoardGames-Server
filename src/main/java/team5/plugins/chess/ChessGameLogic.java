@@ -118,13 +118,24 @@ public class ChessGameLogic extends GameLogic {
         // Commit it to the state
         state().movePiece(pieceId, intendedCoord);
 
+
+        // Now for special cases
+
+        // First most special case things require them to know if they've been moved or not
+        // and when we tell them they moved they can give back information
+        Piece firstMovePiece = state().getPieceAt(intendedCoord);
+        Piece returnedPiece = null;
+        if (FirstMovePieceLogic.class.isInstance(firstMovePiece.getPieceLogic())) {
+            FirstMovePieceLogic firstMovePieceLogic = (FirstMovePieceLogic)firstMovePiece.getPieceLogic();
+            returnedPiece = firstMovePieceLogic.movedFromTo(current, intendedCoord);
+        }
+
         // Pawn-specific
-        Piece pawnPiece = state().getPieceAt(intendedCoord);
         if (PawnPieceLogic.class.isInstance(piece.getPieceLogic())) {
 
             // Is a Pawn, need to notify it so it knows its first move and such
             PawnPieceLogic pawnPL = (PawnPieceLogic)piece.getPieceLogic();
-            Piece enPassantCapturedPiece = pawnPL.movedFromTo(current, intendedCoord);
+            Piece enPassantCapturedPiece = returnedPiece;
 
             if (enPassantCapturedPiece != null) {
                 // Moving that Pawn caused an En Passant capture. The piece coordinate returned is the one it captured
@@ -132,8 +143,8 @@ public class ChessGameLogic extends GameLogic {
             }
 
             // Pawn Promotion
-            if ((intendedCoord.getRow() == 0 && pawnPiece.getUsername().equals(blackPlayer)) ||
-                    (intendedCoord.getRow() == ROWS-1 && pawnPiece.getUsername().equals(whitePlayer))) {
+            if ((intendedCoord.getRow() == 0 && piece.getUsername().equals(blackPlayer)) ||
+                    (intendedCoord.getRow() == ROWS-1 && piece.getUsername().equals(whitePlayer))) {
                 // This piece that was just moved is a pawn
                 // and it was moved by the player to the other side of the board
 
@@ -143,6 +154,15 @@ public class ChessGameLogic extends GameLogic {
                 // And we won't let the turn change to the other player
                 // or do other calcs since this is still the player's turn
                 //return;
+            }
+        } else if (KingPieceLogic.class.isInstance(piece.getPieceLogic())) {
+            KingPieceLogic kingPieceLogic = (KingPieceLogic)piece.getPieceLogic();
+            Piece castledRook = returnedPiece;
+            System.out.println("Returned piece = " + castledRook);
+
+            if (castledRook != null) {
+                System.out.println("-> " + kingPieceLogic.rookPos(intendedCoord));
+                state().movePiece(castledRook.getId(), kingPieceLogic.rookPos(intendedCoord));
             }
         }
 
