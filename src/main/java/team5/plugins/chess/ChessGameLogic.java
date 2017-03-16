@@ -63,7 +63,7 @@ public class ChessGameLogic extends GameLogic {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
                 p.setPieceLogic(PieceLogicFactory.createPieceLogic(pieceNames.get(col)));
-                p.getPieceLogic().setPieceRef(p);
+                p.getPieceLogic().setPieceReference(p);
                 String u = row == 0 ? whitePlayer : blackPlayer;
                 p.setImage(imageFor(pieceNames.get(col), u));
                 p.setDirection(row == 0 ? MovementDirection.Up : MovementDirection.Down);
@@ -86,7 +86,7 @@ public class ChessGameLogic extends GameLogic {
             for (int col = 0; col < COLS; col++) {
                 Piece p = new Piece();
                 p.setPieceLogic(PieceLogicFactory.createPieceLogic("Pawn"));
-                p.getPieceLogic().setPieceRef(p);
+                p.getPieceLogic().setPieceReference(p);
                 String u = row == 1 ? whitePlayer : blackPlayer;
                 p.setImage(imageFor("Pawn", u));
                 p.setDirection(row == 1 ? MovementDirection.Up : MovementDirection.Down);

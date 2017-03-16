@@ -16,8 +16,6 @@ import java.util.List;
 public abstract class PieceLogic {
     protected Piece pieceRef;
 
-    public void setPieceRef(Piece ref) { pieceRef = ref; }
-   
     public abstract List<PieceCoordinate> moveableCoordinates(Board b, PieceCoordinate pc);		//return empty list if no moves
 
     public boolean coordinateWithinBounds(Board b, PieceCoordinate pc) {
