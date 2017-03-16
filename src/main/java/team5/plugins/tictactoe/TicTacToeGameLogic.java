@@ -172,7 +172,6 @@ public class TicTacToeGameLogic extends GameLogic {
 		if (previousPieceOwner != null) {
 			for (int i = 1; i < 3; i++) {
 				currentPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(i, 2 - i));
-	    		currentPieceOwner = getUsernameAtCoordinate(new PieceCoordinate(i, i));
     			if (currentPieceOwner == null) {
     				break;
     			}
